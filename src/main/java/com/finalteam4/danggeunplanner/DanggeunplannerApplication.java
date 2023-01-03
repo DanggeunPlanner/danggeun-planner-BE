@@ -16,4 +16,5 @@ public class DanggeunplannerApplication {
         SpringApplication.run(DanggeunplannerApplication.class, args);
     }
 
+    
 }
