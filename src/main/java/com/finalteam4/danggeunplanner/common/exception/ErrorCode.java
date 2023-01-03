@@ -14,7 +14,6 @@ public enum ErrorCode {
     NOT_VALID_PASSWORD(HttpStatus.BAD_REQUEST, "MEMBER_003", "비밀번호를 다시 확인해주세요."),
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "MEMBER_004", "찾을 수 없는 사용자입니다."),
     ;
-
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
