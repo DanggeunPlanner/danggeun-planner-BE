@@ -1,12 +1,3 @@
----
-name: PULL_REQUEST_TEMPLATE.md
-about: 깃허브 이슈 관리 템플릿입니다.
-title: ''
-labels: ''
-assignees: SungwonJeong, suhjaesuk, JeongO41
-
----
-
 ## PR 체크사항
 PR이 다음 사항을 만족하는지 확인해주세요.
 
@@ -43,7 +34,8 @@ PR 제목에 쓰는 prefix는 다음과 같습니다.
 
 
 ## PR 설명
-
+- 내용
 
 
 ## 작업사항
+- 내용
