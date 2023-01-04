@@ -41,5 +41,6 @@ public class Member {
     }
     public static Member signUpMember(String email, String password){
         return new Member(email, password);
+
     }
 }

@@ -29,6 +29,5 @@ public class AuthService {
                 });
 
         memberRepository.save(Member.signUpMember(email, password));
-
     }
 }

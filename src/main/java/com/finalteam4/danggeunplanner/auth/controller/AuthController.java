@@ -24,5 +24,6 @@ public class AuthController {
 
        return new ResponseEntity<>(new ResponseMessage("회원가입 성공",null), HttpStatus.CREATED);
     }
+
 }
 
