@@ -1,7 +1,7 @@
 package com.finalteam4.danggeunplanner.member.controller;
 
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
-import com.finalteam4.danggeunplanner.member.dto.request.SignUpRequestDto;
+import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
 import com.finalteam4.danggeunplanner.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignUpRequestDto signUpRequestDto){
+    public ResponseEntity<?> signUp(@RequestBody MemberSignUpRequest request){
 
-        memberService.signUp(signUpRequestDto);
+        memberService.signUp(request);
 
         return new ResponseEntity<>(new ResponseMessage("회원가입 성공",null), HttpStatus.CREATED);
     }
