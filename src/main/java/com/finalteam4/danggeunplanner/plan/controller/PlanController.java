@@ -7,6 +7,7 @@ import com.finalteam4.danggeunplanner.plan.service.PlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,5 +30,11 @@ public class PlanController {
     public ResponseEntity<ResponseMessage> update(@PathVariable Long planId, @RequestBody PlanInfoRequest request){
         PlanInfoResponse response = planService.update(planId,request);
         return new ResponseEntity<>(new ResponseMessage("계획 변경 성공",response), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{planId}")
+    public ResponseEntity<ResponseMessage> delete(@PathVariable Long planId){
+        PlanInfoResponse response = planService.delete(planId);
+        return new ResponseEntity<>(new ResponseMessage("계획 삭제 성공",response), HttpStatus.OK);
     }
 }

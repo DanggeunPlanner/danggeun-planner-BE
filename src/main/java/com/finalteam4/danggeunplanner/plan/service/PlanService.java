@@ -42,4 +42,11 @@ public class PlanService {
         String content = request.getContent();
         plan.update(startTime, endTime, content);
     }
+
+    @Transactional
+    public PlanInfoResponse delete(Long planId) {
+        Plan plan = planRepository.findById(planId).orElseThrow(()-> new DanggeunPlannerException(NOT_FOUND_PLAN));
+        planRepository.delete(plan);
+        return new PlanInfoResponse(plan);
+    }
 }
