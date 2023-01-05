@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_PLAN;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +22,24 @@ public class PlanService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public PlanInfoResponse createPlan(Long id, PlanInfoRequest request){
-        Member member = memberRepository.findById(id).orElseThrow(()-> new DanggeunPlannerException(NOT_FOUND_MEMBER));
+    public PlanInfoResponse create(Long memberId, PlanInfoRequest request){
+        Member member = memberRepository.findById(memberId).orElseThrow(()-> new DanggeunPlannerException(NOT_FOUND_MEMBER));
         Plan plan = request.toEntity(member);
         planRepository.save(plan);
         return new PlanInfoResponse(plan);
+    }
+
+    @Transactional
+    public PlanInfoResponse update(Long planId, PlanInfoRequest request){
+        Plan plan = planRepository.findById(planId).orElseThrow(()-> new DanggeunPlannerException(NOT_FOUND_PLAN));
+        updatePlan(plan, request);
+        return new PlanInfoResponse(plan);
+    }
+
+    private void updatePlan(Plan plan, PlanInfoRequest request){
+        String startTime = request.getStartTime();
+        String endTime = request.getEndTime();
+        String content = request.getContent();
+        plan.update(startTime, endTime, content);
     }
 }

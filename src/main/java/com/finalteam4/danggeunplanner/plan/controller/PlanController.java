@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,9 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/plan")
 public class PlanController {
     private final PlanService planService;
-    @PostMapping("/{id}")
-    public ResponseEntity<ResponseMessage> createPlan(@PathVariable Long id, @RequestBody PlanInfoRequest request){
-        PlanInfoResponse response = planService.createPlan(id,request);
+    @PostMapping("/{memberId}")
+    public ResponseEntity<ResponseMessage> create(@PathVariable Long memberId, @RequestBody PlanInfoRequest request){
+        PlanInfoResponse response = planService.create(memberId,request);
         return new ResponseEntity<>(new ResponseMessage("계획 등록 성공",response), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{planId}")
+    public ResponseEntity<ResponseMessage> update(@PathVariable Long planId, @RequestBody PlanInfoRequest request){
+        PlanInfoResponse response = planService.update(planId,request);
+        return new ResponseEntity<>(new ResponseMessage("계획 변경 성공",response), HttpStatus.ACCEPTED);
     }
 }

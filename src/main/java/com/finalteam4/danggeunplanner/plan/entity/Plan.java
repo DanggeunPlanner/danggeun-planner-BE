@@ -42,4 +42,10 @@ public class Plan {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    public void update(String startTime, String endTime, String content){
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.content = content;
+    }
 }
