@@ -1,9 +1,9 @@
 package com.finalteam4.danggeunplanner.planner.service;
 
-import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.planner.dto.response.PlannerResponse;
 import com.finalteam4.danggeunplanner.planner.entity.Plan;
 import com.finalteam4.danggeunplanner.planner.repository.PlanRepository;
+import com.finalteam4.danggeunplanner.timer.entity.Timer;
 import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,29 +16,28 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class PlannerService {
     private final PlanRepository planRepository;
-    private final MemberRepository memberRepository;
-    private final TimerRepository pomodoroRepository;
+    private final TimerRepository timerRepository;
 
     public PlannerResponse find(Long memberId, Long searchId, String date) {
 
-        boolean isOwner = false;
+        boolean owner = false;
         if (memberId.equals(searchId)) {
-            isOwner = true;
+            owner = true;
         }
 
         List<Plan> plans = planRepository.findAllByDateAndId(date, memberId);
-        List<com.finalteam4.danggeunplanner.timer.entity.Timer> pomodoros = pomodoroRepository.findAllByDateAndId(date, memberId);
+        List<Timer> timers = timerRepository.findAllByDateAndId(date, memberId);
 
-        Integer todayCarrot = pomodoros.size();
+        Integer todayCarrot = timers.size();
 
-        PlannerResponse response = new PlannerResponse(isOwner, todayCarrot);
+        PlannerResponse response = new PlannerResponse(owner, todayCarrot);
 
         for (Plan plan : plans) {
             response.addPlan(plan);
         }
 
-        for (com.finalteam4.danggeunplanner.timer.entity.Timer pomodoro : pomodoros) {
-            response.addPomodoro(pomodoro);
+        for (Timer timer : timers) {
+            response.addPomodoro(timer);
         }
 
         return response;

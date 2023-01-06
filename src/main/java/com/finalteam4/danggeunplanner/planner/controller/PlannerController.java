@@ -2,7 +2,7 @@ package com.finalteam4.danggeunplanner.planner.controller;
 
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
 import com.finalteam4.danggeunplanner.planner.dto.response.PlannerResponse;
-import com.finalteam4.danggeunplanner.planner.service.PlanService;
+import com.finalteam4.danggeunplanner.planner.service.PlannerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/planner")
 public class PlannerController {
-    private final PlanService planService;
+    private final PlannerService plannerService;
 
-    @GetMapping("/planner/{memberId}/{searchId}/{date}")
+    @GetMapping("/{memberId}/{searchId}/{date}")
     public ResponseEntity<ResponseMessage> find (@PathVariable Long memberId, @PathVariable Long searchId, @PathVariable String date){
-        PlannerResponse response = planService.find(memberId,searchId, date);
+        PlannerResponse response = plannerService.find(memberId,searchId, date);
         return new ResponseEntity<>(new ResponseMessage("플래너 조회 성공",response), HttpStatus.OK);
     }
 }

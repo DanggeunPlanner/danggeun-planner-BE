@@ -10,18 +10,18 @@ import java.util.List;
 
 @Getter
 public class PlannerResponse {
-    private boolean isOwner;
+    private boolean owner;
     private Integer todayCarrot;
     private List<PlanResponse> plans=new ArrayList<>();
     private List<TimerResponse> pomodoros = new ArrayList<>();
-    public PlannerResponse(boolean isOwner,Integer todayCarrot){
-        this.isOwner=isOwner;
+    public PlannerResponse(boolean owner,Integer todayCarrot){
+        this.owner=owner;
         this.todayCarrot=todayCarrot;
     }
     public void addPlan(Plan plan){
         plans.add(new PlanResponse(plan));
     }
-    public void addPomodoro(Timer pomodoro){
-        pomodoros.add(new TimerResponse(pomodoro));
+    public void addPomodoro(Timer timer){
+        pomodoros.add(new TimerResponse(timer));
     }
 }

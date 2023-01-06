@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 public class PlanResponse {
     private final Long planId;
-
     private final String startTime;
     private final String endTime;
     private final String content;
