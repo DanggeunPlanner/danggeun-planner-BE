@@ -5,6 +5,7 @@ import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.planner.dto.request.PlanRequest;
 import com.finalteam4.danggeunplanner.planner.dto.response.PlanResponse;
+
 import com.finalteam4.danggeunplanner.planner.entity.Plan;
 import com.finalteam4.danggeunplanner.planner.repository.PlanRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class PlanService {
     }
 
     @Transactional
+
     public PlanResponse update(Long planId, PlanRequest request) {
         Plan plan = planRepository.findById(planId).orElseThrow(() -> new DanggeunPlannerException(NOT_FOUND_PLAN));
         updatePlan(plan, request);

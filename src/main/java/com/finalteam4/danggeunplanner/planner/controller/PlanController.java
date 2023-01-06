@@ -30,12 +30,14 @@ public class PlanController {
     @PutMapping("/{planId}")
     public ResponseEntity<ResponseMessage> update(@PathVariable Long planId, @RequestBody PlanRequest request){
         PlanResponse response = planService.update(planId,request);
+
         return new ResponseEntity<>(new ResponseMessage("계획 변경 성공",response), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{planId}")
     public ResponseEntity<ResponseMessage> delete(@PathVariable Long planId){
         PlanResponse response = planService.delete(planId);
+
         return new ResponseEntity<>(new ResponseMessage("계획 삭제 성공",response), HttpStatus.OK);
     }
 }
