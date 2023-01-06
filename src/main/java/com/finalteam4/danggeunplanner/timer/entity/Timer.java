@@ -1,4 +1,4 @@
-package com.finalteam4.danggeunplanner.pomodoro.entity;
+package com.finalteam4.danggeunplanner.timer.entity;
 
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.AccessLevel;
@@ -19,10 +19,9 @@ import java.time.format.DateTimeFormatter;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Pomodoro {
+public class Timer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pomodoro_id")
     private Long id;
 
     @Column
@@ -31,18 +30,18 @@ public class Pomodoro {
     @Column(name="start_time")
     private String startTime;
 
-    @Column(name="finish_time")
-    private String finishTime;
+    @Column(name="end_time")
+    private String endTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
 
-    public Pomodoro(Member member){
+    public Timer(Member member){
         this.date = toDateFormat(LocalDateTime.now());
         this.startTime = toTimeFormat(LocalDateTime.now().minusMinutes(25));
-        this.finishTime = toTimeFormat(LocalDateTime.now());
+        this.endTime = toTimeFormat(LocalDateTime.now());
         this.member = member;
     }
 

@@ -1,10 +1,9 @@
-package com.finalteam4.danggeunplanner.pomodoro.service;
+package com.finalteam4.danggeunplanner.timer.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
-import com.finalteam4.danggeunplanner.pomodoro.entity.Pomodoro;
-import com.finalteam4.danggeunplanner.pomodoro.repository.PomodoroRepository;
+import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,14 +13,14 @@ import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUN
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class PomodoroService {
-    private final PomodoroRepository pomodoroRepository;
+public class TimerService {
+    private final TimerRepository pomodoroRepository;
     private final MemberRepository memberRepository;
 
     @Transactional
     public void finish(Long id){
         Member member = validatedMemberById(id);
-        Pomodoro pomodoro = new Pomodoro(member);
+        com.finalteam4.danggeunplanner.timer.entity.Timer pomodoro = new com.finalteam4.danggeunplanner.timer.entity.Timer(member);
         pomodoroRepository.save(pomodoro);
     }
 

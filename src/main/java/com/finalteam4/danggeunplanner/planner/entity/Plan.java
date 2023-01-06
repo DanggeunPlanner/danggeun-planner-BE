@@ -24,7 +24,6 @@ import javax.persistence.ManyToOne;
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "plan_id")
     private Long id;
 
     @Column(nullable = false)
