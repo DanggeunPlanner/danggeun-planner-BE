@@ -22,20 +22,22 @@ public class PlanController {
     private final PlanService planService;
 
     @PostMapping("/{memberId}")
-    public ResponseEntity<ResponseMessage> createPlan(@PathVariable Long memberId, @RequestBody PlanRequest request){
-        PlanResponse response = planService.createPlan(memberId,request);
+    public ResponseEntity<ResponseMessage> create(@PathVariable Long memberId, @RequestBody PlanRequest request){
+        PlanResponse response = planService.create(memberId,request);
         return new ResponseEntity<>(new ResponseMessage("계획 등록 성공",response), HttpStatus.CREATED);
     }
 
     @PutMapping("/{planId}")
-    public ResponseEntity<ResponseMessage> updatePlan(@PathVariable Long planId, @RequestBody PlanRequest request){
-        PlanResponse response = planService.updatePlan(planId,request);
+    public ResponseEntity<ResponseMessage> update(@PathVariable Long planId, @RequestBody PlanRequest request){
+        PlanResponse response = planService.update(planId,request);
+
         return new ResponseEntity<>(new ResponseMessage("계획 변경 성공",response), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{planId}")
-    public ResponseEntity<ResponseMessage> deletePlan(@PathVariable Long planId){
-        PlanResponse response = planService.deletePlan(planId);
+    public ResponseEntity<ResponseMessage> delete(@PathVariable Long planId){
+        PlanResponse response = planService.delete(planId);
+
         return new ResponseEntity<>(new ResponseMessage("계획 삭제 성공",response), HttpStatus.OK);
     }
 }
