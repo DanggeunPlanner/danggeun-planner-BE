@@ -28,7 +28,7 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Column(unique = true)
+    @Column
     private String username;
 
     @Column(name="profile_image",nullable = false)

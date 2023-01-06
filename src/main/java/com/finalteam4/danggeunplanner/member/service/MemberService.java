@@ -1,10 +1,13 @@
 package com.finalteam4.danggeunplanner.member.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
+import com.finalteam4.danggeunplanner.member.dto.request.MemberCreateUsernameRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberLogInRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberLogInResponse;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
+import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
 import com.finalteam4.danggeunplanner.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_EMAIL;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_NICKNAME;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_VALID_PASSWORD;
 
@@ -42,7 +46,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Boolean logIn(MemberLogInRequest request, HttpServletResponse response) {
+    public MemberLogInResponse logIn(MemberLogInRequest request, HttpServletResponse response) {
         String email = request.getEmail();
         String password = request.getPassword();
 
@@ -54,7 +58,7 @@ public class MemberService {
             throw new DanggeunPlannerException(NOT_VALID_PASSWORD);
         }
 
-        response.addHeader(JwtUtil.AUTHORIZATION_ACCESS, jwtUtil.createAccessToken(member.getUsername()));
+        response.addHeader(JwtUtil.AUTHORIZATION_ACCESS, jwtUtil.createAccessToken(member.getEmail()));
 
         Boolean isExistUsername = true;
 
@@ -62,6 +66,24 @@ public class MemberService {
             isExistUsername = false;
         }
 
-        return isExistUsername;
+        return new MemberLogInResponse(isExistUsername);
+    }
+
+    @Transactional
+    public void createUsername(UserDetailsImpl userDetails, MemberCreateUsernameRequest request) {
+
+        if(memberRepository.existsByUsername(request.getUsername())){
+           throw new DanggeunPlannerException(DUPLICATED_NICKNAME);
+        }
+
+        String eamil = userDetails.getMember().getEmail();
+
+        Member member = memberRepository.findByEmail(eamil).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+        );
+
+
+        member.setUsername(request.getUsername());
+
     }
 }
