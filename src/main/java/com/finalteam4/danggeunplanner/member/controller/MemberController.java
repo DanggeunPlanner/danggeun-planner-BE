@@ -41,9 +41,10 @@ public class MemberController {
     }
 
     @PostMapping("/username")
-    public ResponseEntity<?> createUsername(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<?> createUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberCreateUsernameRequest request){
 
-        memberService.createUsername(userDetails);
-        return new ResponseEntity<>(new ResponseMessage("Username 등록 성공"), HttpStatus.OK);
+        memberService.createUsername(userDetails, request);
+        return new ResponseEntity<>(new ResponseMessage("Username 등록 성공", null), HttpStatus.OK);
     }
 }
+

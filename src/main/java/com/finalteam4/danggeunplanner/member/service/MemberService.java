@@ -69,11 +69,14 @@ public class MemberService {
     }
 
     @Transactional
-    public void createUsername(UserDetailsImpl userDetails) {
-        String username = userDetails.getUsername();
+    public void createUsername(UserDetailsImpl userDetails, MemberCreateUsernameRequest request) {
+        String eamil = userDetails.getMember().getEmail();
 
-        memberRepository.findByUsername(username).
+        Member member = memberRepository.findByEmail(eamil).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+        );
 
+        member.setUsername(request.getUsername());
 
     }
 }
