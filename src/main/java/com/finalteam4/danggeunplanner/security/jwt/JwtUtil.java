@@ -55,12 +55,12 @@ public class JwtUtil {
         return null;
     }
 
-    public String createAccessToken(String username) {
+    public String createAccessToken(String email) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setSubject(username)
+                        .setSubject(email)
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                         .setIssuedAt(date)
                         .signWith(accessTokenKey, signatureAlgorithm)
@@ -91,8 +91,8 @@ public class JwtUtil {
     }
 
     // 인증 객체 생성
-    public Authentication createAuthentication(String username) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username); // 닉네임을 통해 사용자 조회
+    public Authentication createAuthentication(String email) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email); // email을 통해 사용자 조회
         return new UsernamePasswordAuthenticationToken(userDetails, null, null); //userDetail 및 권한 넣어 생성
     }
 

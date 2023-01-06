@@ -20,7 +20,7 @@ public enum ErrorCode {
     NOT_VALID_TOKEN(HttpStatus.BAD_REQUEST, "JWT_002", "토큰이 유효하지 않습니다."),
     NOT_AUTHORIZED_MEMBER(HttpStatus.BAD_REQUEST, "JWT_003", "인가되지 않은 사용자입니다."),
 
-    EXPIRATION_TOKEN(HttpStatus.BAD_REQUEST, "JWT_004", "Access Token이 만료되었습니다")
+    EXPIRATION_TOKEN(HttpStatus.BAD_REQUEST, "JWT_004", "Access Token이 만료되었습니다"),
 
     NOT_FOUND_PLAN(HttpStatus.NOT_FOUND,"PLAN_001","찾을 수 없는 계획입니다."),
 
