@@ -1,5 +1,6 @@
 package com.finalteam4.danggeunplanner.security.jwt;
 
+
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = jwtUtil.resolveToken(request, "AccessToken");
+        String token = jwtUtil.resolveToken(request);
 
         //인증 필요 없는 부분은 그냥 체인 통과하도록 분기처리(필요없으면 그냥 다음 필터로 이동)
         if (token == null){
@@ -65,4 +66,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // 4. Security Context Holder에 Context 넣기
         SecurityContextHolder.setContext(context);
     }
+
 }

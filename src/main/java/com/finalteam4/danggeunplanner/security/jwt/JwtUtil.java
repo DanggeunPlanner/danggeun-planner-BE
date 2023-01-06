@@ -47,8 +47,8 @@ public class JwtUtil {
         byte[] accessTokenBytes = Base64.getDecoder().decode(accessTokenSecretKey); //Base64로 인코딩 되어 있는 것을 secretKey로 decode
         accessTokenKey = Keys.hmacShaKeyFor(accessTokenBytes);
     }
-    public String resolveToken(HttpServletRequest request, String authorization) {
-        String bearerToken = request.getHeader(authorization);
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_ACCESS);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)){
             return bearerToken.substring(7);
         }
