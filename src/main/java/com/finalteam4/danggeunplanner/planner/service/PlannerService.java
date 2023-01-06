@@ -20,11 +20,8 @@ public class PlannerService {
 
     public PlannerResponse find(Long memberId, Long searchId, String date) {
 
-        boolean owner = false;
-        if (memberId.equals(searchId)) {
-            owner = true;
-        }
 
+        boolean owner = memberId.equals(searchId);
         List<Plan> plans = planRepository.findAllByDateAndId(date, memberId);
         List<Timer> timers = timerRepository.findAllByDateAndId(date, memberId);
 
