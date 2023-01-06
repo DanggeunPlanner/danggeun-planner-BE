@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_EMAIL;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_NICKNAME;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_VALID_PASSWORD;
 
@@ -70,11 +71,17 @@ public class MemberService {
 
     @Transactional
     public void createUsername(UserDetailsImpl userDetails, MemberCreateUsernameRequest request) {
+
+        if(memberRepository.existsByUsername(request.getUsername())){
+           throw new DanggeunPlannerException(DUPLICATED_NICKNAME);
+        }
+
         String eamil = userDetails.getMember().getEmail();
 
         Member member = memberRepository.findByEmail(eamil).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
+
 
         member.setUsername(request.getUsername());
 

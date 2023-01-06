@@ -34,7 +34,7 @@ import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.TOKEN_NO
 @RequiredArgsConstructor
 public class JwtUtil {
     public static final String AUTHORIZATION_ACCESS = "AccessToken";
-    private static final String BEARER_PREFIX = "Bearer";
+    private static final String BEARER_PREFIX = "Bearer ";
     private static final long TOKEN_TIME = 60 * 60 * 1000L;
     @Value("${jwt.secret.key.access}")
     private String accessTokenSecretKey;
