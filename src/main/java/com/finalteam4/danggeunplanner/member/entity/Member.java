@@ -29,7 +29,7 @@ public class Member {
     private String password;
 
     @Column(unique = true)
-    private String nickname;
+    private String username;
 
     @Column(name="profile_image",nullable = false)
     private String profileImage;
@@ -38,5 +38,9 @@ public class Member {
         this.email = email;
         this.password = password;
         this.profileImage = "https://item.kakaocdn.net/do/1e917e59f980468a78f2bff7dcc25ac215b3f4e3c2033bfd702a321ec6eda72c";
+    }
+
+    public void setUsername(String username){
+        this.username = username;
     }
 }
