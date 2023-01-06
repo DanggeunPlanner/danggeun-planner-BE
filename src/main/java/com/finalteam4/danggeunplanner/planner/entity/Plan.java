@@ -1,4 +1,4 @@
-package com.finalteam4.danggeunplanner.plan.entity;
+package com.finalteam4.danggeunplanner.planner.entity;
 
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.AccessLevel;
@@ -42,6 +42,7 @@ public class Plan {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
 
     public void update(String startTime, String endTime, String content){
         this.startTime = startTime;

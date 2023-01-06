@@ -1,11 +1,11 @@
-package com.finalteam4.danggeunplanner.plan.dto.request;
+package com.finalteam4.danggeunplanner.planner.dto.request;
 
 import com.finalteam4.danggeunplanner.member.entity.Member;
-import com.finalteam4.danggeunplanner.plan.entity.Plan;
+import com.finalteam4.danggeunplanner.planner.entity.Plan;
 import lombok.Getter;
 
 @Getter
-public class PlanInfoRequest {
+public class PlanRequest {
     private String date;
     private String startTime;
     private String endTime;

@@ -1,9 +1,9 @@
-package com.finalteam4.danggeunplanner.plan.controller;
+package com.finalteam4.danggeunplanner.planner.controller;
 
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
-import com.finalteam4.danggeunplanner.plan.dto.request.PlanInfoRequest;
-import com.finalteam4.danggeunplanner.plan.dto.response.PlanInfoResponse;
-import com.finalteam4.danggeunplanner.plan.service.PlanService;
+import com.finalteam4.danggeunplanner.planner.dto.request.PlanRequest;
+import com.finalteam4.danggeunplanner.planner.dto.response.PlanResponse;
+import com.finalteam4.danggeunplanner.planner.service.PlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +20,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/plan")
 public class PlanController {
     private final PlanService planService;
+
     @PostMapping("/{memberId}")
-    public ResponseEntity<ResponseMessage> create(@PathVariable Long memberId, @RequestBody PlanInfoRequest request){
-        PlanInfoResponse response = planService.create(memberId,request);
+    public ResponseEntity<ResponseMessage> createPlan(@PathVariable Long memberId, @RequestBody PlanRequest request){
+        PlanResponse response = planService.createPlan(memberId,request);
         return new ResponseEntity<>(new ResponseMessage("계획 등록 성공",response), HttpStatus.CREATED);
     }
 
     @PutMapping("/{planId}")
-    public ResponseEntity<ResponseMessage> update(@PathVariable Long planId, @RequestBody PlanInfoRequest request){
-        PlanInfoResponse response = planService.update(planId,request);
+    public ResponseEntity<ResponseMessage> updatePlan(@PathVariable Long planId, @RequestBody PlanRequest request){
+        PlanResponse response = planService.updatePlan(planId,request);
         return new ResponseEntity<>(new ResponseMessage("계획 변경 성공",response), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{planId}")
-    public ResponseEntity<ResponseMessage> delete(@PathVariable Long planId){
-        PlanInfoResponse response = planService.delete(planId);
+    public ResponseEntity<ResponseMessage> deletePlan(@PathVariable Long planId){
+        PlanResponse response = planService.deletePlan(planId);
         return new ResponseEntity<>(new ResponseMessage("계획 삭제 성공",response), HttpStatus.OK);
     }
 }
