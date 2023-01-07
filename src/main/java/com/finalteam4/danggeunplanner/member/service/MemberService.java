@@ -7,7 +7,7 @@ import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLogInResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
-import com.finalteam4.danggeunplanner.member.dto.response.MyPageResponse;
+
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
