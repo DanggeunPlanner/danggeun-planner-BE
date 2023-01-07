@@ -40,7 +40,7 @@ public class Member {
         this.profileImage = "https://item.kakaocdn.net/do/1e917e59f980468a78f2bff7dcc25ac215b3f4e3c2033bfd702a321ec6eda72c";
     }
 
-    public void setUsername(String username){
+    public void updateUsername(String username){
         this.username = username;
     }
 }

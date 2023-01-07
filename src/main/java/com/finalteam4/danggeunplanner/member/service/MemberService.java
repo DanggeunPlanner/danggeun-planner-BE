@@ -4,6 +4,7 @@ import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberCreateUsernameRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberLogInRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLogInResponse;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
@@ -41,7 +42,7 @@ public class MemberService {
                 });
 
         Member member = new Member(email, password);
-        member.setUsername("");
+        member.updateUsername("");
         memberRepository.save(member);
     }
 
@@ -70,7 +71,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void createUsername(UserDetailsImpl userDetails, MemberCreateUsernameRequest request) {
+    public void updateUsername(UserDetailsImpl userDetails, MemberCreateUsernameRequest request) {
 
         if(memberRepository.existsByUsername(request.getUsername())){
            throw new DanggeunPlannerException(DUPLICATED_NICKNAME);
@@ -83,7 +84,16 @@ public class MemberService {
         );
 
 
-        member.setUsername(request.getUsername());
+        member.updateUsername(request.getUsername());
+    }
+
+    public MemberInfoResponse findMember(String username) {
+
+        Member findMember = memberRepository.findByUsername(username).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+        );
+
+        return new MemberInfoResponse(findMember.getId(), findMember.getUsername(), findMember.getProfileImage());
 
     }
 }
