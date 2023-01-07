@@ -32,7 +32,7 @@ public class Member {
     public Member(String email, String password){
         this.email = email;
         this.password = password;
-        this.profileImage = "https://item.kakaocdn.net/do/1e917e59f980468a78f2bff7dcc25ac215b3f4e3c2033bfd702a321ec6eda72c";
+        this.profileImage = "https://files.slack.com/files-pri/T01L2TNGW3T-F04HWRR7AUA/profile_pic.png";
     }
     public void updateUsername(String username){
         this.username = username;
