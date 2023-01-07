@@ -6,10 +6,12 @@ import com.finalteam4.danggeunplanner.member.dto.request.MemberLogInRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLogInResponse;
+import com.finalteam4.danggeunplanner.member.dto.response.MyPageResponse;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
 import com.finalteam4.danggeunplanner.security.jwt.JwtUtil;
+import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +32,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final TimerRepository timerRepository;
 
     @Transactional
     public void signUp(MemberSignUpRequest request) {
@@ -83,7 +86,6 @@ public class MemberService {
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
 
-
         member.updateUsername(request.getUsername());
     }
 
@@ -94,6 +96,16 @@ public class MemberService {
         );
 
         return new MemberInfoResponse(findMember);
+    }
 
+
+    public MyPageResponse findSelf(UserDetailsImpl userDetails) {
+        Member mySelf = memberRepository.findByUsername(userDetails.getUsername()).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+        );
+
+        Integer totalCarrot = timerRepository.findAllByMember(userDetails.getMember()).size();
+
+        return new MyPageResponse(mySelf, totalCarrot);
     }
 }

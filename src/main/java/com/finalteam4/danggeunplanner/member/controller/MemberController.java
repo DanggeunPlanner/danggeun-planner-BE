@@ -6,6 +6,7 @@ import com.finalteam4.danggeunplanner.member.dto.request.MemberLogInRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLogInResponse;
+import com.finalteam4.danggeunplanner.member.dto.response.MyPageResponse;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.service.MemberService;
 import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
@@ -59,8 +60,13 @@ public class MemberController {
 
     }
 
+    @GetMapping("/mypage")
+    public ResponseEntity<?> myPage(@AuthenticationPrincipal UserDetailsImpl userDetails){
 
+        MyPageResponse response = memberService.findSelf(userDetails);
+        return new ResponseEntity<>(new ResponseMessage("마이페이지 조회 성공", response), HttpStatus.OK);
 
+    }
 
 
 }
