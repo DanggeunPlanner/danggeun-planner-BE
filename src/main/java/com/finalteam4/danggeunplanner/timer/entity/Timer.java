@@ -1,5 +1,6 @@
 package com.finalteam4.danggeunplanner.timer.entity;
 
+import com.finalteam4.danggeunplanner.CustomDateTimeFormatter;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,20 +39,10 @@ public class Timer {
 
 
     public Timer(Member member){
-        this.date = toDateFormat(LocalDateTime.now());
-        this.startTime = toTimeFormat(LocalDateTime.now().minusMinutes(25));
-        this.endTime = toTimeFormat(LocalDateTime.now());
+        this.date = CustomDateTimeFormatter.toYearAndMonthAndDayFormat(LocalDateTime.now());
+        this.startTime = CustomDateTimeFormatter.toTimeFormat(LocalDateTime.now().minusMinutes(25));
+        this.endTime = CustomDateTimeFormatter.toTimeFormat(LocalDateTime.now());
         this.member = member;
-    }
-
-    private String toDateFormat(LocalDateTime localDateTime) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return localDateTime.format(dateFormatter);
-    }
-
-    private String toTimeFormat(LocalDateTime localDateTime) {
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        return localDateTime.format(timeFormatter);
     }
 
 }
