@@ -6,8 +6,8 @@ import com.finalteam4.danggeunplanner.member.dto.request.MemberLogInRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLogInResponse;
-import com.finalteam4.danggeunplanner.member.dto.response.MyPageResponse;
-import com.finalteam4.danggeunplanner.member.entity.Member;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
+
 import com.finalteam4.danggeunplanner.member.service.MemberService;
 import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,7 @@ public class MemberController {
     public ResponseEntity<?> createUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberCreateUsernameRequest request){
 
         memberService.updateUsername(userDetails, request);
-        return new ResponseEntity<>(new ResponseMessage("Username 등록 성공", null), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseMessage("닉네임 등록 성공", null), HttpStatus.CREATED);
     }
 
     @GetMapping("/search/{username}")
@@ -61,9 +61,9 @@ public class MemberController {
     }
 
     @GetMapping("/mypage")
-    public ResponseEntity<?> myPage(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<?> findMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        MyPageResponse response = memberService.findSelf(userDetails);
+        MemberMyPageResponse response = memberService.findMyPage(userDetails);
         return new ResponseEntity<>(new ResponseMessage("마이페이지 조회 성공", response), HttpStatus.OK);
 
     }

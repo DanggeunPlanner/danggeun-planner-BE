@@ -6,11 +6,13 @@ import com.finalteam4.danggeunplanner.member.dto.request.MemberLogInRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLogInResponse;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MyPageResponse;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
 import com.finalteam4.danggeunplanner.security.jwt.JwtUtil;
+import com.finalteam4.danggeunplanner.timer.entity.Timer;
 import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.List;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_EMAIL;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_NICKNAME;
@@ -80,9 +84,9 @@ public class MemberService {
            throw new DanggeunPlannerException(DUPLICATED_NICKNAME);
         }
 
-        String eamil = userDetails.getMember().getEmail();
+        String email = userDetails.getMember().getEmail();
 
-        Member member = memberRepository.findByEmail(eamil).orElseThrow(
+        Member member = memberRepository.findByEmail(email).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
 
@@ -91,21 +95,22 @@ public class MemberService {
 
     public MemberInfoResponse findMember(String username) {
 
-        Member findMember = memberRepository.findByUsername(username).orElseThrow(
+        Member member = memberRepository.findByUsername(username).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
 
-        return new MemberInfoResponse(findMember);
+        return new MemberInfoResponse(member);
     }
 
 
-    public MyPageResponse findSelf(UserDetailsImpl userDetails) {
-        Member mySelf = memberRepository.findByUsername(userDetails.getUsername()).orElseThrow(
+    public MemberMyPageResponse findMyPage(UserDetailsImpl userDetails) {
+        Member member = memberRepository.findByUsername(userDetails.getUsername()).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
 
-        Integer totalCarrot = timerRepository.findAllByMember(userDetails.getMember()).size();
+        List<Timer> timers = timerRepository.findAllByMember(userDetails.getMember());
+        Integer totalCarrot = timers.size();
 
-        return new MyPageResponse(mySelf, totalCarrot);
+        return new MemberMyPageResponse(member, totalCarrot);
     }
 }
