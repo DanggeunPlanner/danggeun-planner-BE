@@ -8,7 +8,6 @@ public class TimerResponse {
     private Long timerId;
     private String startTime;
     private String endTime;
-
     public TimerResponse(Timer timer){
         this.timerId = timer.getId();
         this.startTime = timer.getStartTime();
