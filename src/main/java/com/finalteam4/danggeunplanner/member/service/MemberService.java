@@ -93,7 +93,7 @@ public class MemberService {
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
 
-        return new MemberInfoResponse(findMember.getId(), findMember.getUsername(), findMember.getProfileImage());
+        return new MemberInfoResponse(findMember);
 
     }
 }
