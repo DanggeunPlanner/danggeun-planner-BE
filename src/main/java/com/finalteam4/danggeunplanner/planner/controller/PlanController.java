@@ -1,7 +1,6 @@
 package com.finalteam4.danggeunplanner.planner.controller;
 
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
-import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.planner.dto.request.PlanRequest;
 import com.finalteam4.danggeunplanner.planner.dto.response.PlanResponse;
 import com.finalteam4.danggeunplanner.planner.service.PlanService;
@@ -26,22 +25,19 @@ public class PlanController {
 
     @PostMapping
     public ResponseEntity<ResponseMessage> create(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody PlanRequest request){
-        Member member = userDetails.getMember();
-        PlanResponse response = planService.create(member,request);
+        PlanResponse response = planService.create(userDetails.getMember(),request);
         return new ResponseEntity<>(new ResponseMessage("계획 등록 성공",response), HttpStatus.CREATED);
     }
 
     @PutMapping("/{planId}")
     public ResponseEntity<ResponseMessage> update(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long planId, @RequestBody PlanRequest request){
-        Member member = userDetails.getMember();
-        PlanResponse response = planService.update(member,planId,request);
+        PlanResponse response = planService.update(userDetails.getMember(),planId,request);
         return new ResponseEntity<>(new ResponseMessage("계획 변경 성공",response), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{planId}")
     public ResponseEntity<ResponseMessage> delete(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long planId){
-        Member member = userDetails.getMember();
-        PlanResponse response = planService.delete(member,planId);
+        PlanResponse response = planService.delete(userDetails.getMember(),planId);
         return new ResponseEntity<>(new ResponseMessage("계획 삭제 성공",response), HttpStatus.OK);
     }
 }

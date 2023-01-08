@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 public class CustomDateTimeFormatter {
 
     public static String toYearAndMonthFormat(LocalDateTime localDateTime) {
-        java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM");
         return localDateTime.format(dateFormatter);
     }
     public static String toYearAndMonthAndDayFormat(LocalDateTime localDateTime) {

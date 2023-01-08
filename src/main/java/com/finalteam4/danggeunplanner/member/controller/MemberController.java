@@ -47,7 +47,6 @@ public class MemberController {
 
     @PostMapping("/username")
     public ResponseEntity<?> createUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberCreateUsernameRequest request){
-
         memberService.updateUsername(userDetails, request);
         return new ResponseEntity<>(new ResponseMessage("닉네임 등록 성공", null), HttpStatus.CREATED);
     }
