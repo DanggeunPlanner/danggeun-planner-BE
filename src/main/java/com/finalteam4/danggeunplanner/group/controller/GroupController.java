@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,5 +26,11 @@ public class GroupController {
     public ResponseEntity<ResponseMessage<?>> createGroup(@RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
         GroupInfoResponse response = groupService.createGroup(request, userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("그룹 등록 성공", response), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{groupId}")
+    public ResponseEntity<ResponseMessage<?>> updateGroup(@PathVariable Long groupId, @RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        GroupInfoResponse response = groupService.updateGroup(groupId, request, userDetails.getMember());
+        return new ResponseEntity<>(new ResponseMessage<>("그룹 수정 성공", response), HttpStatus.ACCEPTED);
     }
 }

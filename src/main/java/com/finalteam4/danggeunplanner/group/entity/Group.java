@@ -40,4 +40,9 @@ public class Group {
         this.description = description;
         this.groupImage = groupImage;
     }
+
+    public void update(String groupName, String description) {
+        this.groupName = groupName;
+        this.description = description;
+    }
 }
