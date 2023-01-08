@@ -6,6 +6,7 @@ import com.finalteam4.danggeunplanner.group.dto.response.GroupInfoResponse;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.entity.GroupImageEnum;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
+import com.finalteam4.danggeunplanner.group.repository.ParticipantRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_VALI
 @Transactional(readOnly = true)
 public class GroupService {
     private final GroupRepository groupRepository;
+    private final ParticipantRepository participantRepository;
 
     @Transactional
     public GroupInfoResponse createGroup(GroupInfoRequest request, Member member) {
@@ -37,6 +39,17 @@ public class GroupService {
         validateAccess(member, group);
 
         group.update(request.getGroupName(),request.getDescription());
+        return new GroupInfoResponse(group);
+    }
+
+    @Transactional
+    public GroupInfoResponse deleteGroup(Long groupId, Member member) {
+        Group group = validateExistGroup(groupId);
+
+        validateAccess(member, group);
+
+        participantRepository.deleteAllByGroupId(groupId);
+        groupRepository.deleteById(groupId);
         return new GroupInfoResponse(group);
     }
 

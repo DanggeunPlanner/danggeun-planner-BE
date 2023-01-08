@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,5 +33,11 @@ public class GroupController {
     public ResponseEntity<ResponseMessage<?>> updateGroup(@PathVariable Long groupId, @RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
         GroupInfoResponse response = groupService.updateGroup(groupId, request, userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("그룹 수정 성공", response), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<ResponseMessage<?>> deleteGroup(@PathVariable Long groupId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        GroupInfoResponse response = groupService.deleteGroup(groupId, userDetails.getMember());
+        return new ResponseEntity<>(new ResponseMessage<>("그룹 삭제 성공", response), HttpStatus.OK);
     }
 }
