@@ -1,6 +1,6 @@
 package com.finalteam4.danggeunplanner.calendar.entity;
 
-import com.finalteam4.danggeunplanner.CustomDateTimeFormatter;
+import com.finalteam4.danggeunplanner.TimeConverter;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.planner.entity.Planner;
 import lombok.AccessLevel;
@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,27 +27,25 @@ public class Calendar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="calendar_id")
     private Long id;
-
     private String date;
     private Integer carrot;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
     @OneToMany(mappedBy = "calendar")
-    private  List<Planner> planners = new ArrayList<>();
+    private List<Planner> planners = new ArrayList<>();
 
     public void addPlanner(Planner planner){
         planners.add(planner);
     }
+
     public Calendar(Member member){
-        this.date = CustomDateTimeFormatter.toYearAndMonthFormat(LocalDateTime.now());
+        this.date = TimeConverter.getCurrentTimeToYearMonth();
         this.member = member;
         this.carrot=0;
     }
-    public void plusCarrot(){
+
+    public void addCarrot(){
         this.carrot++;
     }
-
-
 }
