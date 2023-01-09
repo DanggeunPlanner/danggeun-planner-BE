@@ -37,12 +37,10 @@ public class Timer {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-
     public Timer(Member member){
         this.date = CustomDateTimeFormatter.toYearAndMonthAndDayFormat(LocalDateTime.now());
         this.startTime = CustomDateTimeFormatter.toTimeFormat(LocalDateTime.now().minusMinutes(25));
         this.endTime = CustomDateTimeFormatter.toTimeFormat(LocalDateTime.now());
         this.member = member;
     }
-
 }
