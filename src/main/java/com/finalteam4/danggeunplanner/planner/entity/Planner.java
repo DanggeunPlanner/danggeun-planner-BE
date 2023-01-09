@@ -35,33 +35,36 @@ public class Planner {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
-    @OneToMany(mappedBy ="planner")
-    private List<Plan> plans = new ArrayList<>();
-
-    @OneToMany(mappedBy ="planner")
-    private List<Timer> timers = new ArrayList<>();
 
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="calendar_id")
     private Calendar calendar;
+
+    @OneToMany(mappedBy ="planner")
+    private List<Plan> plans = new ArrayList<>();
+    @OneToMany(mappedBy ="planner")
+    private List<Timer> timers = new ArrayList<>();
+
     public void addPlan(Plan plan){
         plans.add(plan);
     }
+
     public void addTimer(Timer timer){
         timers.add(timer);
     }
+
     public void confirmCalendar(Calendar calendar){
         this.calendar=calendar;
         calendar.addPlanner(this);
     }
 
-    public Planner(Member member,String date){
+    public Planner(Member member, String date){
         this.date = date;
         this.member = member;
         this.carrot=0;
     }
 
-    public void plusCarrot(){
+    public void addCarrot(){
         this.carrot++;
     }
 }

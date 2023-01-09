@@ -7,8 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface PlannerRepository extends JpaRepository<Planner,Long> {
-    boolean existsByMemberAndDate(Member member, String date);
-
+    Boolean existsByMemberAndDate(Member member, String date);
     Optional<Planner> findByMemberAndDate(Member member, String date);
 
 }

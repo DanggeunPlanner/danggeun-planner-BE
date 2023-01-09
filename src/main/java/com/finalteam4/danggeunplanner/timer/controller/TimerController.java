@@ -2,6 +2,7 @@ package com.finalteam4.danggeunplanner.timer.controller;
 
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
 import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
+import com.finalteam4.danggeunplanner.timer.dto.response.TimerResponse;
 import com.finalteam4.danggeunplanner.timer.service.TimerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class TimerController {
     private final TimerService timerService;
     @PostMapping
     ResponseEntity<ResponseMessage> finish(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        timerService.finish(userDetails.getMember());
-        return new ResponseEntity<>(new ResponseMessage<>("타이머 등록 완료",null), HttpStatus.CREATED);
+        TimerResponse response = timerService.finish(userDetails.getMember());
+        return new ResponseEntity<>(new ResponseMessage<>("타이머 등록 완료",response), HttpStatus.CREATED);
     }
 }

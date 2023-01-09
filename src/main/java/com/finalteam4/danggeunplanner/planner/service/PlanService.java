@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_PLAN;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_PLANNER;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_VALID_ACCESS;
@@ -26,15 +24,18 @@ public class PlanService {
     private final PlannerRepository plannerRepository;
     @Transactional
     public PlanResponse create(Member member, PlanRequest request) {
-        Plan plan = request.toEntity(member);
+        Plan plan = request.toPlan(member);
         planRepository.save(plan);
 
-        createPlanner(member,plan.getDate());
-        Planner planner = findPlanner(member, plan.getDate());
+        String date = plan.getDate();
+
+        createPlanner(member,date);
+        Planner planner = plannerRepository.findByMemberAndDate(member,date).orElseThrow(() -> new DanggeunPlannerException(NOT_FOUND_PLANNER));
         plan.confirmPlanner(planner);
 
         return new PlanResponse(plan);
     }
+
     private void createPlanner(Member member,String date){
         if(!plannerRepository.existsByMemberAndDate(member, date)) {
             Planner planner = new Planner(member,date);
@@ -42,41 +43,30 @@ public class PlanService {
         }
     }
 
-    private Planner findPlanner(Member member, String date){
-        return plannerRepository.findByMemberAndDate(member,date).orElseThrow(
-                () -> new DanggeunPlannerException(NOT_FOUND_PLANNER)
-        );
-    }
-
     @Transactional
     public PlanResponse update(Member member ,Long planId, PlanRequest request) {
         Plan plan = planRepository.findById(planId).orElseThrow(() -> new DanggeunPlannerException(NOT_FOUND_PLAN));
+        isValidatedMember(member,plan.getMember());
 
-        validateAccess(member,plan);
-
-        updatePlan(plan, request);
-        return new PlanResponse(plan);
-    }
-
-    private void updatePlan(Plan plan, PlanRequest request) {
         String startTime = request.getStartTime();
         String endTime = request.getEndTime();
         String content = request.getContent();
+
         plan.update(startTime, endTime, content);
+        return new PlanResponse(plan);
     }
 
     @Transactional
     public PlanResponse delete(Member member,Long planId) {
         Plan plan = planRepository.findById(planId).orElseThrow(() -> new DanggeunPlannerException(NOT_FOUND_PLAN));
-
-        validateAccess(member,plan);
+        isValidatedMember(member,plan.getMember());
 
         planRepository.delete(plan);
         return new PlanResponse(plan);
     }
 
-    private void validateAccess(Member member, Plan plan){
-        if(!Objects.equals(member.getId(), plan.getMember().getId())){
+    private void isValidatedMember(Member member, Member other){
+        if(!member.getId().equals(other.getId())){
             throw new DanggeunPlannerException(NOT_VALID_ACCESS);
         }
     }

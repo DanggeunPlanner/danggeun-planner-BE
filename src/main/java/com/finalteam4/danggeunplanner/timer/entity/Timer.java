@@ -1,13 +1,12 @@
 package com.finalteam4.danggeunplanner.timer.entity;
 
-import com.finalteam4.danggeunplanner.CustomDateTimeFormatter;
+import com.finalteam4.danggeunplanner.TimeConverter;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.planner.entity.Planner;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,21 +25,16 @@ public class Timer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="timer_id")
     private Long id;
-
     @Column
     private String date;
-
     @Column(name="start_time")
     private String startTime;
-
     @Column(name="end_time")
     private String endTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
-
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="planner_id")
     private Planner planner;
 
@@ -50,9 +44,9 @@ public class Timer {
     }
 
     public Timer(Member member){
-        this.date = CustomDateTimeFormatter.toYearAndMonthAndDayFormat(LocalDateTime.now());
-        this.startTime = CustomDateTimeFormatter.toTimeFormat(LocalDateTime.now().minusMinutes(25));
-        this.endTime = CustomDateTimeFormatter.toTimeFormat(LocalDateTime.now());
+        this.date = TimeConverter.getCurrentTimeToYearMonthDay();
+        this.startTime = TimeConverter.changeTimeToHourMinute(LocalDateTime.now().minusMinutes(25));
+        this.endTime = TimeConverter.changeTimeToHourMinute(LocalDateTime.now());
         this.member = member;
     }
 }

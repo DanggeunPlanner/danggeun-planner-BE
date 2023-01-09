@@ -20,8 +20,8 @@ public class PlannerController {
     private final PlannerService plannerService;
 
     @GetMapping("{username}/{date}")
-    public ResponseEntity<ResponseMessage> find (@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String username, @PathVariable String date){
-        PlannerResponse response = plannerService.find(userDetails.getMember(),username,date);
-        return new ResponseEntity<>(new ResponseMessage("플래너 조회 성공",response), HttpStatus.OK);
+    public ResponseEntity<ResponseMessage> find (@AuthenticationPrincipal final UserDetailsImpl userDetails, @PathVariable final String username, @PathVariable String date){
+        PlannerResponse response = plannerService.find(userDetails.getMember(), username, date);
+        return new ResponseEntity<>(new ResponseMessage("플래너 조회 성공", response), HttpStatus.OK);
     }
 }

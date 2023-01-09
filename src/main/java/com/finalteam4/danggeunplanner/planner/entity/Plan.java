@@ -29,13 +29,10 @@ public class Plan {
 
     @Column(nullable = false)
     private String date;
-
     @Column(name="start_time", nullable = false)
     private String startTime;
-
     @Column(name="end_time", nullable = false)
     private String endTime;
-
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
