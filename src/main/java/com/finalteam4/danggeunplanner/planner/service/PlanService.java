@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_PLAN;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_PLANNER;
+
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_VALID_ACCESS;
 
 @Service
@@ -64,6 +65,7 @@ public class PlanService {
         planRepository.delete(plan);
         return new PlanResponse(plan);
     }
+
 
     private void isValidatedMember(Member member, Member other){
         if(!member.getId().equals(other.getId())){

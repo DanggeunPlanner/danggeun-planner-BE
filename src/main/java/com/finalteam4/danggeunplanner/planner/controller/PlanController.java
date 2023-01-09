@@ -1,6 +1,7 @@
 package com.finalteam4.danggeunplanner.planner.controller;
 
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
+import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.planner.dto.request.PlanRequest;
 import com.finalteam4.danggeunplanner.planner.dto.response.PlanResponse;
 import com.finalteam4.danggeunplanner.planner.service.PlanService;
