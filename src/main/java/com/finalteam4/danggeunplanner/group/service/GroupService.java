@@ -1,20 +1,32 @@
 package com.finalteam4.danggeunplanner.group.service;
 
+import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.dto.request.GroupInfoRequest;
 import com.finalteam4.danggeunplanner.group.dto.response.GroupInfoResponse;
+import com.finalteam4.danggeunplanner.group.dto.response.GroupListResponse;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.entity.GroupImageEnum;
+import com.finalteam4.danggeunplanner.group.participant.entity.Participant;
+import com.finalteam4.danggeunplanner.group.participant.repository.ParticipantRepository;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_JOIN_GROUP;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_VALID_ACCESS;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class GroupService {
     private final GroupRepository groupRepository;
+    private final ParticipantRepository participantRepository;
 
     @Transactional
     public GroupInfoResponse createGroup(GroupInfoRequest request, Member member) {
@@ -24,5 +36,53 @@ public class GroupService {
         groupRepository.save(group);
 
         return new GroupInfoResponse(group);
+    }
+
+    @Transactional
+    public GroupInfoResponse updateGroup(Long groupId, GroupInfoRequest request, Member member) {
+        Group group = validateExistGroup(groupId);
+
+        validateAccess(member, group);
+
+        group.update(request.getGroupName(),request.getDescription());
+        return new GroupInfoResponse(group);
+    }
+
+    @Transactional
+    public GroupInfoResponse deleteGroup(Long groupId, Member member) {
+        Group group = validateExistGroup(groupId);
+
+        validateAccess(member, group);
+
+        participantRepository.deleteAllByGroupId(groupId);
+        groupRepository.deleteById(groupId);
+        return new GroupInfoResponse(group);
+    }
+
+    public List<GroupListResponse> findGroupList(Member member) {
+        List<Participant> participantList = participantRepository.findAllByMember(member);
+
+        if(participantList.isEmpty()){
+            throw new DanggeunPlannerException(NOT_FOUND_JOIN_GROUP);
+        }
+
+        List<GroupListResponse> groupListResponse = new ArrayList<>();
+        for (Participant participant : participantList) {
+            Integer participants = participantRepository.countParticipantByGroup_Id(participant.getGroup().getId());
+            groupListResponse.add(new GroupListResponse(participant, participants));
+        }
+        return groupListResponse;
+    }
+
+    private Group validateExistGroup(Long groupId) {
+        return groupRepository.findById(groupId).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
+        );
+    }
+
+    private void validateAccess(Member member, Group group) {
+        if(!group.getAdmin().equals(member.getUsername())){
+            throw new DanggeunPlannerException(NOT_VALID_ACCESS);
+        }
     }
 }
