@@ -10,7 +10,7 @@ public class PlanRequest {
     private String startTime;
     private String endTime;
     private String content;
-    public Plan toEntity(Member member){
+    public Plan toPlan(Member member){
         return Plan.builder()
                 .date(date)
                 .startTime(startTime)

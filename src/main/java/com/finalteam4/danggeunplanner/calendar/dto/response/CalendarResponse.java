@@ -1,25 +1,24 @@
 package com.finalteam4.danggeunplanner.calendar.dto.response;
 
-import com.finalteam4.danggeunplanner.member.entity.Member;
+import com.finalteam4.danggeunplanner.calendar.entity.Calendar;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class CalendarResponse {
-    private String username;
-    private String profileImage;
-    private Double monthlyAverageCarrot;
-    private String[] stage1;
-    private String[] stage2;
-    private String[] stage3;
-    private String[] stage4;
+    private final String username;
+    private final String profileImage;
+    private final Integer carrot;
+    private final List<ColorStageResponse> colorStages = new ArrayList<>();
 
-    public CalendarResponse(Member member, Double monthlyAverageCarrot, String[] stage1, String[] stage2, String[] stage3, String[] stage4){
-        this.username = member.getUsername();
-        this.profileImage = member.getProfileImage();
-        this.monthlyAverageCarrot = monthlyAverageCarrot;
-        this.stage1 = stage1;
-        this.stage2 = stage2;
-        this.stage3 = stage3;
-        this.stage4 = stage4;
+    public CalendarResponse(Calendar calendar){
+        this.username = calendar.getMember().getUsername();
+        this.profileImage = calendar.getMember().getProfileImage();
+        this.carrot = calendar.getCarrot();
+    }
+    public void addColorStage(ColorStageResponse colorStage){
+        colorStages.add(colorStage);
     }
 }
