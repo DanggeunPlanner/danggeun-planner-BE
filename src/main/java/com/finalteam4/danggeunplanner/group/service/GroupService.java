@@ -3,16 +3,22 @@ package com.finalteam4.danggeunplanner.group.service;
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.dto.request.GroupInfoRequest;
 import com.finalteam4.danggeunplanner.group.dto.response.GroupInfoResponse;
+import com.finalteam4.danggeunplanner.group.dto.response.GroupListResponse;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.entity.GroupImageEnum;
+import com.finalteam4.danggeunplanner.group.participant.entity.Participant;
+import com.finalteam4.danggeunplanner.group.participant.repository.ParticipantRepository;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
-import com.finalteam4.danggeunplanner.group.repository.ParticipantRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_JOIN_GROUP;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_VALID_ACCESS;
 
 @Service
@@ -51,6 +57,21 @@ public class GroupService {
         participantRepository.deleteAllByGroupId(groupId);
         groupRepository.deleteById(groupId);
         return new GroupInfoResponse(group);
+    }
+
+    public List<GroupListResponse> findGroupList(Member member) {
+        List<Participant> participantList = participantRepository.findAllByMember(member);
+
+        if(participantList.isEmpty()){
+            throw new DanggeunPlannerException(NOT_FOUND_JOIN_GROUP);
+        }
+
+        List<GroupListResponse> groupListResponse = new ArrayList<>();
+        for (Participant participant : participantList) {
+            Integer participants = participantRepository.countParticipantByGroup_Id(participant.getGroup().getId());
+            groupListResponse.add(new GroupListResponse(participant, participants));
+        }
+        return groupListResponse;
     }
 
     private Group validateExistGroup(Long groupId) {
