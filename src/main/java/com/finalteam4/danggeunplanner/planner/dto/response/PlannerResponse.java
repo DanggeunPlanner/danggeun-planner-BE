@@ -1,8 +1,8 @@
 package com.finalteam4.danggeunplanner.planner.dto.response;
 
-import com.finalteam4.danggeunplanner.planner.entity.Plan;
+import com.finalteam4.danggeunplanner.member.entity.Member;
+import com.finalteam4.danggeunplanner.planner.entity.Planner;
 import com.finalteam4.danggeunplanner.timer.dto.response.TimerResponse;
-import com.finalteam4.danggeunplanner.timer.entity.Timer;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -10,18 +10,23 @@ import java.util.List;
 
 @Getter
 public class PlannerResponse {
-    private boolean owner;
-    private Integer todayCarrot;
-    private List<PlanResponse> plans=new ArrayList<>();
-    private List<TimerResponse> pomodoros = new ArrayList<>();
-    public PlannerResponse(boolean owner,Integer todayCarrot){
-        this.owner=owner;
-        this.todayCarrot=todayCarrot;
+    private final Boolean isOwner;
+    private final String username;
+    private final Integer carrot;
+    private final List<PlanResponse> plans = new ArrayList<>();
+    private final List<TimerResponse> timers = new ArrayList<>();
+
+    public PlannerResponse(Planner planner, Member member){
+        this.isOwner= planner.getMember().getId().equals(member.getId());
+        this.username = planner.getMember().getUsername();
+        this.carrot = planner.getCarrot();
     }
-    public void addPlan(Plan plan){
-        plans.add(new PlanResponse(plan));
+
+    public void addPlan(PlanResponse response){
+        plans.add(response);
     }
-    public void addPomodoro(Timer timer){
-        pomodoros.add(new TimerResponse(timer));
+
+    public void addTimer(TimerResponse response){
+        timers.add(response);
     }
 }

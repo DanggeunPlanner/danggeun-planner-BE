@@ -44,6 +44,7 @@ public class MemberController {
         return new ResponseEntity<>(new ResponseMessage("로그인 성공", memberLogInResponse), HttpStatus.OK);
     }
 
+
     @PutMapping("/username")
     public ResponseEntity<ResponseMessage> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberUpdateUsernameRequest request){
         MemberUpdateUsernameResponse response = memberService.updateUsername(userDetails, request);
@@ -61,7 +62,6 @@ public class MemberController {
         MemberMyPageResponse response = memberService.findMyPage(userDetails);
         return new ResponseEntity<>(new ResponseMessage("마이페이지 조회 성공", response), HttpStatus.OK);
     }
-
 
 }
 

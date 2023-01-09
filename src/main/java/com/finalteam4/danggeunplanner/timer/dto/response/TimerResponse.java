@@ -5,12 +5,14 @@ import lombok.Getter;
 
 @Getter
 public class TimerResponse {
-    private Long timerId;
-    private String startTime;
-    private String endTime;
+    private final Long timerId;
+    private final String date;
+    private final String startTime;
+    private final String endTime;
 
     public TimerResponse(Timer timer){
         this.timerId = timer.getId();
+        this.date = timer.getDate();
         this.startTime = timer.getStartTime();
         this.endTime = timer.getEndTime();
     }

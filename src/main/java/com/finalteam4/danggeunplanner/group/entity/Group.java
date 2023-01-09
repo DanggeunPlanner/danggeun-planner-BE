@@ -1,6 +1,8 @@
 package com.finalteam4.danggeunplanner.group.entity;
 
+import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
+@Entity(name = "groups")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Group {
@@ -20,9 +22,27 @@ public class Group {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String groupName;
+
+    @Column(nullable = false)
+    private String admin;
+
     @Column(nullable = false)
     private String description;
+
     @Column(nullable = false)
-    private String image;
+    private String groupImage;
+
+    @Builder
+    public Group(String groupName, String description, Member member, String groupImage){
+        this.groupName = groupName;
+        this.admin = member.getUsername();
+        this.description = description;
+        this.groupImage = groupImage;
+    }
+
+    public void update(String groupName, String description) {
+        this.groupName = groupName;
+        this.description = description;
+    }
 }
