@@ -21,26 +21,23 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
     private Long id;
-
     @Column(nullable = false)
     private String email;
-
     @Column(nullable = false)
     private String password;
-
     @Column
     private String username;
-
     @Column(name="profile_image",nullable = false)
     private String profileImage;
-
     public Member(String email, String password){
         this.email = email;
         this.password = password;
-        this.profileImage = "https://item.kakaocdn.net/do/1e917e59f980468a78f2bff7dcc25ac215b3f4e3c2033bfd702a321ec6eda72c";
+        this.profileImage = "https://files.slack.com/files-pri/T01L2TNGW3T-F04HWRR7AUA/profile_pic.png";
     }
-
     public void updateUsername(String username){
         this.username = username;
+    }
+    public void updateProfileImage(String profileImage){
+        this.profileImage = profileImage;
     }
 }

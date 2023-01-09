@@ -17,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +48,6 @@ public class MemberController {
 
     @PostMapping("/username")
     public ResponseEntity<?> createUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberCreateUsernameRequest request){
-
         memberService.updateUsername(userDetails, request);
         return new ResponseEntity<>(new ResponseMessage("닉네임 등록 성공", null), HttpStatus.CREATED);
     }
@@ -67,7 +67,6 @@ public class MemberController {
         return new ResponseEntity<>(new ResponseMessage("마이페이지 조회 성공", response), HttpStatus.OK);
 
     }
-
 
 }
 
