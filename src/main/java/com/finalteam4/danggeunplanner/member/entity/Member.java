@@ -22,16 +22,13 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
     private Long id;
-
     @Column(nullable = false)
     private String email;
-
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = true)
     private String username;
-
     @Column(name="profile_image",nullable = false)
     private String profileImage;
 
@@ -44,5 +41,8 @@ public class Member {
     }
     public void updateUsername(String username){
         this.username = username;
+    }
+    public void updateProfileImage(String profileImage){
+        this.profileImage = profileImage;
     }
 }

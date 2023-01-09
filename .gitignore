@@ -37,5 +37,7 @@ out/
 .vscode/
 application-mysql.properties
 application-security.properties
+application-s3.properties
 .DS_Store
 
+src/main/resources/application-s3.properties

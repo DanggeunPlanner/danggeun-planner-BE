@@ -62,6 +62,5 @@ public class MemberController {
         return new ResponseEntity<>(new ResponseMessage("마이페이지 조회 성공", response), HttpStatus.OK);
     }
 
-
 }
 
