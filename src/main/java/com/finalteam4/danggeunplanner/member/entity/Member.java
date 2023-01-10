@@ -43,6 +43,7 @@ public class Member {
     public void updateUsername(String username){
         this.username = username;
     }
+    
     public void updateProfileImage(String profileImage){
         this.profileImage = profileImage;
     }
