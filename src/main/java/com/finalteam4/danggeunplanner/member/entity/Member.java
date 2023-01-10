@@ -3,6 +3,7 @@ package com.finalteam4.danggeunplanner.member.entity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,18 +26,24 @@ public class Member {
     private String email;
     @Column(nullable = false)
     private String password;
+
     @Column
     private String username;
+
     @Column(name="profile_image",nullable = false)
     private String profileImage;
-    public Member(String email, String password){
+
+    @Builder
+    public Member(String email, String password, String username, String profileImage){
         this.email = email;
         this.password = password;
-        this.profileImage = "https://files.slack.com/files-pri/T01L2TNGW3T-F04HWRR7AUA/profile_pic.png";
+        this.username = username;
+        this.profileImage = profileImage;
     }
     public void updateUsername(String username){
         this.username = username;
     }
+    
     public void updateProfileImage(String profileImage){
         this.profileImage = profileImage;
     }

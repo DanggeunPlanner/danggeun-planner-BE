@@ -1,13 +1,15 @@
 package com.finalteam4.danggeunplanner.member.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
-import com.finalteam4.danggeunplanner.member.dto.request.MemberCreateUsernameRequest;
-import com.finalteam4.danggeunplanner.member.dto.request.MemberLogInRequest;
+import com.finalteam4.danggeunplanner.member.dto.request.MemberLoginRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
+import com.finalteam4.danggeunplanner.member.dto.request.MemberUpdateUsernameRequest;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoListResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLogInResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
 
+import com.finalteam4.danggeunplanner.member.dto.response.MemberUpdateUsernameResponse;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
@@ -48,13 +50,12 @@ public class MemberService {
                     throw new DanggeunPlannerException(DUPLICATED_EMAIL);
                 });
 
-        Member member = new Member(email, password);
-        member.updateUsername("");
+        Member member = request.toEntity(password);
         memberRepository.save(member);
     }
 
     @Transactional
-    public MemberLogInResponse logIn(MemberLogInRequest request, HttpServletResponse response) {
+    public MemberLogInResponse login(MemberLoginRequest request, HttpServletResponse response) {
         String email = request.getEmail();
         String password = request.getPassword();
 
@@ -69,8 +70,7 @@ public class MemberService {
         response.addHeader(JwtUtil.AUTHORIZATION_ACCESS, jwtUtil.createAccessToken(member.getEmail()));
 
         Boolean isExistUsername = true;
-
-        if(member.getUsername().equals("")){
+        if(member.getUsername()==null){
             isExistUsername = false;
         }
 
@@ -78,7 +78,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateUsername(UserDetailsImpl userDetails, MemberCreateUsernameRequest request) {
+    public MemberUpdateUsernameResponse updateUsername(UserDetailsImpl userDetails, MemberUpdateUsernameRequest request) {
 
         if(memberRepository.existsByUsername(request.getUsername())){
            throw new DanggeunPlannerException(DUPLICATED_NICKNAME);
@@ -91,15 +91,18 @@ public class MemberService {
         );
 
         member.updateUsername(request.getUsername());
+        return new MemberUpdateUsernameResponse(member);
     }
 
-    public MemberInfoResponse findMember(String username) {
+    public MemberInfoListResponse find(String username) {
 
-        Member member = memberRepository.findByUsername(username).orElseThrow(
-                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
-        );
+        List<Member> members = memberRepository.findByUsernameStartsWithOrderByUsername(username);
 
-        return new MemberInfoResponse(member);
+        MemberInfoListResponse memberInfoListResponse = new MemberInfoListResponse();
+        for(Member member : members){
+            memberInfoListResponse.add(new MemberInfoResponse(member));
+        }
+        return memberInfoListResponse;
     }
 
 
