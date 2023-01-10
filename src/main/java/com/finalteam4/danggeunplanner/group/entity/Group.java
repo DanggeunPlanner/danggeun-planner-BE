@@ -1,5 +1,6 @@
 package com.finalteam4.danggeunplanner.group.entity;
 
+import com.finalteam4.danggeunplanner.group.participant.entity.Participant;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,6 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "groups")
 @Getter
@@ -33,6 +37,8 @@ public class Group {
     @Column(nullable = false)
     private String groupImage;
 
+    @OneToMany(mappedBy = "group")
+    private List<Participant> participants = new ArrayList<>();
     @Builder
     public Group(String groupName, String description, Member member, String groupImage){
         this.groupName = groupName;
