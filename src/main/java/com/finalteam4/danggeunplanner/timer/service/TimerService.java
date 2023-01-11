@@ -53,18 +53,23 @@ public class TimerService {
         timerValidator.validateActiveTimer(timer);
 
         timer.finish(timer);
+        deleteInactiveTimer(member);
+
+        Planner planner = plannerRepository.findByMemberAndDate(member,TimeConverter.getCurrentTimeToYearMonthDay()).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_PLANNER)
+        );
+        Calendar calendar = calendarRepository.findByMemberAndDate(member,TimeConverter.getCurrentTimeToYearMonth()).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_CALENDAR)
+        );
 
         createPlanner(member);
-        Planner planner = plannerRepository.findByMemberAndDate(member,TimeConverter.getCurrentTimeToYearMonthDay()).orElseThrow(() -> new DanggeunPlannerException(NOT_FOUND_PLANNER));
         timer.confirmPlanner(planner);
         planner.addCarrot();
 
         createCalendar(member);
-        Calendar calendar = calendarRepository.findByMemberAndDate(member, TimeConverter.getCurrentTimeToYearMonth()).orElseThrow(() -> new DanggeunPlannerException(NOT_FOUND_CALENDAR));
         planner.confirmCalendar(calendar);
         calendar.addCarrot();
-
-        deleteInactiveTimer(member);
+        
         return new TimerResponse(timer);
     }
 
@@ -78,14 +83,14 @@ public class TimerService {
     }
 
     private void createPlanner(Member member){
-        if(!plannerRepository.existsByMemberAndDate(member, TimeConverter.getCurrentTimeToYearMonthDay())) {
-            Planner planner = new Planner(member, TimeConverter.getCurrentTimeToYearMonthDay());
+        if(!plannerRepository.existsByMemberAndDate(member,TimeConverter.getCurrentTimeToYearMonthDay())) {
+            Planner planner = new Planner(member,TimeConverter.getCurrentTimeToYearMonthDay());
             plannerRepository.save(planner);
         }
     }
 
     private void createCalendar(Member member){
-        if(!calendarRepository.existsByMemberAndDate(member, TimeConverter.getCurrentTimeToYearMonth())) {
+        if(!calendarRepository.existsByMemberAndDate(member,TimeConverter.getCurrentTimeToYearMonth())) {
             Calendar calendar = new Calendar(member);
             calendarRepository.save(calendar);
         }
