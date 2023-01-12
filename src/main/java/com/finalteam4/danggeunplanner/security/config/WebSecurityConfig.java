@@ -50,10 +50,9 @@ public class WebSecurityConfig {
                 antMatchers("/api/member/login").permitAll().
                 antMatchers("/api/member/reissuance").permitAll().
                 anyRequest().authenticated().
-                //security 거치기 전에 Jwt인증인가 필터 먼저 거치도록(아래 매개변수에서 뒤에꺼보다 앞에꺼가 먼저 실행되도록)
+
                 and().
                 addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class).
-//                addFilterBefore(new JwtAuthExceptionFilter(), JwtAuthFilter.class).
                 exceptionHandling().
                 authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 

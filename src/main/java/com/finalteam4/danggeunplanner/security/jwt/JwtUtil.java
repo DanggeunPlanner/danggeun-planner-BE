@@ -1,9 +1,6 @@
 package com.finalteam4.danggeunplanner.security.jwt;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.common.exception.ErrorCode;
-import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -11,7 +8,6 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -30,8 +25,6 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-//import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.TOKEN_NOT_FOUND;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @Component
