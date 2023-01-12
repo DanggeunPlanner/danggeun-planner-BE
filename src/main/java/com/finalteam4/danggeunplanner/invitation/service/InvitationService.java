@@ -2,7 +2,7 @@ package com.finalteam4.danggeunplanner.invitation.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.entity.Group;
-import com.finalteam4.danggeunplanner.group.participant.entity.Participant;
+import com.finalteam4.danggeunplanner.group.entity.Participant;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
 import com.finalteam4.danggeunplanner.invitation.dto.response.InvitationListResponse;
 import com.finalteam4.danggeunplanner.invitation.dto.response.InvitationResponse;
