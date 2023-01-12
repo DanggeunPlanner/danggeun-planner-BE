@@ -15,11 +15,15 @@ public enum ErrorCode {
     DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "MEMBER_002", "이미 사용 중인 닉네임입니다."),
     NOT_VALID_PASSWORD(HttpStatus.BAD_REQUEST, "MEMBER_003", "비밀번호를 다시 확인해주세요."),
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "MEMBER_004", "찾을 수 없는 회원입니다."),
-
-    TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT_001", "토큰이 존재하지 않습니다."),
-    NOT_VALID_TOKEN(HttpStatus.BAD_REQUEST, "JWT_002", "토큰이 유효하지 않습니다."),
-    NOT_AUTHORIZED_MEMBER(HttpStatus.BAD_REQUEST, "JWT_003", "인가되지 않은 사용자입니다."),
-    EXPIRATION_TOKEN(HttpStatus.BAD_REQUEST, "JWT_004", "Access Token이 만료되었습니다"),
+    NOT_MATCH_REFRESHTOKEN(HttpStatus.NOT_ACCEPTABLE, "MEMBER_005", "Refresh Token이 일치하지 않습니다."),
+    
+    ACCESSTOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT_001", "Access Token이 존재하지 않습니다."),
+    REFRESHTOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT_002", "Refresh Token이 존재하지 않습니다."),
+    NOT_VALID_ACCESSTOKEN(HttpStatus.BAD_REQUEST, "JWT_003", "Access Token이 유효하지 않습니다."),
+    NOT_VALID_REFRESHTOKEN(HttpStatus.BAD_REQUEST, "JWT_004", "Refresh Token이 유효하지 않습니다."),
+    EXPIRATION_ACCESSTOKEN(HttpStatus.BAD_REQUEST, "JWT_005", "Access Token이 만료되었습니다"),
+    EXPIRATION_REFRESHTOKEN(HttpStatus.BAD_REQUEST, "JWT_006", "Refresh Token이 만료되었습니다"),
+    NOT_AUTHORIZED_MEMBER(HttpStatus.BAD_REQUEST, "JWT_007", "인가되지 않은 사용자입니다."),
 
     NOT_FOUND_TIMER(HttpStatus.NOT_FOUND,"TIMER_001","찾을 수 없는 타이머입니다."),
     IS_RUNNING_TIMER(HttpStatus.BAD_REQUEST,"TIMER_002","실행중인 타이머입니다."),

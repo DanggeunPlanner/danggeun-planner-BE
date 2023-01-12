@@ -37,6 +37,9 @@ public class Member {
     @Column(name="profile_image",nullable = false)
     private String profileImage;
 
+    @Column
+    private String refreshToken;
+
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="invitation_id")
     private Invitation invitation;
@@ -55,10 +58,14 @@ public class Member {
     public void updateUsername(String username){
         this.username = username;
     }
-    
     public void updateProfileImage(String profileImage){
         this.profileImage = profileImage;
     }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+    
     public void deleteInvitation(){
         this.invitation=null;
     }
