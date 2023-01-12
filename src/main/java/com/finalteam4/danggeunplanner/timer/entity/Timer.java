@@ -25,12 +25,11 @@ public class Timer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="timer_id")
     private Long id;
-    @Column
     private String date;
-    @Column(name="start_time")
     private String startTime;
-    @Column(name="end_time")
     private String endTime;
+    private LocalDateTime createdAt;
+    private Boolean isFinish;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
@@ -44,9 +43,15 @@ public class Timer {
     }
 
     public Timer(Member member){
-        this.date = TimeConverter.getCurrentTimeToYearMonthDay();
-        this.startTime = TimeConverter.changeTimeToHourMinute(LocalDateTime.now().minusMinutes(25));
-        this.endTime = TimeConverter.changeTimeToHourMinute(LocalDateTime.now());
+        this.createdAt = LocalDateTime.now();
+        this.isFinish = false;
         this.member = member;
+    }
+
+    public void finish(Timer timer){
+        this.date= TimeConverter.getCurrentTimeToYearMonthDay();
+        this.startTime=TimeConverter.changeTimeToHourMinute(timer.getCreatedAt());
+        this.endTime=TimeConverter.changeTimeToHourMinute(timer.getCreatedAt().plusMinutes(25));
+        this.isFinish=true;
     }
 }
