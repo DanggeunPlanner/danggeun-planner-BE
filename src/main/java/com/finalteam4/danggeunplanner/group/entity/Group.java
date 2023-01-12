@@ -11,6 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "groups")
 @Getter
@@ -33,12 +36,19 @@ public class Group {
     @Column(nullable = false)
     private String groupImage;
 
+    @OneToMany(mappedBy = "group")
+    private List<Participant> participants = new ArrayList<>();
+
     @Builder
     public Group(String groupName, String description, Member member, String groupImage){
         this.groupName = groupName;
         this.admin = member.getUsername();
         this.description = description;
         this.groupImage = groupImage;
+    }
+
+    public void addParticipant(Participant participant) {
+        this.participants.add(participant);
     }
 
     public void update(String groupName, String description) {

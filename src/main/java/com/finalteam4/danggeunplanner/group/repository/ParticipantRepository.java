@@ -1,6 +1,6 @@
-package com.finalteam4.danggeunplanner.group.participant.repository;
+package com.finalteam4.danggeunplanner.group.repository;
 
-import com.finalteam4.danggeunplanner.group.participant.entity.Participant;
+import com.finalteam4.danggeunplanner.group.entity.Participant;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,8 +15,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
     @Modifying
     @Query("delete from Participant p where p.group.id = :groupId")
     void deleteAllByGroupId(@Param("groupId") Long groupId);
-
     List<Participant> findAllByMember(Member member);
-
     Integer countParticipantByGroup_Id(Long groupId);
 }
