@@ -21,13 +21,18 @@ public enum ErrorCode {
     NOT_AUTHORIZED_MEMBER(HttpStatus.BAD_REQUEST, "JWT_003", "인가되지 않은 사용자입니다."),
     EXPIRATION_TOKEN(HttpStatus.BAD_REQUEST, "JWT_004", "Access Token이 만료되었습니다"),
 
+    NOT_FOUND_TIMER(HttpStatus.NOT_FOUND,"TIMER_001","찾을 수 없는 타이머입니다."),
+    IS_RUNNING_TIMER(HttpStatus.BAD_REQUEST,"TIMER_002","실행중인 타이머입니다."),
+    EXPIRED_TIMER(HttpStatus.BAD_REQUEST, "TIMER_003", "만료된 타이머입니다."),
+    ALREADY_FINISHED_TIMER(HttpStatus.BAD_REQUEST, "TIMER_004", "이미 완료된 타이머입니다."),
+
     NOT_FOUND_PLAN(HttpStatus.NOT_FOUND,"PLAN_001","찾을 수 없는 계획입니다."),
 
     NOT_FOUND_GROUP(HttpStatus.NOT_FOUND,"GROUP_001","찾을 수 없는 그룹입니다."),
     NOT_FOUND_JOIN_GROUP(HttpStatus.NOT_FOUND,"GROUP_002","가입한 그룹이 없습니다."),
 
     NOT_FOUND_PLANNER(HttpStatus.NOT_FOUND,"PLANNER_001","찾을 수 없는 플래너입니다."),
-    
+
     NOT_FOUND_CALENDAR(HttpStatus.NOT_FOUND,"CALENDAR_001","찾을 수 없는 캘린더입니다."),
 
     ;

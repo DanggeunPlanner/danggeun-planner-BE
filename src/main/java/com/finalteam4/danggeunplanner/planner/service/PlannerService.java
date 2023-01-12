@@ -25,10 +25,10 @@ public class PlannerService {
     private final MemberRepository memberRepository;
 
     public PlannerResponse find(Member member, String username, String date) {
-        Member searchMember = memberRepository.findByUsername(username).orElseThrow(
+        Member other = memberRepository.findByUsername(username).orElseThrow(
                 ()-> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
-        Planner planner = plannerRepository.findByMemberAndDate(searchMember, date).orElseThrow(
+        Planner planner = plannerRepository.findByMemberAndDate(other, date).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_PLANNER)
         );
 
