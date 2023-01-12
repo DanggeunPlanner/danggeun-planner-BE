@@ -1,7 +1,6 @@
 package com.finalteam4.danggeunplanner.security.config;
 
 import com.finalteam4.danggeunplanner.security.exception.CustomAuthenticationEntryPoint;
-//import com.finalteam4.danggeunplanner.security.exception.JwtAuthExceptionFilter;
 import com.finalteam4.danggeunplanner.security.jwt.JwtAuthFilter;
 import com.finalteam4.danggeunplanner.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;

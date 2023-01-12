@@ -1,6 +1,5 @@
 package com.finalteam4.danggeunplanner.security.jwt;
 
-import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
