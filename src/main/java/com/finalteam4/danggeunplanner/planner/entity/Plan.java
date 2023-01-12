@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,9 +31,9 @@ public class Plan {
     @Column(nullable = false)
     private String date;
     @Column(name="start_time", nullable = false)
-    private String startTime;
+    private LocalDateTime startTime;
     @Column(name="end_time", nullable = false)
-    private String endTime;
+    private LocalDateTime endTime;
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,7 +49,7 @@ public class Plan {
         planner.addPlan(this);
     }
 
-    public void update(String startTime, String endTime, String content){
+    public void update(LocalDateTime startTime, LocalDateTime endTime, String content){
         this.startTime = startTime;
         this.endTime = endTime;
         this.content = content;
