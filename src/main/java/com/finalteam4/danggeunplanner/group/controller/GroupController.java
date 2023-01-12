@@ -2,6 +2,7 @@ package com.finalteam4.danggeunplanner.group.controller;
 
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
 import com.finalteam4.danggeunplanner.group.dto.request.GroupInfoRequest;
+import com.finalteam4.danggeunplanner.group.dto.response.GroupDetailResponse;
 import com.finalteam4.danggeunplanner.group.dto.response.GroupInfoResponse;
 import com.finalteam4.danggeunplanner.group.dto.response.GroupListResponse;
 import com.finalteam4.danggeunplanner.group.service.GroupService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,26 +30,32 @@ public class GroupController {
     private final GroupService groupService;
 
     @PostMapping
-    public ResponseEntity<ResponseMessage<?>> createGroup(@RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ResponseMessage<GroupInfoResponse>> createGroup(@Valid @RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
         GroupInfoResponse response = groupService.createGroup(request, userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("그룹 등록 성공", response), HttpStatus.CREATED);
     }
 
     @PutMapping("/{groupId}")
-    public ResponseEntity<ResponseMessage<?>> updateGroup(@PathVariable Long groupId, @RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ResponseMessage<GroupInfoResponse>> updateGroup(@PathVariable Long groupId, @RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
         GroupInfoResponse response = groupService.updateGroup(groupId, request, userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("그룹 수정 성공", response), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{groupId}")
-    public ResponseEntity<ResponseMessage<?>> deleteGroup(@PathVariable Long groupId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ResponseMessage<GroupInfoResponse>> deleteGroup(@PathVariable Long groupId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         GroupInfoResponse response = groupService.deleteGroup(groupId, userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("그룹 삭제 성공", response), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<ResponseMessage<?>> findGroupList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ResponseMessage<List<GroupListResponse>>> findGroupList(@AuthenticationPrincipal UserDetailsImpl userDetails){
         List<GroupListResponse> response = groupService.findGroupList(userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("그룹 리스트 조회 성공", response), HttpStatus.OK);
+    }
+
+    @GetMapping("/{groupId}")
+    public ResponseEntity<ResponseMessage<GroupDetailResponse>> findGroup(@PathVariable Long groupId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        GroupDetailResponse response = groupService.findGroup(groupId, userDetails.getMember());
+        return new ResponseEntity<>(new ResponseMessage<>("그룹 조회 성공", response), HttpStatus.OK);
     }
 }

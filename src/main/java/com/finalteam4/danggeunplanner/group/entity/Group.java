@@ -39,12 +39,17 @@ public class Group {
 
     @OneToMany(mappedBy = "group")
     private List<Participant> participants = new ArrayList<>();
+
     @Builder
     public Group(String groupName, String description, Member member, String groupImage){
         this.groupName = groupName;
         this.admin = member.getUsername();
         this.description = description;
         this.groupImage = groupImage;
+    }
+
+    public void addParticipant(Participant participant) {
+        this.participants.add(participant);
     }
 
     public void update(String groupName, String description) {

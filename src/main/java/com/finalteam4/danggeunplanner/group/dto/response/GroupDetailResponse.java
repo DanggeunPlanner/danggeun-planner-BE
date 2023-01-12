@@ -3,17 +3,21 @@ package com.finalteam4.danggeunplanner.group.dto.response;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
-public class GroupInfoResponse {
+public class GroupDetailResponse {
     private Long groupId;
     private String groupName;
-    private String groupImage;
     private String description;
+    private Integer monthlyCarrot;
+    private List<GroupDetailMonthlyRankingResponse> monthlyRanking;
 
-    public GroupInfoResponse(Group group) {
+    public GroupDetailResponse(Group group, Integer monthlyCarrot, List<GroupDetailMonthlyRankingResponse> monthlyRanking) {
         this.groupId = group.getId();
         this.groupName = group.getGroupName();
-        this.groupImage = group.getGroupImage();
         this.description = group.getDescription();
+        this.monthlyCarrot = monthlyCarrot;
+        this.monthlyRanking = monthlyRanking;
     }
 }
