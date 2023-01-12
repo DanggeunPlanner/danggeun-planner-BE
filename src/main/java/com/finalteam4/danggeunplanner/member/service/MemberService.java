@@ -16,20 +16,26 @@ import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
 import com.finalteam4.danggeunplanner.security.jwt.JwtUtil;
 import com.finalteam4.danggeunplanner.timer.entity.Timer;
 import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_EMAIL;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_NICKNAME;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_MATCH_REFRESHTOKEN;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_VALID_PASSWORD;
+import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_ACCESS;
+import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_REFRESH;
 
 @Service
 @RequiredArgsConstructor
@@ -58,23 +64,51 @@ public class MemberService {
     public MemberLogInResponse login(MemberLoginRequest request, HttpServletResponse response) {
         String email = request.getEmail();
         String password = request.getPassword();
-
         Member member = memberRepository.findByEmail(email).orElseThrow(
                         () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
                 );
-
         if(!passwordEncoder.matches(password, member.getPassword())){
             throw new DanggeunPlannerException(NOT_VALID_PASSWORD);
         }
-
-        response.addHeader(JwtUtil.AUTHORIZATION_ACCESS, jwtUtil.createAccessToken(member.getEmail()));
 
         Boolean isExistUsername = true;
         if(member.getUsername()==null){
             isExistUsername = false;
         }
 
+        issueTokens(response, member);
         return new MemberLogInResponse(isExistUsername);
+    }
+
+    private void issueTokens(HttpServletResponse response, Member member){
+        String accessToken = jwtUtil.createAccessToken(member.getEmail());
+        String refreshToken = jwtUtil.createRefreshToken();
+        response.addHeader(AUTHORIZATION_ACCESS, accessToken);
+        response.addHeader(AUTHORIZATION_REFRESH, refreshToken);
+
+        member.updateRefreshToken(refreshToken);
+    }
+
+    public void reissuance(HttpServletRequest request, HttpServletResponse response) {
+        jwtUtil.validateRefreshToken(request);
+
+        System.out.println("service까지 오는지 확인 ");
+        String accessToken = jwtUtil.resolveToken(request, AUTHORIZATION_ACCESS);
+        System.out.println("accessToken :" + accessToken);
+
+        Claims info = jwtUtil.getUserInfoFromToken(accessToken);
+        Member member = memberRepository.findByEmail(info.getSubject()).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+        );
+
+        String refreshToken = jwtUtil.resolveToken(request, AUTHORIZATION_REFRESH);
+
+        if(!member.getRefreshToken().substring(7).equals(refreshToken)){
+            throw new DanggeunPlannerException(NOT_MATCH_REFRESHTOKEN);
+        }
+
+        issueTokens(response, member);
+
     }
 
     @Transactional
@@ -116,4 +150,6 @@ public class MemberService {
 
         return new MemberMyPageResponse(member, totalCarrot);
     }
+
+
 }

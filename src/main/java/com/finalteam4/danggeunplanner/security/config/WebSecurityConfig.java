@@ -1,5 +1,7 @@
 package com.finalteam4.danggeunplanner.security.config;
 
+import com.finalteam4.danggeunplanner.security.exception.CustomAuthenticationEntryPoint;
+//import com.finalteam4.danggeunplanner.security.exception.JwtAuthExceptionFilter;
 import com.finalteam4.danggeunplanner.security.jwt.JwtAuthFilter;
 import com.finalteam4.danggeunplanner.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -45,9 +48,15 @@ public class WebSecurityConfig {
         http.authorizeRequests().
                 antMatchers("/api/member/signup").permitAll().
                 antMatchers("/api/member/login").permitAll().
+                antMatchers("/api/member/reissuance").permitAll().
                 anyRequest().authenticated().
                 //security 거치기 전에 Jwt인증인가 필터 먼저 거치도록(아래 매개변수에서 뒤에꺼보다 앞에꺼가 먼저 실행되도록)
-                and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                and().
+                addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class).
+//                addFilterBefore(new JwtAuthExceptionFilter(), JwtAuthFilter.class).
+                exceptionHandling().
+                authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+
 
         return http.build();
     }
@@ -61,6 +70,7 @@ public class WebSecurityConfig {
         configuration.setAllowCredentials(true); // 내 서버가 응답할 때 json을 js에서 처리할 수 있게 설정
         configuration.setMaxAge(3600L);
         configuration.addExposedHeader("AccessToken"); // 헤더에 있는 JWT 토큰을 클라이언트에서 사용할 수 있도록 권한을 주는 부분
+        configuration.addExposedHeader("RefreshToken");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/**", configuration);
         return source;

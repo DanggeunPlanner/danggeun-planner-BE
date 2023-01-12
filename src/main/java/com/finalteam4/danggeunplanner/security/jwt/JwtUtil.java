@@ -1,10 +1,13 @@
 package com.finalteam4.danggeunplanner.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
+import com.finalteam4.danggeunplanner.common.exception.ErrorCode;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,18 +30,23 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.TOKEN_NOT_FOUND;
+//import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.TOKEN_NOT_FOUND;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
     public static final String AUTHORIZATION_ACCESS = "AccessToken";
+    public static final String AUTHORIZATION_REFRESH = "RefreshToken";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long TOKEN_TIME = 60 * 60 * 1000L;
+    private static final long TOKEN_TIME = 24 * 60 * 60 * 1000L;
     @Value("${jwt.secret.key.access}")
     private String accessTokenSecretKey;
+    @Value("${jwt.secret.key.refresh}")
+    private String refreshTokenSecretKey;
     private Key accessTokenKey;
+    private Key refreshTokenKey;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;  //사용할 암호화 알고리즘
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -46,15 +54,17 @@ public class JwtUtil {
     public void init(){
         byte[] accessTokenBytes = Base64.getDecoder().decode(accessTokenSecretKey); //Base64로 인코딩 되어 있는 것을 secretKey로 decode
         accessTokenKey = Keys.hmacShaKeyFor(accessTokenBytes);
+
+        byte[] refreshTokenBytes = Base64.getDecoder().decode(refreshTokenSecretKey);
+        refreshTokenKey = Keys.hmacShaKeyFor(refreshTokenBytes);
     }
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_ACCESS);
+    public String resolveToken(HttpServletRequest request, String authorization) {
+        String bearerToken = request.getHeader(authorization);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)){
             return bearerToken.substring(7);
         }
         return null;
     }
-
     public String createAccessToken(String email) {
         Date date = new Date();
 
@@ -66,38 +76,57 @@ public class JwtUtil {
                         .signWith(accessTokenKey, signatureAlgorithm)
                         .compact();
     }
-
-    // Access 토큰 검증
-    public boolean validateAccessToken(String accessToken) {
+    public String createRefreshToken(){
+        Date date = new Date();
+        return BEARER_PREFIX +
+                Jwts.builder()
+                        .setExpiration(new Date(date.getTime() + TOKEN_TIME + 30 * 60 * 1000L))
+                        .setIssuedAt(date)
+                        .signWith(refreshTokenKey, signatureAlgorithm)
+                        .compact();
+    }
+    public boolean validateAccessToken(HttpServletRequest request,  HttpServletResponse response) {
         try {
-            Jwts.parserBuilder().setSigningKey(accessTokenKey).build().parseClaimsJws(accessToken);
+            Jwts.parserBuilder().setSigningKey(accessTokenKey).build().parseClaimsJws(request.getHeader(AUTHORIZATION_ACCESS).substring(7));
             return true;
         } catch (SecurityException | MalformedJwtException e) {
-            log.info("Invalid Access JWT signature, 유효하지 않는 Access JWT 서명 입니다.");
+            e.printStackTrace();
+            request.setAttribute("exception", ErrorCode.NOT_VALID_ACCESSTOKEN.getCode());
         } catch (ExpiredJwtException e) {
-            // 만료된 경우 토큰 재발급
-            log.info("Expired Access JWT, 만료된 Access JWT 입니다.");
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported Access JWT, 지원되지 않는 Access JWT 입니다.");
-        } catch (IllegalArgumentException e) {
-            log.info("Access JWT claims is empty, 잘못된 Access JWT 입니다.");
+                e.printStackTrace();
+                request.setAttribute("exception", ErrorCode.EXPIRATION_ACCESSTOKEN.getCode());
+        } catch (JwtException e) {
+            e.printStackTrace();
+            request.setAttribute("exception", ErrorCode.ACCESSTOKEN_NOT_FOUND.getCode());
         }
         return false;
     }
+    public boolean validateRefreshToken(HttpServletRequest request){
+        try {
+            Jwts.parserBuilder().setSigningKey(refreshTokenKey).build().parseClaimsJws(request.getHeader(AUTHORIZATION_REFRESH).substring(7));
+            return true;
+        } catch (SecurityException | MalformedJwtException e) {
+            e.printStackTrace();
+            request.setAttribute("exception", ErrorCode.NOT_VALID_REFRESHTOKEN.getCode());
+        } catch (ExpiredJwtException e) {
+            e.printStackTrace();
+            request.setAttribute("exception", ErrorCode.EXPIRATION_REFRESHTOKEN.getCode());
+        } catch (JwtException e) {
+            e.printStackTrace();
+            request.setAttribute("exception", ErrorCode.REFRESHTOKEN_NOT_FOUND.getCode());
+        }
+        return false;
 
-    // 토큰에서 사용자 정보 가져오기
+    }
     public Claims getUserInfoFromToken(String token) {
             return Jwts.parserBuilder().setSigningKey(accessTokenKey).build().parseClaimsJws(token).getBody();
     }
 
     // 인증 객체 생성
     public Authentication createAuthentication(String email) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email); // email을 통해 사용자 조회
-        return new UsernamePasswordAuthenticationToken(userDetails, null, null); //userDetail 및 권한 넣어 생성
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, null);
     }
-
-
-
 }
 
 

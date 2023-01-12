@@ -33,6 +33,9 @@ public class Member {
     @Column(name="profile_image",nullable = false)
     private String profileImage;
 
+    @Column
+    private String refreshToken;
+
     @Builder
     public Member(String email, String password, String username, String profileImage){
         this.email = email;
@@ -43,8 +46,10 @@ public class Member {
     public void updateUsername(String username){
         this.username = username;
     }
-    
     public void updateProfileImage(String profileImage){
         this.profileImage = profileImage;
+    }
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
