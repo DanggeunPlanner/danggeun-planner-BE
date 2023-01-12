@@ -1,6 +1,6 @@
 package com.finalteam4.danggeunplanner.group.dto.response;
 
-import com.finalteam4.danggeunplanner.group.participant.entity.Participant;
+import com.finalteam4.danggeunplanner.group.entity.Participant;
 import lombok.Getter;
 
 @Getter
