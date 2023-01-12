@@ -14,7 +14,7 @@ public enum ErrorCode {
     DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST, "MEMBER_001", "이미 사용 중인 이메일입니다."),
     DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "MEMBER_002", "이미 사용 중인 닉네임입니다."),
     NOT_VALID_PASSWORD(HttpStatus.BAD_REQUEST, "MEMBER_003", "비밀번호를 다시 확인해주세요."),
-    NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "MEMBER_004", "찾을 수 없는 사용자입니다."),
+    NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "MEMBER_004", "찾을 수 없는 회원입니다."),
 
     TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT_001", "토큰이 존재하지 않습니다."),
     NOT_VALID_TOKEN(HttpStatus.BAD_REQUEST, "JWT_002", "토큰이 유효하지 않습니다."),
@@ -35,6 +35,11 @@ public enum ErrorCode {
 
     NOT_FOUND_CALENDAR(HttpStatus.NOT_FOUND,"CALENDAR_001","찾을 수 없는 캘린더입니다."),
 
+    NOT_FOUND_INVITATION(HttpStatus.NOT_FOUND,"INVITATION_001","찾을 수 없는 초대 리스트입니다."),
+    EXCEED_INVITATION_MAX_SIZE(HttpStatus.BAD_REQUEST, "INVITATION_002", "초대가능한 인원은 최대 30명입니다."),
+    ALREADY_INVITED_MEMBER(HttpStatus.BAD_REQUEST, "INVITATION_003", "이미 초대리스트에 있는 회원입니다."),
+    ALREADY_PARTICIPATED_MEMBER(HttpStatus.BAD_REQUEST, "INVITATION_004", "이미 그룹에 있는 참가자입니다."),
+    NOT_INVITED_MEMBER(HttpStatus.NOT_FOUND,"INVITATION_005","초대리스트에 존재하지 않는 회원입니다.")
     ;
     private final HttpStatus httpStatus;
     private final String code;
