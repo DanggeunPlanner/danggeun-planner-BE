@@ -64,7 +64,8 @@ public class Member {
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
-
+    }
+    
     public void deleteInvitation(){
         this.invitation=null;
     }
