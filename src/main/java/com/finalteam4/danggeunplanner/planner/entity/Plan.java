@@ -33,6 +33,7 @@ public class Plan {
     private String startTime;
     @Column(name="end_time", nullable = false)
     private String endTime;
+    @Column(nullable=false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
