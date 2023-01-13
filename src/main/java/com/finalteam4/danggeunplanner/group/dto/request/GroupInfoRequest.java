@@ -17,7 +17,7 @@ public class GroupInfoRequest {
     public Group toEntity(Member member, GroupImageEnum groupImageEnum){
         return Group.builder()
                 .groupName(groupName)
-                .member(member)
+                .admin(member.getUsername())
                 .description(description)
                 .groupImage(groupImageEnum.getImage())
                 .build();

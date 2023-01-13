@@ -1,6 +1,5 @@
 package com.finalteam4.danggeunplanner.group.entity;
 
-import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,9 +39,9 @@ public class Group {
     private List<Participant> participants = new ArrayList<>();
 
     @Builder
-    public Group(String groupName, String description, Member member, String groupImage){
+    public Group(String groupName, String description, String admin, String groupImage){
         this.groupName = groupName;
-        this.admin = member.getUsername();
+        this.admin = admin;
         this.description = description;
         this.groupImage = groupImage;
     }
@@ -54,5 +53,9 @@ public class Group {
     public void update(String groupName, String description) {
         this.groupName = groupName;
         this.description = description;
+    }
+
+    public void updateAdmin(String username) {
+        this.admin = username;
     }
 }
