@@ -16,7 +16,7 @@ public class GroupDetailResponse {
 
     public GroupDetailResponse(Group group, Integer groupCarrot) {
         this.groupId = group.getId();
-        this.groupName = group.getGroupName();
+        this.groupName = group.getName();
         this.description = group.getDescription();
         this.groupCarrot = groupCarrot;
     }
