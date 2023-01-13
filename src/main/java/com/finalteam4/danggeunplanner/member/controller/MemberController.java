@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -43,6 +44,15 @@ public class MemberController {
         MemberLogInResponse memberLogInResponse = memberService.login(request, response);
         return new ResponseEntity<>(new ResponseMessage("로그인 성공", memberLogInResponse), HttpStatus.OK);
     }
+
+    @PostMapping("/reissuance")
+    public ResponseEntity<ResponseMessage> reissuance(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("===========");
+        memberService.reissuance(request, response);
+        return new ResponseEntity<>(new ResponseMessage("토큰 재발행 성공", null), HttpStatus.ACCEPTED);
+    }
+
+
 
     @PutMapping("/username")
     public ResponseEntity<ResponseMessage> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberUpdateUsernameRequest request){

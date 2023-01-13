@@ -1,6 +1,7 @@
 package com.finalteam4.danggeunplanner.member.entity;
 
 
+import com.finalteam4.danggeunplanner.invitation.entity.Invitation;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +10,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Getter
@@ -33,6 +37,17 @@ public class Member {
     @Column(name="profile_image",nullable = false)
     private String profileImage;
 
+    @Column
+    private String refreshToken;
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="invitation_id")
+    private Invitation invitation;
+
+    public void confirmInvitation(Invitation invitation){
+        this.invitation=invitation;
+    }
+    
     @Builder
     public Member(String email, String password, String username, String profileImage){
         this.email = email;
@@ -43,8 +58,15 @@ public class Member {
     public void updateUsername(String username){
         this.username = username;
     }
-    
     public void updateProfileImage(String profileImage){
         this.profileImage = profileImage;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+    
+    public void deleteInvitation(){
+        this.invitation=null;
     }
 }
