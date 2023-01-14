@@ -44,9 +44,9 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests().
-                antMatchers("/api/member/signup").permitAll().
-                antMatchers("/api/member/login").permitAll().
-                antMatchers("/api/member/reissuance").permitAll().
+                antMatchers("/api/auth/**").permitAll().
+//                antMatchers("/api/auth/login").permitAll().
+//                antMatchers("/api/auth/token").permitAll().
                 anyRequest().authenticated().
 
                 and().

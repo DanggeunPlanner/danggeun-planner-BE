@@ -21,7 +21,7 @@ public enum ErrorCode {
     REFRESHTOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT_002", "Refresh Token이 존재하지 않습니다."),
     NOT_VALID_ACCESSTOKEN(HttpStatus.BAD_REQUEST, "JWT_003", "Access Token이 유효하지 않습니다."),
     NOT_VALID_REFRESHTOKEN(HttpStatus.BAD_REQUEST, "JWT_004", "Refresh Token이 유효하지 않습니다."),
-    EXPIRATION_ACCESSTOKEN(HttpStatus.BAD_REQUEST, "JWT_005", "Access Token이 만료되었습니다"),
+    EXPIRATION_ACCESSTOKEN(HttpStatus.UNAUTHORIZED, "JWT_005", "Access Token이 만료되었습니다"),
     EXPIRATION_REFRESHTOKEN(HttpStatus.BAD_REQUEST, "JWT_006", "Refresh Token이 만료되었습니다"),
     NOT_AUTHORIZED_MEMBER(HttpStatus.BAD_REQUEST, "JWT_007", "인가되지 않은 사용자입니다."),
 

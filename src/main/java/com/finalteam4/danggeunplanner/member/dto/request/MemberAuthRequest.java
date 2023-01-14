@@ -1,11 +1,10 @@
 package com.finalteam4.danggeunplanner.member.dto.request;
 
 import com.finalteam4.danggeunplanner.member.entity.Member;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class MemberSignUpRequest {
+public class MemberAuthRequest {
 
         private String email;
         private String password;
