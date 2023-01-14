@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    //global
     NOT_VALID_FORMAT(HttpStatus.BAD_REQUEST, "NOT_VALID_FORMAT", "지정된 양식을 사용해주세요."),
     NOT_VALID_ACCESS(HttpStatus.BAD_REQUEST,"NOT_VALID_ACCESS","접근 권한이 없습니다."),
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SERVER_001", "내부 서버 오류입니다."),
     
     DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST, "MEMBER_001", "이미 사용 중인 이메일입니다."),
     DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "MEMBER_002", "이미 사용 중인 닉네임입니다."),
@@ -31,7 +31,9 @@ public enum ErrorCode {
     ALREADY_FINISHED_TIMER(HttpStatus.BAD_REQUEST, "TIMER_004", "이미 완료된 타이머입니다."),
 
     NOT_FOUND_PLAN(HttpStatus.NOT_FOUND,"PLAN_001","찾을 수 없는 계획입니다."),
-
+    DIFFERENT_PLANNING_DATE(HttpStatus.BAD_REQUEST, "PLAN_002", "계획 시작 날짜와 종료 날짜가 다릅니다."),
+    NOT_VALID_PLANNING_TIME(HttpStatus.BAD_REQUEST, "PLAN_003", "계획 종료 시간이 시작 시간과 같거나 이전입니다."),
+    OVERLAP_WITH_OTHER_PLAN(HttpStatus.BAD_REQUEST, "PLAN_004", "계획이 다른 계획과의 시간이 겹칩니다."),
     NOT_FOUND_GROUP(HttpStatus.NOT_FOUND,"GROUP_001","찾을 수 없는 그룹입니다."),
     NOT_FOUND_JOIN_GROUP(HttpStatus.NOT_FOUND,"GROUP_002","가입한 그룹이 없습니다."),
 
