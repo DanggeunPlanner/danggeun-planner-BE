@@ -34,6 +34,7 @@ public class Plan {
     private LocalDateTime startTime;
     @Column(name="end_time", nullable = false)
     private LocalDateTime endTime;
+
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
