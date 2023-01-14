@@ -3,12 +3,14 @@ package com.finalteam4.danggeunplanner.planner.dto.response;
 import com.finalteam4.danggeunplanner.planner.entity.Plan;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class PlanResponse {
     private final Long planId;
     private final String date;
-    private final String startTime;
-    private final String endTime;
+    private final LocalDateTime startTime;
+    private final LocalDateTime endTime;
     private final String content;
 
     public PlanResponse(Plan plan){

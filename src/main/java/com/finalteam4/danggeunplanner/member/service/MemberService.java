@@ -2,6 +2,10 @@ package com.finalteam4.danggeunplanner.member.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
+import com.finalteam4.danggeunplanner.group.entity.Group;
+import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
+import com.finalteam4.danggeunplanner.member.dto.request.MemberLoginRequest;
+import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberUpdateUsernameRequest;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoListResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
@@ -27,6 +31,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_EMAIL;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_NICKNAME;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_MATCH_REFRESHTOKEN;
 import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_ACCESS;
@@ -41,8 +49,9 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final TimerRepository timerRepository;
     private final MemberValidator memberValidator;
-
     private final S3UploaderService s3Uploader;
+    private final GroupRepository groupRepository;
+
 
     @Transactional
     public void signUp(MemberAuthRequest request) {
@@ -100,6 +109,14 @@ public class MemberService {
     public MemberUpdateUsernameResponse updateUsername(Member member, MemberUpdateUsernameRequest request) {
         String username = request.getUsername();
         memberValidator.validateUsername(username);
+       
+        if (groupRepository.existsByAdmin(member.getUsername())){
+            Group group = groupRepository.findByAdmin(member.getUsername()).orElseThrow(
+                    () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
+            );
+            group.updateAdmin(request.getUsername());
+        }
+
         member.updateUsername(username);
         return new MemberUpdateUsernameResponse(member);
     }
