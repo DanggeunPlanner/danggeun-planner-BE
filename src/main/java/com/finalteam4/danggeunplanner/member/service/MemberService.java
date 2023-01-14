@@ -1,6 +1,8 @@
 package com.finalteam4.danggeunplanner.member.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
+import com.finalteam4.danggeunplanner.group.entity.Group;
+import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberLoginRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberUpdateUsernameRequest;
@@ -29,6 +31,7 @@ import java.util.List;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_EMAIL;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_NICKNAME;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_MATCH_REFRESHTOKEN;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_VALID_PASSWORD;
@@ -43,6 +46,7 @@ public class MemberService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final TimerRepository timerRepository;
+    private final GroupRepository groupRepository;
 
     @Transactional
     public void signUp(MemberSignUpRequest request) {
@@ -121,6 +125,13 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
+
+        if (groupRepository.existsByAdmin(member.getUsername())){
+            Group group = groupRepository.findByAdmin(member.getUsername()).orElseThrow(
+                    () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
+            );
+            group.updateAdmin(request.getUsername());
+        }
 
         member.updateUsername(request.getUsername());
         return new MemberUpdateUsernameResponse(member);

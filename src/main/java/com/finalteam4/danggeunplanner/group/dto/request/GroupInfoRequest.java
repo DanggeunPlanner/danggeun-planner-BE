@@ -16,10 +16,10 @@ public class GroupInfoRequest {
 
     public Group toEntity(Member member, GroupImageEnum groupImageEnum){
         return Group.builder()
-                .groupName(groupName)
-                .member(member)
+                .name(groupName)
+                .admin(member.getUsername())
                 .description(description)
-                .groupImage(groupImageEnum.getImage())
+                .image(groupImageEnum.getImage())
                 .build();
     }
 }

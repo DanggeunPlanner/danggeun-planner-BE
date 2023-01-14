@@ -1,6 +1,5 @@
 package com.finalteam4.danggeunplanner.group.entity;
 
-import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +24,7 @@ public class Group {
     private Long id;
 
     @Column(nullable = false)
-    private String groupName;
+    private String name;
 
     @Column(nullable = false)
     private String admin;
@@ -34,17 +33,17 @@ public class Group {
     private String description;
 
     @Column(nullable = false)
-    private String groupImage;
+    private String image;
 
     @OneToMany(mappedBy = "group")
     private List<Participant> participants = new ArrayList<>();
 
     @Builder
-    public Group(String groupName, String description, Member member, String groupImage){
-        this.groupName = groupName;
-        this.admin = member.getUsername();
+    public Group(String name, String description, String admin, String image){
+        this.name = name;
+        this.admin = admin;
         this.description = description;
-        this.groupImage = groupImage;
+        this.image = image;
     }
 
     public void addParticipant(Participant participant) {
@@ -52,7 +51,11 @@ public class Group {
     }
 
     public void update(String groupName, String description) {
-        this.groupName = groupName;
+        this.name = groupName;
         this.description = description;
+    }
+
+    public void updateAdmin(String username) {
+        this.admin = username;
     }
 }

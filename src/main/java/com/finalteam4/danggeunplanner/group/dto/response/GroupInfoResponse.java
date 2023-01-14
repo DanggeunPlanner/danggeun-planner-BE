@@ -12,8 +12,8 @@ public class GroupInfoResponse {
 
     public GroupInfoResponse(Group group) {
         this.groupId = group.getId();
-        this.groupName = group.getGroupName();
-        this.groupImage = group.getGroupImage();
+        this.groupName = group.getName();
+        this.groupImage = group.getImage();
         this.description = group.getDescription();
     }
 }

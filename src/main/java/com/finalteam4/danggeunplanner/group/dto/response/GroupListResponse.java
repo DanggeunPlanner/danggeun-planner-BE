@@ -12,8 +12,8 @@ public class GroupListResponse {
 
     public GroupListResponse(Participant participant, Integer participants) {
         this.groupId = participant.getGroup().getId();
-        this.groupName = participant.getGroup().getGroupName();
-        this.groupImage = participant.getGroup().getGroupImage();
+        this.groupName = participant.getGroup().getName();
+        this.groupImage = participant.getGroup().getImage();
         this.participants = participants;
     }
 }
