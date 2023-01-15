@@ -17,16 +17,18 @@ public enum ErrorCode {
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "MEMBER_004", "찾을 수 없는 회원입니다."),
 
     NOT_MATCH_REFRESHTOKEN(HttpStatus.NOT_ACCEPTABLE, "MEMBER_005", "Refresh Token이 일치하지 않습니다."),
-    
+
+
     ACCESSTOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT_001", "Access Token이 존재하지 않습니다."),
-    REFRESHTOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT_002", "Refresh Token이 존재하지 않습니다."),
-    INVALID_ACCESSTOKEN(HttpStatus.BAD_REQUEST, "JWT_003", "Access Token이 유효하지 않습니다."),
-    INVALID_REFRESHTOKEN(HttpStatus.BAD_REQUEST, "JWT_004", "Refresh Token이 유효하지 않습니다."),
-    EXPIRATION_ACCESSTOKEN(HttpStatus.UNAUTHORIZED, "JWT_005", "Access Token이 만료되었습니다"),
-    EXPIRATION_REFRESHTOKEN(HttpStatus.BAD_REQUEST, "JWT_006", "Refresh Token이 만료되었습니다"),
-    ACCESSTOKEN_NOT_SUPPORT(HttpStatus.UNAUTHORIZED, "JWT_007", "지원하지 않는 Access Token입니다"),
-    REFRESHTOKEN_NOT_SUPPORT(HttpStatus.UNAUTHORIZED, "JWT_008", "지원하지 않는 Refresh Token입니다"),
-    UNKNOWN_ACCESSTOKEN_ERROR(HttpStatus.UNAUTHORIZED, "JWT_009", "Access Token 에러입니다"),
+    INVALID_ACCESSTOKEN(HttpStatus.BAD_REQUEST, "JWT_002", "Access Token이 유효하지 않습니다."),
+    EXPIRATION_ACCESSTOKEN(HttpStatus.UNAUTHORIZED, "JWT_003", "Access Token이 만료되었습니다"),
+    ACCESSTOKEN_NOT_SUPPORT(HttpStatus.UNAUTHORIZED, "JWT_004", "지원하지 않는 Access Token입니다"),
+    UNKNOWN_ACCESSTOKEN_ERROR(HttpStatus.UNAUTHORIZED, "JWT_005", "Access Token 에러입니다"),
+
+    REFRESHTOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT_006", "Refresh Token이 존재하지 않습니다."),
+    INVALID_REFRESHTOKEN(HttpStatus.BAD_REQUEST, "JWT_007", "Refresh Token이 유효하지 않습니다."),
+    EXPIRATION_REFRESHTOKEN(HttpStatus.BAD_REQUEST, "JWT_008", "Refresh Token이 만료되었습니다"),
+    REFRESHTOKEN_NOT_SUPPORT(HttpStatus.UNAUTHORIZED, "JWT_009", "지원하지 않는 Refresh Token입니다"),
     UNKNOWN_REFRESHTOKEN_ERROR(HttpStatus.UNAUTHORIZED, "JWT_010", "Refresh Token 에러입니다"),
     NOT_AUTHORIZED_MEMBER(HttpStatus.BAD_REQUEST, "JWT_011", "인가되지 않은 사용자입니다."),
     UNKNOWN_TOKEN_ERROR(HttpStatus.BAD_REQUEST, "JWT_012", "알 수 없는 토큰 에러입니다"),
