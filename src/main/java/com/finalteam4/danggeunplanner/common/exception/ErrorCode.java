@@ -28,7 +28,8 @@ public enum ErrorCode {
     REFRESHTOKEN_NOT_SUPPORT(HttpStatus.UNAUTHORIZED, "JWT_008", "지원하지 않는 Refresh Token입니다"),
     UNKNOWN_ACCESSTOKEN_ERROR(HttpStatus.UNAUTHORIZED, "JWT_009", "Access Token 에러입니다"),
     UNKNOWN_REFRESHTOKEN_ERROR(HttpStatus.UNAUTHORIZED, "JWT_010", "Refresh Token 에러입니다"),
-    NOT_AUTHORIZED_MEMBER(HttpStatus.BAD_REQUEST, "JWT_007", "인가되지 않은 사용자입니다."),
+    NOT_AUTHORIZED_MEMBER(HttpStatus.BAD_REQUEST, "JWT_011", "인가되지 않은 사용자입니다."),
+    UNKNOWN_TOKEN_ERROR(HttpStatus.BAD_REQUEST, "JWT_012", "알 수 없는 토큰 에러입니다"),
 
     NOT_FOUND_TIMER(HttpStatus.NOT_FOUND,"TIMER_001","찾을 수 없는 타이머입니다."),
     IS_RUNNING_TIMER(HttpStatus.BAD_REQUEST,"TIMER_002","실행중인 타이머입니다."),

@@ -52,7 +52,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             errorCode = ErrorCode.UNKNOWN_REFRESHTOKEN_ERROR;
         }
         else {
-            errorCode = ErrorCode.NOT_AUTHORIZED_MEMBER;
+            errorCode = ErrorCode.UNKNOWN_TOKEN_ERROR;
         }
         setResponse(response, errorCode);
 
