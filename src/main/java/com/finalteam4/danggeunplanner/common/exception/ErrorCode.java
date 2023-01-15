@@ -19,7 +19,6 @@ public enum ErrorCode {
     NOT_MATCH_REFRESHTOKEN(HttpStatus.NOT_ACCEPTABLE, "MEMBER_005", "Refresh Token이 일치하지 않습니다."),
     
     ACCESSTOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT_001", "Access Token이 존재하지 않습니다."),
-
     REFRESHTOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "JWT_002", "Refresh Token이 존재하지 않습니다."),
     INVALID_ACCESSTOKEN(HttpStatus.BAD_REQUEST, "JWT_003", "Access Token이 유효하지 않습니다."),
     INVALID_REFRESHTOKEN(HttpStatus.BAD_REQUEST, "JWT_004", "Refresh Token이 유효하지 않습니다."),

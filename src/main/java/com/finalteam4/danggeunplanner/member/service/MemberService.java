@@ -1,6 +1,7 @@
 package com.finalteam4.danggeunplanner.member.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
+import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
@@ -14,6 +15,8 @@ import com.finalteam4.danggeunplanner.member.dto.response.MemberUpdateUsernameRe
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.security.jwt.JwtUtil;
+
+import com.finalteam4.danggeunplanner.member.dto.response.MemberProfileImageResponse;
 import com.finalteam4.danggeunplanner.storage.service.S3UploaderService;
 import com.finalteam4.danggeunplanner.timer.entity.Timer;
 import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
@@ -29,7 +32,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
-import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
+
 import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_ACCESS;
 import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_REFRESH;
 
@@ -84,7 +87,6 @@ public class MemberService {
         String refreshTokenWithBearer = request.getHeader(AUTHORIZATION_REFRESH);
         Member member = memberRepository.findByRefreshToken(refreshTokenWithBearer);
         jwtUtil.validateRefreshToken(request, member.getEmail());
-
         jwtUtil.resolveToken(request, AUTHORIZATION_REFRESH);
         issueTokens(response, member);
     }
