@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TimerRepository extends JpaRepository<Timer, Long> {
+
     List<Timer> findAllByMemberAndIsFinish(Member member,Boolean isFinish);
 
     List<Timer> findAllByMember(Member member);
