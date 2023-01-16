@@ -1,5 +1,6 @@
-package com.finalteam4.danggeunplanner.group.entity;
+package com.finalteam4.danggeunplanner.participant.entity;
 
+import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,6 +31,11 @@ public class Participant {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
+
+    public Participant(Member member, Group group) {
+        this.member = member;
+        this.group = group;
+    }
 
     public void confirmGroup(Group group){
         this.group = group;
