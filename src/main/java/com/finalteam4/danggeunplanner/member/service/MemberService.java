@@ -13,6 +13,7 @@ import com.finalteam4.danggeunplanner.member.dto.response.MemberProfileImageResp
 import com.finalteam4.danggeunplanner.member.dto.response.MemberUpdateUsernameResponse;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
+import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
 import com.finalteam4.danggeunplanner.security.jwt.JwtUtil;
 import com.finalteam4.danggeunplanner.storage.service.S3UploaderService;
 import com.finalteam4.danggeunplanner.timer.entity.Timer;
@@ -90,23 +91,23 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberUpdateUsernameResponse updateUsername(Member member, MemberUpdateUsernameRequest request) {
+    public MemberUpdateUsernameResponse updateUsername(UserDetailsImpl userDetails, MemberUpdateUsernameRequest request) {
         String username = request.getUsername();
         memberValidator.validateUsername(username);
        
-        if (groupRepository.existsByAdmin(member.getUsername())){
-            Group group = groupRepository.findByAdmin(member.getUsername()).orElseThrow(
+        if (groupRepository.existsByAdmin(userDetails.getUsername())){
+            Group group = groupRepository.findByAdmin(userDetails.getUsername()).orElseThrow(
                     () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
             );
             group.updateAdmin(request.getUsername());
         }
 
-        Member memberForUsername = memberRepository.findByEmail(member.getEmail()).orElseThrow(
+        Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
 
-        memberForUsername.updateUsername(username);
-        return new MemberUpdateUsernameResponse(memberForUsername);
+        member.updateUsername(username);
+        return new MemberUpdateUsernameResponse(member);
     }
 
     public MemberInfoListResponse find(String username) {

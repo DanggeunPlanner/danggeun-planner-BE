@@ -3,16 +3,13 @@ package com.finalteam4.danggeunplanner.member.dto.request;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.Getter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
-
 @Getter
 public class MemberAuthRequest {
 
-        @Email(regexp = "/^([\\w\\.\\_\\-])*[a-zA-Z0-9]+([\\w\\.\\_\\-])*([a-zA-Z0-9])+([\\w\\.\\_\\-])+@([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,8}$/")
+//        @Email(regexp = "/^([\\w\\.\\_\\-])*[a-zA-Z0-9]+([\\w\\.\\_\\-])*([a-zA-Z0-9])+([\\w\\.\\_\\-])+@([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,8}$/")
         private String email;
 
-        @Pattern(regexp = "/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,13}$/")
+//        @Pattern(regexp = "/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\\\(\\\\)\\-_=+]).{8,13}$/")
         private String password;
 
         public Member toEntity(String password){
