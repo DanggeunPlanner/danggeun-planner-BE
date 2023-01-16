@@ -11,10 +11,12 @@ import com.finalteam4.danggeunplanner.group.dto.response.GroupListResponse;
 import com.finalteam4.danggeunplanner.group.dto.response.ParticipantRankingResponse;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.entity.GroupImageEnum;
-import com.finalteam4.danggeunplanner.group.entity.Participant;
+import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
-import com.finalteam4.danggeunplanner.group.repository.ParticipantRepository;
+import com.finalteam4.danggeunplanner.participant.repository.ParticipantRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
+import com.finalteam4.danggeunplanner.timer.entity.Timer;
+import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,16 +36,23 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final ParticipantRepository participantRepository;
     private final CalendarRepository calendarRepository;
+    private final TimerRepository timerRepository;
     private final GroupValidator groupValidator;
 
     @Transactional
     public GroupInfoResponse createGroup(GroupInfoRequest request, Member member) {
         GroupImageEnum groupImages = GroupImageEnum.pickRandomImage();
         Group group = request.toEntity(member, groupImages);
-
         groupRepository.save(group);
 
+        createParticipant(member, group);
+
         return new GroupInfoResponse(group);
+    }
+
+    private void createParticipant(Member member, Group group) {
+        Participant participant = new Participant(member, group);
+        participantRepository.save(participant);
     }
 
     @Transactional
@@ -73,7 +82,6 @@ public class GroupService {
 
     public List<GroupListResponse> findGroupList(Member member) {
         List<Participant> participantList = participantRepository.findAllByMember(member);
-        groupValidator.validateJoinGroup(participantList);
 
         List<GroupListResponse> groupListResponse = new ArrayList<>();
         for (Participant participant : participantList) {
@@ -96,15 +104,19 @@ public class GroupService {
 
         descendingOrderByCarrot(calendarList);
 
+        Integer groupDailyCarrot = 0;
         Integer groupCarrot = 0;
-        Integer rank = 0;
 
+        for (Participant participant : group.getParticipants()) {
+            List<Timer> timers = timerRepository.findAllByMemberAndIsFinish(participant.getMember(),true);
+            groupDailyCarrot += timers.size();
+        }
         for (Calendar calendar : calendarList) {
             groupCarrot += calendar.getCarrot();
         }
 
-        GroupDetailResponse response = new GroupDetailResponse(group, groupCarrot);
-        bringParticipantRanking(calendarList, rank, response);
+        GroupDetailResponse response = new GroupDetailResponse(group, groupDailyCarrot, groupCarrot);
+        bringParticipantRanking(calendarList, response);
 
         return response;
     }
@@ -126,12 +138,13 @@ public class GroupService {
         calendarList.sort(comparator);
     }
 
-    private void bringParticipantRanking(List<Calendar> calendarList, Integer rank, GroupDetailResponse response) {
+    private void bringParticipantRanking(List<Calendar> calendarList, GroupDetailResponse response) {
+        Integer rank = 0;
         Iterator<Calendar> calendarIter = calendarList.iterator();
         while(calendarIter.hasNext()){
             rank++;
             Calendar calendarIt = calendarIter.next();
-            ParticipantRankingResponse ranking = new ParticipantRankingResponse(rank, calendarIt);
+            ParticipantRankingResponse ranking = new ParticipantRankingResponse(calendarIt);
             response.addRanking(ranking);
             if (rank >= 3) {
                 break;

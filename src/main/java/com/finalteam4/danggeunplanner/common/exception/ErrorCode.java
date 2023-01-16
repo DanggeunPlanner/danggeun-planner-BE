@@ -45,6 +45,9 @@ public enum ErrorCode {
     NOT_FOUND_GROUP(HttpStatus.NOT_FOUND,"GROUP_001","찾을 수 없는 그룹입니다."),
     NOT_FOUND_JOIN_GROUP(HttpStatus.NOT_FOUND,"GROUP_002","가입한 그룹이 없습니다."),
 
+    NOT_FOUND_PARTICIPANT(HttpStatus.NOT_FOUND,"PARTICIPANT_001","찾을 수 없는 참가자입니다."),
+    NOT_DELETE_PARTICIPANT(HttpStatus.BAD_REQUEST,"PARTICIPANT_002","관리자는 그룹을 탈퇴할 수 없습니다."),
+
     NOT_FOUND_PLANNER(HttpStatus.NOT_FOUND,"PLANNER_001","찾을 수 없는 플래너입니다."),
 
     NOT_FOUND_CALENDAR(HttpStatus.NOT_FOUND,"CALENDAR_001","찾을 수 없는 캘린더입니다."),
