@@ -101,8 +101,12 @@ public class MemberService {
             group.updateAdmin(request.getUsername());
         }
 
-        member.updateUsername(username);
-        return new MemberUpdateUsernameResponse(member);
+        Member memberForUsername = memberRepository.findByEmail(member.getEmail()).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+        );
+
+        memberForUsername.updateUsername(username);
+        return new MemberUpdateUsernameResponse(memberForUsername);
     }
 
     public MemberInfoListResponse find(String username) {

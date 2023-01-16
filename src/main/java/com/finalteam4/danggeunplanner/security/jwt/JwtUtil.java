@@ -35,7 +35,7 @@ public class JwtUtil {
     public static final String AUTHORIZATION_ACCESS = "AccessToken";
     public static final String AUTHORIZATION_REFRESH = "RefreshToken";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long TOKEN_TIME =  60 * 60 * 1000L;
+    private static final long TOKEN_TIME =  30 * 1000L;
     @Value("${jwt.secret.key.access}")
     private String accessTokenSecretKey;
     @Value("${jwt.secret.key.refresh}")

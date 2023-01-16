@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
@@ -35,7 +36,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<ResponseMessage<Void>> signUp(@RequestBody MemberAuthRequest request){
+    public ResponseEntity<ResponseMessage<Void>> signUp(@Valid @RequestBody MemberAuthRequest request){
         memberService.signUp(request);
         return new ResponseEntity<>(new ResponseMessage<>("회원가입 성공",null), HttpStatus.CREATED);
     }
@@ -53,7 +54,7 @@ public class MemberController {
     }
 
     @PutMapping("/member/username")
-    public ResponseEntity<ResponseMessage<MemberUpdateUsernameResponse>> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberUpdateUsernameRequest request){
+    public ResponseEntity<ResponseMessage<MemberUpdateUsernameResponse>> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @Valid @RequestBody MemberUpdateUsernameRequest request){
         MemberUpdateUsernameResponse response = memberService.updateUsername(userDetails.getMember(), request);
         return new ResponseEntity<>(new ResponseMessage<>("닉네임 변경 성공", response), HttpStatus.ACCEPTED);
     }
@@ -70,7 +71,7 @@ public class MemberController {
         return new ResponseEntity<>(new ResponseMessage<>("마이페이지 조회 성공", response), HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/member/image")
     public ResponseEntity<ResponseMessage<MemberProfileImageResponse>> uploadMemberImage(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                @RequestParam(value="image") MultipartFile image)throws IOException {
         MemberProfileImageResponse response = memberService.uploadImage(userDetails.getMember(), image);
