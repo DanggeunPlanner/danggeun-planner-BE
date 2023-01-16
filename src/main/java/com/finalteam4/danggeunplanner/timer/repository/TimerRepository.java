@@ -10,5 +10,4 @@ public interface TimerRepository extends JpaRepository<Timer, Long> {
     List<Timer> findAllByMemberAndIsFinish(Member member,Boolean isFinish);
 
     List<Timer> findAllByMember(Member member);
-    List<Timer> findAllByMemberAndIsFinish(Member member,Boolean isFinish);
 }
