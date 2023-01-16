@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_PARTICIPANT;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +46,15 @@ public class ParticipantService {
             response.addParticipantList(participantListResponse);
         }
         return response;
+    }
+
+    @Transactional
+    public void deleteParticipant(Long groupId, Member member) {
+        Participant participant = participantRepository.findByGroup_IdAndMember(groupId, member).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_PARTICIPANT)
+        );
+        participantValidator.validateAdmin(member, participant);
+
+        participantRepository.deleteById(participant.getId());
     }
 }
