@@ -1,25 +1,23 @@
 package com.finalteam4.danggeunplanner.member.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
-import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
-import com.finalteam4.danggeunplanner.member.dto.request.MemberLoginRequest;
-import com.finalteam4.danggeunplanner.member.dto.request.MemberSignUpRequest;
+import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberUpdateUsernameRequest;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoListResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLoginResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberProfileImageResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberUpdateUsernameResponse;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
+import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
 import com.finalteam4.danggeunplanner.security.jwt.JwtUtil;
-import com.finalteam4.danggeunplanner.member.dto.response.MemberProfileImageResponse;
 import com.finalteam4.danggeunplanner.storage.service.S3UploaderService;
 import com.finalteam4.danggeunplanner.timer.entity.Timer;
 import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,12 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-
-import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_EMAIL;
-import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.DUPLICATED_NICKNAME;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
-import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_MATCH_REFRESHTOKEN;
 import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_ACCESS;
 import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_REFRESH;
 
@@ -86,36 +80,31 @@ public class MemberService {
         member.updateRefreshToken(refreshToken);
     }
 
-    @Transactional // 이 로직은 추후 refreshToken 수정 중 변경될 수 있어서 아직 리팩토링 하지 않음
+    @Transactional //리팩토링 진행 전(로직 수정 가능)
     public void reissueToken(HttpServletRequest request, HttpServletResponse response) {
-        jwtUtil.validateRefreshToken(request);
+        String refreshTokenWithBearer = request.getHeader(AUTHORIZATION_REFRESH);
+        Member member = memberRepository.findByRefreshToken(refreshTokenWithBearer);
+        jwtUtil.validateRefreshToken(request, member.getEmail());
 
-        String accessToken = jwtUtil.resolveToken(request, AUTHORIZATION_ACCESS);
-        Claims info = jwtUtil.getUserInfoFromToken(accessToken);
-        Member member = memberRepository.findByEmail(info.getSubject()).orElseThrow(
-                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
-        );
-
-        String refreshToken = jwtUtil.resolveToken(request, AUTHORIZATION_REFRESH);
-
-        if(!member.getRefreshToken().substring(7).equals(refreshToken)){
-            throw new DanggeunPlannerException(NOT_MATCH_REFRESHTOKEN);
-        }
-
+        jwtUtil.resolveToken(request, AUTHORIZATION_REFRESH);
         issueTokens(response, member);
     }
 
     @Transactional
-    public MemberUpdateUsernameResponse updateUsername(Member member, MemberUpdateUsernameRequest request) {
+    public MemberUpdateUsernameResponse updateUsername(UserDetailsImpl userDetails, MemberUpdateUsernameRequest request) {
         String username = request.getUsername();
         memberValidator.validateUsername(username);
        
-        if (groupRepository.existsByAdmin(member.getUsername())){
-            Group group = groupRepository.findByAdmin(member.getUsername()).orElseThrow(
+        if (groupRepository.existsByAdmin(userDetails.getUsername())){
+            Group group = groupRepository.findByAdmin(userDetails.getUsername()).orElseThrow(
                     () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
             );
             group.updateAdmin(request.getUsername());
         }
+
+        Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+        );
 
         member.updateUsername(username);
         return new MemberUpdateUsernameResponse(member);

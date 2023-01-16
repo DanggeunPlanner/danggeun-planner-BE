@@ -54,7 +54,7 @@ public class MemberController {
 
     @PutMapping("/member/username")
     public ResponseEntity<ResponseMessage<MemberUpdateUsernameResponse>> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberUpdateUsernameRequest request){
-        MemberUpdateUsernameResponse response = memberService.updateUsername(userDetails.getMember(), request);
+        MemberUpdateUsernameResponse response = memberService.updateUsername(userDetails, request);
         return new ResponseEntity<>(new ResponseMessage<>("닉네임 변경 성공", response), HttpStatus.ACCEPTED);
     }
 
@@ -70,7 +70,7 @@ public class MemberController {
         return new ResponseEntity<>(new ResponseMessage<>("마이페이지 조회 성공", response), HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/member/image")
     public ResponseEntity<ResponseMessage<MemberProfileImageResponse>> uploadMemberImage(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                @RequestParam(value="image") MultipartFile image)throws IOException {
         MemberProfileImageResponse response = memberService.uploadImage(userDetails.getMember(), image);
