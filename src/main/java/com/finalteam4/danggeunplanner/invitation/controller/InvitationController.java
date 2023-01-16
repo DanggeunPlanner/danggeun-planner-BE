@@ -23,27 +23,26 @@ public class InvitationController {
     private final InvitationService invitationService;
 
     @PostMapping("/{groupId}")
-    public ResponseEntity<ResponseMessage<?>> create(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId){
+    public ResponseEntity<ResponseMessage<Void>> create(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId){
         invitationService.create(userDetails.getMember(),groupId);
         return new ResponseEntity<>(new ResponseMessage<>("초대 리스트 생성 성공", null), HttpStatus.CREATED);
     }
 
     @GetMapping("/{groupId}")
-    public ResponseEntity<ResponseMessage<?>> find(@AuthenticationPrincipal UserDetailsImpl userDetails,@PathVariable Long groupId){
+    public ResponseEntity<ResponseMessage<InvitationListResponse>> find(@AuthenticationPrincipal UserDetailsImpl userDetails,@PathVariable Long groupId){
         InvitationListResponse response = invitationService.find(userDetails.getMember(),groupId);
         return new ResponseEntity<>(new ResponseMessage<>("초대 리스트 조회 성공", response ),HttpStatus.OK);
     }
 
     @PutMapping("/add/{groupId}/{username}")
-    public ResponseEntity<ResponseMessage<?>> addMember(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId, @PathVariable String username){
+    public ResponseEntity<ResponseMessage<InvitationResponse>> addMember(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId, @PathVariable String username){
         InvitationResponse response = invitationService.addMember(userDetails.getMember(), groupId, username);
         return new ResponseEntity<>(new ResponseMessage<>("초대 리스트에 회원 추가 성공", response), HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/remove/{groupId}/{username}")
-    public ResponseEntity<ResponseMessage<?>> removeMember(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId ,@PathVariable String username){
+    public ResponseEntity<ResponseMessage<InvitationResponse>> removeMember(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId ,@PathVariable String username){
         InvitationResponse response = invitationService.removeMember(userDetails.getMember(), groupId, username);
         return new ResponseEntity<>(new ResponseMessage<>("초대 리스트에 회원 제거 성공", response), HttpStatus.ACCEPTED);
     }
-
 }

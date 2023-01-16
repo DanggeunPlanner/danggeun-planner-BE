@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_ACCESS;
+import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_REFRESH;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,27 +27,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String uri = request.getRequestURI();
 
-        if(uri.contains("api/member/signup") || uri.contains("api/member/login")){
+        if(uri.contains("api/auth/signup") || uri.contains("api/auth/login") || uri.contains("api/auth/token")){
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = jwtUtil.resolveToken(request, AUTHORIZATION_ACCESS);
 
+        String refreshToken = jwtUtil.resolveToken(request, AUTHORIZATION_REFRESH);
+
         //인증 필요 없는 부분은 그냥 체인 통과하도록 분기처리(필요없으면 그냥 다음 필터로 이동)
-        if (token == null){
+        if (token == null || refreshToken!=null){
             filterChain.doFilter(request, response);
             return;
         }
 
-        System.out.println("===============check");
         jwtUtil.validateAccessToken(request, response);
 
-        //토큰에서 "sub" 부분 추출해서 인증객체생성
         Claims info = jwtUtil.getUserInfoFromToken(token);
+
         setAuthentication(info.getSubject());
 
-        // 4. 다음 필터로 보냄
         filterChain.doFilter(request,response);
     }
 

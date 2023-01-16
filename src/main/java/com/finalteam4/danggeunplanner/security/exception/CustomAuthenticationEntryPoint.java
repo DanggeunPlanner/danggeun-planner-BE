@@ -20,30 +20,39 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         ErrorCode errorCode;
 
         if(exception == null) {
-            errorCode = ErrorCode.ACCESSTOKEN_NOT_FOUND;
+            errorCode = ErrorCode.NOT_AUTHORIZED_MEMBER;
         }
         //Access : 토큰 만료된 경우
         else if(exception.equals(ErrorCode.EXPIRATION_ACCESSTOKEN.getCode())) {
             errorCode = ErrorCode.EXPIRATION_ACCESSTOKEN;
         }
         //Access : 유효하지 않은 토큰인 경우
-        else if(exception.equals(ErrorCode.NOT_VALID_ACCESSTOKEN.getCode())) {
-            errorCode = ErrorCode.NOT_VALID_ACCESSTOKEN;
+        else if(exception.equals(ErrorCode.INVALID_ACCESSTOKEN.getCode())) {
+            errorCode = ErrorCode.INVALID_ACCESSTOKEN;
+        }
+        else if(exception.equals(ErrorCode.ACCESSTOKEN_NOT_SUPPORT.getCode())) {
+            errorCode = ErrorCode.ACCESSTOKEN_NOT_SUPPORT;
+        }
+        else if(exception.equals(ErrorCode.UNKNOWN_ACCESSTOKEN_ERROR.getCode())) {
+            errorCode = ErrorCode.UNKNOWN_ACCESSTOKEN_ERROR;
         }
         //Refresh : 토큰 만료된 경우
         else if(exception.equals(ErrorCode.EXPIRATION_REFRESHTOKEN.getCode())) {
             errorCode = ErrorCode.EXPIRATION_REFRESHTOKEN;
         }
         //Refresh : 유효하지 않은 토큰인 경우
-        else if(exception.equals(ErrorCode.NOT_VALID_REFRESHTOKEN.getCode())) {
-            errorCode = ErrorCode.NOT_VALID_REFRESHTOKEN;
+        else if(exception.equals(ErrorCode.INVALID_REFRESHTOKEN.getCode())) {
+            errorCode = ErrorCode.INVALID_REFRESHTOKEN;
+        }
+        else if(exception.equals(ErrorCode.REFRESHTOKEN_NOT_SUPPORT.getCode())) {
+            errorCode = ErrorCode.REFRESHTOKEN_NOT_SUPPORT;
         }
         //Refresh : 그외
-        else if(exception.equals(ErrorCode.REFRESHTOKEN_NOT_FOUND.getCode())) {
-            errorCode = ErrorCode.REFRESHTOKEN_NOT_FOUND;
+        else if(exception.equals(ErrorCode.UNKNOWN_REFRESHTOKEN_ERROR.getCode())) {
+            errorCode = ErrorCode.UNKNOWN_REFRESHTOKEN_ERROR;
         }
         else {
-            errorCode = ErrorCode.NOT_AUTHORIZED_MEMBER;
+            errorCode = ErrorCode.UNKNOWN_TOKEN_ERROR;
         }
         setResponse(response, errorCode);
 

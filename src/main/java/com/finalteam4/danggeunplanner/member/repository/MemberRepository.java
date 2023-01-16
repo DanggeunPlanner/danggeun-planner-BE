@@ -13,4 +13,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByUsernameStartsWithOrderByUsername(String username);
     Boolean existsByUsername(String username);
     Boolean existsInvitationByUsername(Member member);
+    Member findByRefreshToken(String refreshTokenWithBearer);
 }
