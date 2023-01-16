@@ -2,7 +2,7 @@ package com.finalteam4.danggeunplanner.group.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.entity.Group;
-import com.finalteam4.danggeunplanner.group.entity.Participant;
+import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
