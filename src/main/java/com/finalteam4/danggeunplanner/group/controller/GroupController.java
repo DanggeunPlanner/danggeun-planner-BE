@@ -2,9 +2,12 @@ package com.finalteam4.danggeunplanner.group.controller;
 
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
 import com.finalteam4.danggeunplanner.group.dto.request.GroupInfoRequest;
+import com.finalteam4.danggeunplanner.group.dto.request.GroupInvitationRequest;
 import com.finalteam4.danggeunplanner.group.dto.response.GroupDetailResponse;
 import com.finalteam4.danggeunplanner.group.dto.response.GroupInfoResponse;
+import com.finalteam4.danggeunplanner.group.dto.response.GroupInvitationResponse;
 import com.finalteam4.danggeunplanner.group.dto.response.GroupListResponse;
+import com.finalteam4.danggeunplanner.group.dto.response.GroupSearchResponse;
 import com.finalteam4.danggeunplanner.group.service.GroupService;
 import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -57,5 +60,18 @@ public class GroupController {
     public ResponseEntity<ResponseMessage<GroupDetailResponse>> findGroup(@PathVariable Long groupId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         GroupDetailResponse response = groupService.findGroup(groupId, userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("그룹 조회 성공", response), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{groupId}/{username}")
+    public ResponseEntity<ResponseMessage<GroupSearchResponse>> searchMember(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId, @PathVariable String username){
+        GroupSearchResponse response = groupService.searchMember(userDetails.getMember(), groupId, username);
+        return new ResponseEntity<>(new ResponseMessage<>("회원 검색 성공", response), HttpStatus.OK);
+    }
+
+    @PostMapping("/invitation/{groupId}")
+    public ResponseEntity<ResponseMessage<GroupInvitationResponse>> invite(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId, @RequestBody GroupInvitationRequest request){
+        List<String> username = request.getUsername();
+        GroupInvitationResponse response = groupService.invite(userDetails.getMember(), groupId, username);
+        return new ResponseEntity<>(new ResponseMessage<>("회원 초대 성공", response), HttpStatus.CREATED);
     }
 }

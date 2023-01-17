@@ -7,14 +7,18 @@ import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.dto.request.GroupInfoRequest;
 import com.finalteam4.danggeunplanner.group.dto.response.GroupDetailResponse;
 import com.finalteam4.danggeunplanner.group.dto.response.GroupInfoResponse;
+import com.finalteam4.danggeunplanner.group.dto.response.GroupInvitationResponse;
 import com.finalteam4.danggeunplanner.group.dto.response.GroupListResponse;
+import com.finalteam4.danggeunplanner.group.dto.response.GroupSearchMemberResponse;
+import com.finalteam4.danggeunplanner.group.dto.response.GroupSearchResponse;
 import com.finalteam4.danggeunplanner.group.dto.response.ParticipantRankingResponse;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.entity.GroupImageEnum;
-import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
-import com.finalteam4.danggeunplanner.participant.repository.ParticipantRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
+import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
+import com.finalteam4.danggeunplanner.participant.entity.Participant;
+import com.finalteam4.danggeunplanner.participant.repository.ParticipantRepository;
 import com.finalteam4.danggeunplanner.timer.entity.Timer;
 import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +42,7 @@ public class GroupService {
     private final ParticipantRepository participantRepository;
     private final CalendarRepository calendarRepository;
     private final TimerRepository timerRepository;
+    private final MemberRepository memberRepository;
     private final GroupValidator groupValidator;
 
     @Transactional
@@ -151,5 +156,55 @@ public class GroupService {
                 break;
             }
         }
+    }
+
+    public GroupSearchResponse searchMember(Member member, Long groupId, String username) {
+        Group group = groupRepository.findById(groupId).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
+        );
+
+        groupValidator.validateAdmin(member, group);
+
+        GroupSearchResponse response = new GroupSearchResponse(group);
+
+        List<Member> members = memberRepository.findByUsernameStartsWithOrderByUsername(username);
+        for (Member other : members) {
+            if (other.getId().equals(member.getId())){
+                continue;
+            }
+            Optional<Participant> participant = participantRepository.findByMemberAndGroup(other, group);
+            boolean isMember = participant.isPresent();
+            GroupSearchMemberResponse invitationSearch = new GroupSearchMemberResponse(other, isMember);
+            response.addMembers(invitationSearch);
+        }
+        return response;
+    }
+
+    @Transactional
+    public GroupInvitationResponse invite(Member member, Long groupId, List<String> username) {
+        Group group = groupRepository.findById(groupId).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
+        );
+
+        groupValidator.validateAdmin(member, group);
+
+        GroupInvitationResponse response = new GroupInvitationResponse(group);
+        List<Participant> participants = new ArrayList<>();
+
+        List<Member> members = memberRepository.findAll();
+        for (Member other : members) {
+            for (String name : username) {
+                if (participantRepository.existsByMemberAndGroup(other, group)){
+                    continue;
+                }
+                if (other.getUsername().equals(name)){
+                    Participant participant = new Participant(other, group);
+                    participants.add(participant);
+                    response.addUsername(participant.getMember());
+                }
+            }
+        }
+        participantRepository.saveAll(participants);
+        return response;
     }
 }
