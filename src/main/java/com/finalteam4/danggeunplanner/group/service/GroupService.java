@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -112,11 +113,11 @@ public class GroupService {
     private void bringCalendarListOfParticipant(Group group, List<Calendar> calendarList) {
         for (Participant participant : group.getParticipants()) {
             Member other = participant.getMember();
-            Optional<Calendar> calendar = calendarRepository.findByMemberAndDate(other, TimeConverter.getCurrentTimeToYearMonth());
+            Optional<Calendar> calendar = calendarRepository.findByMemberAndDate(other, TimeConverter.convertToCalendarDateForm(LocalDateTime.now()));
             if (calendar.isPresent()) {
                 calendarList.add(calendar.get());
             } else {
-                new Calendar(other);
+                new Calendar(other, TimeConverter.convertToCalendarDateForm(LocalDateTime.now()));
             }
         }
     }
