@@ -1,9 +1,9 @@
 package com.finalteam4.danggeunplanner.timer.entity;
 
-import com.finalteam4.danggeunplanner.TimeConverter;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.planner.entity.Planner;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,10 +25,10 @@ public class Timer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="timer_id")
     private Long id;
-    private String date;
-    private String startTime;
-    private String endTime;
-    private LocalDateTime createdAt;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private String content;
+    private Integer count;
     private Boolean isFinish;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
@@ -42,16 +42,22 @@ public class Timer {
         planner.addTimer(this);
     }
 
-    public Timer(Member member){
-        this.createdAt = LocalDateTime.now();
-        this.isFinish = false;
+    @Builder
+    public Timer(Member member, LocalDateTime startTime, String content, Integer count, Boolean isFinish){
         this.member = member;
+        this.startTime = startTime;
+        this.content = content;
+        this.count = count;
+        this.isFinish=isFinish;
     }
 
-    public void finish(Timer timer){
-        this.date= TimeConverter.getCurrentTimeToYearMonthDay();
-        this.startTime=TimeConverter.changeTimeToHourMinute(timer.getCreatedAt());
-        this.endTime=TimeConverter.changeTimeToHourMinute(timer.getCreatedAt().plusMinutes(25));
+    public void finish(LocalDateTime endTime, Integer count){
+        this.endTime=endTime;
+        this.count=count;
         this.isFinish=true;
+    }
+
+    public void update(String content){
+        this.content=content;
     }
 }

@@ -1,6 +1,5 @@
 package com.finalteam4.danggeunplanner.calendar.entity;
 
-import com.finalteam4.danggeunplanner.TimeConverter;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.planner.entity.Planner;
 import lombok.AccessLevel;
@@ -39,9 +38,9 @@ public class Calendar {
         planners.add(planner);
     }
 
-    public Calendar(Member member){
-        this.date = TimeConverter.getCurrentTimeToYearMonth();
+    public Calendar(Member member, String date){
         this.member = member;
+        this.date = date;
         this.carrot=0;
     }
 

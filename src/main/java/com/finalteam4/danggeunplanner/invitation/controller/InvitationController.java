@@ -25,7 +25,7 @@ public class InvitationController {
 
     @PostMapping("/{groupId}")
     public ResponseEntity<ResponseMessage<Void>> create(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId){
-        invitationService.create(userDetails.getMember(),groupId);
+        invitationService.create(userDetails.getMember().getId(),groupId);
         return new ResponseEntity<>(new ResponseMessage<>("초대 리스트 생성 성공", null), HttpStatus.CREATED);
     }
 

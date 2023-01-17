@@ -12,7 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_CALENDAR;
+import java.util.Optional;
+
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
 
 @Service
@@ -26,16 +27,19 @@ public class CalendarService {
         Member member = memberRepository.findByUsername(username).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER));
 
-        Calendar calendar = calendarRepository.findByMemberAndDate(member, date).orElseThrow(
-                () -> new DanggeunPlannerException(NOT_FOUND_CALENDAR));
+        Optional<Calendar> calendar = calendarRepository.findByMemberAndDate(member, date);
 
-        CalendarResponse response = new CalendarResponse(calendar);
-        ColorStageResponse colorStage = new ColorStageResponse();
+        if(calendar.isPresent()) {
+            CalendarResponse response = new CalendarResponse(calendar.get());
+            ColorStageResponse colorStage = new ColorStageResponse();
 
-        addDateToColorStage(calendar, colorStage);
-        response.addColorStage(colorStage);
+            addDateToColorStage(calendar.get(), colorStage);
+            response.addColorStage(colorStage);
 
-        return response;
+            return response;
+        }
+
+        return new CalendarResponse(member);
     }
 
     private void addDateToColorStage(Calendar calendar, ColorStageResponse colorStage){

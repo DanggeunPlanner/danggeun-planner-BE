@@ -28,8 +28,9 @@ public class Invitation {
     @OneToOne
     @JoinColumn(name="group_id")
     private Group group;
-    @OneToMany(mappedBy="invitation")
-    List<Member> members = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name = "invitation_id")
+    private List<Member> members = new ArrayList<>();
 
     public Invitation(Group group){
         this.group = group;
