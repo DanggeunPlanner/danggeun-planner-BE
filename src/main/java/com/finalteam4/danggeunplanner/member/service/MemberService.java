@@ -123,7 +123,12 @@ public class MemberService {
 
     public MemberMyPageResponse findMyPage(Member member) {
         List<Timer> timers = timerRepository.findAllByMemberAndIsFinish(member,true);
-        Integer totalCarrot = timers.size();
+
+        Integer totalCarrot = 0;
+
+        for(Timer timer : timers){
+            totalCarrot += timer.getCount();
+        }
         return new MemberMyPageResponse(member, totalCarrot);
     }
 
@@ -134,13 +139,7 @@ public class MemberService {
         Member memberForImageUpload = memberRepository.findByUsername(member.getUsername()).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
-
-        List<Timer> timers = timerRepository.findAllByMember(userDetails.getMember());
-
-        Integer totalCarrot = 0;
-        for(Timer timer : timers){
-            totalCarrot += timer.getCount();
-        }
+        memberForImageUpload.updateProfileImage(storedFileName);
         return new MemberProfileImageResponse(memberForImageUpload);
     }
 
