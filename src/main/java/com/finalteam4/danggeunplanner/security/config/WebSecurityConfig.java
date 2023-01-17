@@ -45,7 +45,7 @@ public class WebSecurityConfig {
 
         http.authorizeRequests().
                 antMatchers("/api/auth/**").permitAll().
-                antMatchers("/api/login/kakao").permitAll().
+                antMatchers("/login/kakao").permitAll().
                 anyRequest().authenticated().
 
                 and().
