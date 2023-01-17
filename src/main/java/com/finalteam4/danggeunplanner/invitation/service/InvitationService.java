@@ -2,18 +2,24 @@ package com.finalteam4.danggeunplanner.invitation.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.entity.Group;
-import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
+import com.finalteam4.danggeunplanner.invitation.dto.response.InvitationGroupResponse;
 import com.finalteam4.danggeunplanner.invitation.dto.response.InvitationListResponse;
 import com.finalteam4.danggeunplanner.invitation.dto.response.InvitationResponse;
+import com.finalteam4.danggeunplanner.invitation.dto.response.InvitationSearchResponse;
 import com.finalteam4.danggeunplanner.invitation.entity.Invitation;
 import com.finalteam4.danggeunplanner.invitation.repository.InvitationRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.member.service.MemberValidator;
+import com.finalteam4.danggeunplanner.participant.entity.Participant;
+import com.finalteam4.danggeunplanner.participant.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_INVITATION;
@@ -26,6 +32,7 @@ public class InvitationService {
     private final InvitationRepository invitationRepository;
     private final MemberRepository memberRepository;
     private final GroupRepository groupRepository;
+    private final ParticipantRepository participantRepository;
     private final MemberValidator memberValidator;
     private final InvitationValidator invitationValidator;
     @Transactional
@@ -102,5 +109,24 @@ public class InvitationService {
         if(memberRepository.existsInvitationByUsername(member)){
             member.deleteInvitation();
         }
+    }
+
+    public InvitationGroupResponse searchMember(Member member, Long groupId, String username) {
+        Group group = groupRepository.findById(groupId).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
+        );
+        InvitationGroupResponse response = new InvitationGroupResponse(group);
+
+        List<Member> members = memberRepository.findByUsernameStartsWithOrderByUsername(username);
+        for (Member searchMember : members) {
+            if (searchMember.getId().equals(member.getId())){
+                continue;
+            }
+            Optional<Participant> participant = participantRepository.findByMemberAndGroup(searchMember, group);
+            boolean isMember = participant.isPresent();
+            InvitationSearchResponse invitationSearchResponse = new InvitationSearchResponse(searchMember, isMember);
+            response.addMembers(invitationSearchResponse);
+        }
+        return response;
     }
 }
