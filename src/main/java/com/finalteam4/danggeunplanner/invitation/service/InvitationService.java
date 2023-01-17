@@ -74,9 +74,6 @@ public class InvitationService {
         invitationValidator.validateInvitedMember(invitation,other);
 
         invitation.addMember(other);
-        System.out.println(other.getId());
-        System.out.println(invitation.getMembers());
-
         return new InvitationResponse(other);
     }
     @Transactional
