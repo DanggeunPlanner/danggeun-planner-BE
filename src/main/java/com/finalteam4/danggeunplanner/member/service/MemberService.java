@@ -108,10 +108,10 @@ public class MemberService {
     public MemberInfoListResponse find(Member member, String username) {
 
         List<Member> members = memberRepository.findByUsernameStartsWithOrderByUsername(username);
-        members.remove(member);
-
         MemberInfoListResponse memberInfoListResponse = new MemberInfoListResponse();
         for(Member other : members){
+            if(member.getUsername().equals(other.getUsername()))
+                continue;
             memberInfoListResponse.add(new MemberInfoResponse(other));
         }
         return memberInfoListResponse;
