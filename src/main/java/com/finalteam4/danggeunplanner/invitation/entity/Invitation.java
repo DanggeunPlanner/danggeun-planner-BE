@@ -29,7 +29,7 @@ public class Invitation {
     @JoinColumn(name="group_id")
     private Group group;
     @OneToMany
-    @JoinColumn
+    @JoinColumn(name = "invitation_id")
     private List<Member> members = new ArrayList<>();
 
     public Invitation(Group group){
