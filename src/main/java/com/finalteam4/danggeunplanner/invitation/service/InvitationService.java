@@ -28,25 +28,27 @@ public class InvitationService {
     private final MemberValidator memberValidator;
     private final InvitationValidator invitationValidator;
     @Transactional
-    public void create(Member member,Long groupId) {
+    public void create(Long memberId,Long groupId) {
+
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                ()-> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+        );
         Group group = groupRepository.findById(groupId).orElseThrow(
                 ()->new DanggeunPlannerException(NOT_FOUND_GROUP)
         );
+        deleteExistInvitation(group);
+
         invitationValidator.validateAdmin(member,group);
-        deleteExistInvitation(member);
 
         Invitation invitation = new Invitation(group);
         invitationRepository.save(invitation);
-        member.confirmInvitation(invitation);
     }
 
     public InvitationListResponse find(Member member,Long groupId) {
-        Invitation invitation = invitationRepository.findById(member.getInvitation().getId()).orElseThrow(
-                ()->new DanggeunPlannerException(NOT_FOUND_INVITATION)
-        );
         Group group = groupRepository.findById(groupId).orElseThrow(
                 ()->new DanggeunPlannerException(NOT_FOUND_GROUP)
         );
+        Invitation invitation = invitationRepository.findByGroup(group);
         invitationValidator.validateAdmin(member,group);
 
         InvitationListResponse response = new InvitationListResponse();
@@ -59,7 +61,7 @@ public class InvitationService {
     }
     @Transactional
     public InvitationResponse addMember(Member member,Long groupId, String username){
-        Invitation invitation = invitationRepository.findById(member.getInvitation().getId()).orElseThrow(
+        Invitation invitation = invitationRepository.findById(groupId).orElseThrow(
                 ()->new DanggeunPlannerException(NOT_FOUND_INVITATION)
         );
         Member other = memberRepository.findByUsername(username).orElseThrow(
@@ -73,14 +75,15 @@ public class InvitationService {
         invitationValidator.validateMaxSize(invitation,group);
         invitationValidator.validateParticipant(group,other);
         invitationValidator.validateInvitedMember(invitation,other);
-
         invitation.addMember(other);
+        System.out.println(other.getId());
+        System.out.println(invitation.getMembers());
 
         return new InvitationResponse(other);
     }
     @Transactional
     public InvitationResponse removeMember(Member member, Long groupId, String username) {
-        Invitation invitation = invitationRepository.findById(member.getInvitation().getId()).orElseThrow(
+        Invitation invitation = invitationRepository.findById(groupId).orElseThrow(
                 ()->new DanggeunPlannerException(NOT_FOUND_INVITATION)
         );
         Member other = memberRepository.findByUsername(username).orElseThrow(
@@ -97,9 +100,10 @@ public class InvitationService {
 
         return new InvitationResponse(other);
     }
-    private void deleteExistInvitation(Member member){
-        if(memberRepository.existsInvitationByUsername(member)){
-            member.deleteInvitation();
+    private void deleteExistInvitation(Group group){
+        if(invitationRepository.existsByGroup(group)){
+            Invitation invitation = invitationRepository.findByGroup(group);
+            invitationRepository.delete(invitation);
         }
     }
 }

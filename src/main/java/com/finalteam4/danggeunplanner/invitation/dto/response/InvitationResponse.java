@@ -6,10 +6,8 @@ import lombok.Getter;
 @Getter
 public class InvitationResponse {
     private final String username;
-    private final String profileImage;
 
     public InvitationResponse(Member member){
         this.username = member.getUsername();
-        this.profileImage = member.getProfileImage();
     }
 }
