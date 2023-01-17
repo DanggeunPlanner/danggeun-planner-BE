@@ -5,6 +5,7 @@ import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberUpdateUsernameRequest;
+import com.finalteam4.danggeunplanner.member.dto.request.OauthLoginRequest;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoListResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLoginResponse;
@@ -46,6 +47,8 @@ public class MemberService {
     private final S3UploaderService s3Uploader;
     private final GroupRepository groupRepository;
 
+    private final OauthLoginRequest oauthLoginRequest;
+
 
     @Transactional
     public void signUp(MemberAuthRequest request) {
@@ -61,13 +64,8 @@ public class MemberService {
         Member member = memberRepository.findByEmail(request.getEmail()).orElseThrow(
                         () -> new DanggeunPlannerException(NOT_FOUND_MEMBER));
         memberValidator.validateMatchPassword(request.getPassword(), member.getPassword());
-
-        boolean isExistUsername = true;
-        if(member.getUsername()==null){
-            isExistUsername = false;
-        }
-
         issueTokens(response, member);
+        boolean isExistUsername = memberValidator.validateExistUsername(member);
         return new MemberLoginResponse(isExistUsername);
     }
 
@@ -110,13 +108,14 @@ public class MemberService {
         return new MemberUpdateUsernameResponse(member);
     }
 
-    public MemberInfoListResponse find(String username) {
+    public MemberInfoListResponse find(Member member, String username) {
 
         List<Member> members = memberRepository.findByUsernameStartsWithOrderByUsername(username);
+        members.remove(member);
 
         MemberInfoListResponse memberInfoListResponse = new MemberInfoListResponse();
-        for(Member member : members){
-            memberInfoListResponse.add(new MemberInfoResponse(member));
+        for(Member other : members){
+            memberInfoListResponse.add(new MemberInfoResponse(other));
         }
         return memberInfoListResponse;
     }
@@ -134,10 +133,22 @@ public class MemberService {
         Member memberForImageUpload = memberRepository.findByUsername(member.getUsername()).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
-
         memberForImageUpload.updateProfileImage(storedFileName);
-
         return new MemberProfileImageResponse(memberForImageUpload);
     }
 
+    @Transactional
+    public MemberLoginResponse OauthLogin(OauthLoginRequest oauthLoginRequest, HttpServletResponse response) {
+        Member member = memberRepository.findByEmail(oauthLoginRequest.getEmail()).orElse(null);
+
+        //카카오계정으로 가입된 회원이 없으면 회원가입 진행하고 토큰 발행, 있으면 그냥 토큰 발행
+        if(member == null){
+            member = oauthLoginRequest.toEntity(oauthLoginRequest.getEmail());
+            memberRepository.save(member);
+        }
+
+        issueTokens(response, member);
+        boolean isExistUsername = memberValidator.validateExistUsername(member);
+        return new MemberLoginResponse(isExistUsername);
+    }
 }

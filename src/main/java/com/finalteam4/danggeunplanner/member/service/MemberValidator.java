@@ -40,4 +40,12 @@ public class MemberValidator {
             throw new DanggeunPlannerException(DUPLICATED_NICKNAME);
         }
     }
+
+    public boolean validateExistUsername(Member member){
+        boolean isExistUsername = true;
+        if(member.getUsername()==null){
+            isExistUsername = false;
+        }
+        return isExistUsername;
+    }
 }

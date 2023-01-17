@@ -3,12 +3,14 @@ package com.finalteam4.danggeunplanner.member.controller;
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberUpdateUsernameRequest;
+import com.finalteam4.danggeunplanner.member.dto.request.OauthLoginRequest;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoListResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLoginResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberProfileImageResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberUpdateUsernameResponse;
 import com.finalteam4.danggeunplanner.member.service.MemberService;
+import com.finalteam4.danggeunplanner.member.service.OauthService;
 import com.finalteam4.danggeunplanner.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,7 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class MemberController {
     private final MemberService memberService;
+    private final OauthService oauthService;
 
     @PostMapping("/auth/signup")
     public ResponseEntity<ResponseMessage<Void>> signUp(@RequestBody MemberAuthRequest request){
@@ -59,8 +62,8 @@ public class MemberController {
     }
 
     @GetMapping("/member/search/{username}")
-    public ResponseEntity<ResponseMessage<MemberInfoListResponse>> find(@PathVariable String username){
-        MemberInfoListResponse response = memberService.find(username);
+    public ResponseEntity<ResponseMessage<MemberInfoListResponse>> find(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String username){
+        MemberInfoListResponse response = memberService.find(userDetails.getMember(), username);
         return new ResponseEntity<>(new ResponseMessage<>("회원 검색 성공", response), HttpStatus.OK);
     }
 
@@ -77,5 +80,12 @@ public class MemberController {
         return new ResponseEntity<>(new ResponseMessage<>("프로필 사진 변경 성공", response), HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/login/kakao")
+    public ResponseEntity<ResponseMessage<MemberLoginResponse>> kakaoLogin(@RequestParam String code, HttpServletResponse response){
+        String kakaoAccessToken = oauthService.getKakaoAccessToken(code); //받은 코드로 액세스토큰 받기
+        OauthLoginRequest kakaoLoginRequest = oauthService.createKakaoUser(kakaoAccessToken); //받아온 액세스토큰으로 카카오 로그인 리퀘스트 만들기
+        MemberLoginResponse memberLogInResponse = memberService.OauthLogin(kakaoLoginRequest, response); 
+        return new ResponseEntity<>(new ResponseMessage<>("카카오 로그인 성공", memberLogInResponse), HttpStatus.ACCEPTED);
+    }
 }
 

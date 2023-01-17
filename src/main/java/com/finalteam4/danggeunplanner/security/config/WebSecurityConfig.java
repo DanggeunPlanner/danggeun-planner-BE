@@ -45,15 +45,13 @@ public class WebSecurityConfig {
 
         http.authorizeRequests().
                 antMatchers("/api/auth/**").permitAll().
-//                antMatchers("/api/auth/login").permitAll().
-//                antMatchers("/api/auth/token").permitAll().
+                antMatchers("/api/login/kakao").permitAll().
                 anyRequest().authenticated().
 
                 and().
                 addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class).
                 exceptionHandling().
                 authenticationEntryPoint(new CustomAuthenticationEntryPoint());
-
 
         return http.build();
     }
