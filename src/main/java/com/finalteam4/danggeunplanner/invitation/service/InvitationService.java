@@ -9,13 +9,11 @@ import com.finalteam4.danggeunplanner.invitation.entity.Invitation;
 import com.finalteam4.danggeunplanner.invitation.repository.InvitationRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
-import com.finalteam4.danggeunplanner.member.service.MemberValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
-import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_INVITATION;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
 
 @Service
@@ -25,7 +23,6 @@ public class InvitationService {
     private final InvitationRepository invitationRepository;
     private final MemberRepository memberRepository;
     private final GroupRepository groupRepository;
-    private final MemberValidator memberValidator;
     private final InvitationValidator invitationValidator;
     @Transactional
     public void create(Long memberId,Long groupId) {
@@ -61,20 +58,20 @@ public class InvitationService {
     }
     @Transactional
     public InvitationResponse addMember(Member member,Long groupId, String username){
-        Invitation invitation = invitationRepository.findById(groupId).orElseThrow(
-                ()->new DanggeunPlannerException(NOT_FOUND_INVITATION)
-        );
+
         Member other = memberRepository.findByUsername(username).orElseThrow(
                 ()->new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
         Group group = groupRepository.findById(groupId).orElseThrow(
                 ()->new DanggeunPlannerException(NOT_FOUND_GROUP)
         );
+        Invitation invitation = invitationRepository.findByGroup(group);
 
         invitationValidator.validateAdmin(member,group);
         invitationValidator.validateMaxSize(invitation,group);
         invitationValidator.validateParticipant(group,other);
         invitationValidator.validateInvitedMember(invitation,other);
+
         invitation.addMember(other);
         System.out.println(other.getId());
         System.out.println(invitation.getMembers());
@@ -83,15 +80,14 @@ public class InvitationService {
     }
     @Transactional
     public InvitationResponse removeMember(Member member, Long groupId, String username) {
-        Invitation invitation = invitationRepository.findById(groupId).orElseThrow(
-                ()->new DanggeunPlannerException(NOT_FOUND_INVITATION)
-        );
+
         Member other = memberRepository.findByUsername(username).orElseThrow(
                 ()->new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
         Group group = groupRepository.findById(groupId).orElseThrow(
                 ()->new DanggeunPlannerException(NOT_FOUND_GROUP)
         );
+        Invitation invitation = invitationRepository.findByGroup(group);
 
         invitationValidator.validateAdmin(member,group);
         invitationValidator.validateExistMember(invitation,other);
