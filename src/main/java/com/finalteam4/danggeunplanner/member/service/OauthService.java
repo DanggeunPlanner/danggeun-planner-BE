@@ -21,10 +21,9 @@ import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.SOCIAL_L
 @Slf4j
 @Service
 public class OauthService {
-
     @Value("${kakao.clientId}")
     private String clientId;
-    @Value("${kakao.redirect_Uri}")
+    @Value("${kakao.redirectUri}")
     private String redirectUri;
     private String grantType = "authorization_code";
 
@@ -32,7 +31,7 @@ public class OauthService {
         System.out.println(code);
 
         String access_Token = "";
-        String refresh_Token = "";
+//        String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
 
 
@@ -76,10 +75,10 @@ public class OauthService {
             JsonElement element = parser.parse(result);
 
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
-            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+//            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
 
             System.out.println("access_token : " + access_Token);
-            System.out.println("refresh_token : " + refresh_Token);
+//            System.out.println("refresh_token : " + refresh_Token);
 
             br.close();
             bw.close();

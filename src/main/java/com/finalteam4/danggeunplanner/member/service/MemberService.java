@@ -47,9 +47,6 @@ public class MemberService {
     private final S3UploaderService s3Uploader;
     private final GroupRepository groupRepository;
 
-    private final OauthLoginRequest oauthLoginRequest;
-
-
     @Transactional
     public void signUp(MemberAuthRequest request) {
         memberValidator.validateEmail(request.getEmail());

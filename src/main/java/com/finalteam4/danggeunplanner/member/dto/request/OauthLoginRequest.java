@@ -1,14 +1,12 @@
 package com.finalteam4.danggeunplanner.member.dto.request;
 
 import com.finalteam4.danggeunplanner.member.entity.Member;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class OauthLoginRequest {
     private String email;
 
-    @Builder
     public OauthLoginRequest(String email){
         this.email = email;
     }

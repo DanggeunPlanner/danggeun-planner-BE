@@ -80,11 +80,11 @@ public class MemberController {
         return new ResponseEntity<>(new ResponseMessage<>("프로필 사진 변경 성공", response), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/login/kakao")
+    @GetMapping("/auth/kakao")
     public ResponseEntity<ResponseMessage<MemberLoginResponse>> kakaoLogin(@RequestParam String code, HttpServletResponse response){
         String kakaoAccessToken = oauthService.getKakaoAccessToken(code); //받은 코드로 액세스토큰 받기
         OauthLoginRequest kakaoLoginRequest = oauthService.createKakaoUser(kakaoAccessToken); //받아온 액세스토큰으로 카카오 로그인 리퀘스트 만들기
-        MemberLoginResponse memberLogInResponse = memberService.OauthLogin(kakaoLoginRequest, response); 
+        MemberLoginResponse memberLogInResponse = memberService.OauthLogin(kakaoLoginRequest, response);
         return new ResponseEntity<>(new ResponseMessage<>("카카오 로그인 성공", memberLogInResponse), HttpStatus.ACCEPTED);
     }
 }
