@@ -38,14 +38,22 @@ public class ParticipantService {
         boolean isAdmin = group.getAdmin().equals(member.getUsername());
         ParticipantInfoResponse response = new ParticipantInfoResponse(group, onlineParticipant, isAdmin);
 
+        ParticipantListResponse myInfoListResponse = appendListResponse(member);
+        response.addMyInfo(myInfoListResponse);
+
         for (Participant participant : group.getParticipants()) {
             boolean identification = member.getId().equals(participant.getMember().getId());
-            List<Timer> timers = timerRepository.findAllByMemberAndIsFinish(participant.getMember(),true);
-            Integer dailyCarrot = timers.size();
-            ParticipantListResponse participantListResponse = new ParticipantListResponse(participant.getMember(), identification, true, dailyCarrot);
-            response.addParticipantList(participantListResponse);
+            if (!identification) {
+                ParticipantListResponse participantListResponse = appendListResponse(participant.getMember());
+                response.addParticipantList(participantListResponse);
+            }
         }
         return response;
+    }
+    private ParticipantListResponse appendListResponse(Member member) {
+        List<Timer> timers = timerRepository.findAllByMemberAndIsFinish(member,true);
+        Integer dailyCarrot = timers.size();
+        return new ParticipantListResponse(member,true, dailyCarrot);
     }
 
     @Transactional

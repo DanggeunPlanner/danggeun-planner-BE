@@ -7,14 +7,12 @@ import lombok.Getter;
 public class ParticipantListResponse {
     private String username;
     private String profileImage;
-    private Boolean identification;
     private Boolean online;
     private Integer dailyCarrot;
 
-    public ParticipantListResponse(Member member, Boolean identification, Boolean online, Integer dailyCarrot) {
+    public ParticipantListResponse(Member member, Boolean online, Integer dailyCarrot) {
         this.username = member.getUsername();
         this.profileImage = member.getProfileImage();
-        this.identification = identification;
         this.online = online;
         this.dailyCarrot = dailyCarrot;
     }
