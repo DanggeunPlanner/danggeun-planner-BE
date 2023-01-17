@@ -155,7 +155,11 @@ public class MemberService {
         );
 
         List<Timer> timers = timerRepository.findAllByMember(userDetails.getMember());
-        Integer totalCarrot = timers.size();
+
+        Integer totalCarrot = 0;
+        for(Timer timer : timers){
+            totalCarrot += timer.getCount();
+        }
 
         return new MemberMyPageResponse(member, totalCarrot);
     }
