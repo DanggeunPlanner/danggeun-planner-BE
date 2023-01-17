@@ -32,7 +32,7 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .antMatchers("/h2-console/**", "/favicon.ico");
+                .antMatchers("/h2-console/**");
     }
 
     @Bean
@@ -44,9 +44,9 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests().
-                antMatchers("/api/member/signup").permitAll().
-                antMatchers("/api/member/login").permitAll().
-                antMatchers("/api/member/reissuance").permitAll().
+                antMatchers("/api/auth/**").permitAll().
+//                antMatchers("/api/auth/login").permitAll().
+//                antMatchers("/api/auth/token").permitAll().
                 anyRequest().authenticated().
 
                 and().

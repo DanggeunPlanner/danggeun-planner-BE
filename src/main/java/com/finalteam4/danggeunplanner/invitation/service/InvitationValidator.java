@@ -2,9 +2,9 @@ package com.finalteam4.danggeunplanner.invitation.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.entity.Group;
-import com.finalteam4.danggeunplanner.group.entity.Participant;
 import com.finalteam4.danggeunplanner.invitation.entity.Invitation;
 import com.finalteam4.danggeunplanner.member.entity.Member;
+import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

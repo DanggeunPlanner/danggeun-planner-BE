@@ -5,12 +5,12 @@ import lombok.Getter;
 
 @Getter
 public class ParticipantRankingResponse {
-    private Integer rank;
+    private String profileImage;
     private String username;
     private Integer carrot;
 
-    public ParticipantRankingResponse(Integer rank, Calendar calendar) {
-        this.rank = rank;
+    public ParticipantRankingResponse(Calendar calendar) {
+        this.profileImage = calendar.getMember().getProfileImage();
         this.username = calendar.getMember().getUsername();
         this.carrot = calendar.getCarrot();
     }
