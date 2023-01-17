@@ -1,5 +1,6 @@
 package com.finalteam4.danggeunplanner.participant.repository;
 
+import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +20,5 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
     List<Participant> findAllByMember(Member member);
     Integer countParticipantByGroup_Id(Long groupId);
     Optional<Participant> findByGroup_IdAndMember(Long groupId, Member member);
+    Optional<Participant> findByMemberAndGroup(Member searchMember, Group group);
 }

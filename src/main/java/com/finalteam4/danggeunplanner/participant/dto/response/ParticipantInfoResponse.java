@@ -12,6 +12,7 @@ public class ParticipantInfoResponse {
     private String groupName;
     private String onlineParticipant;
     private Boolean isAdmin;
+    private List<ParticipantListResponse> myInfo = new ArrayList<>();
     private List<ParticipantListResponse> participantList = new ArrayList<>();
 
     public ParticipantInfoResponse(Group group, String onlineParticipant, Boolean isAdmin) {
@@ -20,7 +21,9 @@ public class ParticipantInfoResponse {
         this.onlineParticipant = onlineParticipant;
         this.isAdmin = isAdmin;
     }
-
+    public void addMyInfo(ParticipantListResponse response) {
+        myInfo.add(response);
+    }
     public void addParticipantList(ParticipantListResponse response){
         participantList.add(response);
     }

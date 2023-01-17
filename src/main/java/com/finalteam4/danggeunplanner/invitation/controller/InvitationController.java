@@ -1,6 +1,7 @@
 package com.finalteam4.danggeunplanner.invitation.controller;
 
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
+import com.finalteam4.danggeunplanner.invitation.dto.response.InvitationGroupResponse;
 import com.finalteam4.danggeunplanner.invitation.dto.response.InvitationListResponse;
 import com.finalteam4.danggeunplanner.invitation.dto.response.InvitationResponse;
 import com.finalteam4.danggeunplanner.invitation.service.InvitationService;
@@ -44,5 +45,11 @@ public class InvitationController {
     public ResponseEntity<ResponseMessage<InvitationResponse>> removeMember(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId ,@PathVariable String username){
         InvitationResponse response = invitationService.removeMember(userDetails.getMember(), groupId, username);
         return new ResponseEntity<>(new ResponseMessage<>("초대 리스트에 회원 제거 성공", response), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/search/{groupId}/{username}")
+    public ResponseEntity<ResponseMessage<InvitationGroupResponse>> searchMember(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long groupId, @PathVariable String username){
+        InvitationGroupResponse response = invitationService.searchMember(userDetails.getMember(), groupId, username);
+        return new ResponseEntity<>(new ResponseMessage<>("회원 검색 성공", response), HttpStatus.OK);
     }
 }
