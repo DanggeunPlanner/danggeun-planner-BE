@@ -135,8 +135,12 @@ public class MemberService {
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
 
-        memberForImageUpload.updateProfileImage(storedFileName);
+        List<Timer> timers = timerRepository.findAllByMember(userDetails.getMember());
 
+        Integer totalCarrot = 0;
+        for(Timer timer : timers){
+            totalCarrot += timer.getCount();
+        }
         return new MemberProfileImageResponse(memberForImageUpload);
     }
 

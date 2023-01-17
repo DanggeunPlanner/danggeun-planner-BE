@@ -20,8 +20,18 @@ public class PlannerController {
     private final PlannerService plannerService;
 
     @GetMapping("{username}/{date}")
-    public ResponseEntity<ResponseMessage<PlannerResponse>> find (@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String username, @PathVariable String date){
-        PlannerResponse response = plannerService.find(userDetails.getMember(), username, date);
-        return new ResponseEntity<>(new ResponseMessage<>("플래너 조회 성공", response), HttpStatus.OK);
+    public ResponseEntity<ResponseMessage<PlannerResponse>> findAll (@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String username, @PathVariable String date){
+        PlannerResponse response = plannerService.findAll(userDetails.getMember(), username, date);
+        return new ResponseEntity<>(new ResponseMessage<>("플래너 전체 조회 성공", response), HttpStatus.OK);
+    }
+    @GetMapping("{username}/{date}/plan")
+    public ResponseEntity<ResponseMessage<PlannerResponse>> findPlan (@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String username, @PathVariable String date){
+        PlannerResponse response = plannerService.findPlan(userDetails.getMember(), username, date);
+        return new ResponseEntity<>(new ResponseMessage<>("플래너 계획 조회 성공", response), HttpStatus.OK);
+    }
+    @GetMapping("{username}/{date}/timer")
+    public ResponseEntity<ResponseMessage<PlannerResponse>> findTimer (@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String username, @PathVariable String date){
+        PlannerResponse response = plannerService.findTimer(userDetails.getMember(), username, date);
+        return new ResponseEntity<>(new ResponseMessage<>("플래너 타이머 조회 성공", response), HttpStatus.OK);
     }
 }

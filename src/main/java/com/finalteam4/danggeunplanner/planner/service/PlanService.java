@@ -2,6 +2,7 @@ package com.finalteam4.danggeunplanner.planner.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.member.entity.Member;
+import com.finalteam4.danggeunplanner.member.service.MemberValidator;
 import com.finalteam4.danggeunplanner.planner.dto.request.PlanRequest;
 import com.finalteam4.danggeunplanner.planner.dto.response.PlanResponse;
 import com.finalteam4.danggeunplanner.planner.entity.Plan;
@@ -12,11 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_PLAN;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_PLANNER;
-import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_VALID_ACCESS;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +23,7 @@ public class PlanService {
     private final PlanRepository planRepository;
     private final PlannerRepository plannerRepository;
     private final PlanValidator planValidator;
+    private final MemberValidator memberValidator;
 
     @Transactional
     public PlanResponse create(Member member, PlanRequest request) {
@@ -50,13 +49,9 @@ public class PlanService {
         Plan plan = planRepository.findById(planId).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_PLAN)
         );
-        validatedMember(member, plan.getMember());
+        memberValidator.validateAccess(member, plan.getMember());
 
-        LocalDateTime startTime = request.getStartTime();
-        LocalDateTime endTime = request.getEndTime();
-        String content = request.getContent();
-
-        plan.update(startTime, endTime, content);
+        plan.update(request.getStartTime(), request.getEndTime(), request.getContent());
 
         planValidator.validatePlanningTime(plan);
         planValidator.validatePlanningDate(plan);
@@ -70,7 +65,7 @@ public class PlanService {
         Plan plan = planRepository.findById(planId).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_PLAN)
         );
-        validatedMember(member, plan.getMember());
+        memberValidator.validateAccess(member, plan.getMember());
 
         planRepository.delete(plan);
         return new PlanResponse(plan);
@@ -80,12 +75,6 @@ public class PlanService {
         if (!plannerRepository.existsByMemberAndDate(member, plan.getDate())) {
             Planner planner = new Planner(member, plan.getDate());
             plannerRepository.save(planner);
-        }
-    }
-
-    private void validatedMember(Member member, Member other) {
-        if (!member.getId().equals(other.getId())) {
-            throw new DanggeunPlannerException(NOT_VALID_ACCESS);
         }
     }
 }
