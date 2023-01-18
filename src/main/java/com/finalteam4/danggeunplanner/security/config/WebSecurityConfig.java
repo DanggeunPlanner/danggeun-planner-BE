@@ -45,15 +45,13 @@ public class WebSecurityConfig {
 
         http.authorizeRequests().
                 antMatchers("/api/auth/**").permitAll().
-//                antMatchers("/api/auth/login").permitAll().
-//                antMatchers("/api/auth/token").permitAll().
+                antMatchers("/login/kakao").permitAll().
                 anyRequest().authenticated().
 
                 and().
                 addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class).
                 exceptionHandling().
                 authenticationEntryPoint(new CustomAuthenticationEntryPoint());
-
 
         return http.build();
     }
@@ -62,6 +60,7 @@ public class WebSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedOrigin("http://danggeunplanner.s3-website.ap-northeast-2.amazonaws.com/");
+        configuration.addAllowedOrigin("http://localhost:8080/login/kakao");
         configuration.addAllowedMethod("*"); // 허용할 Http Method
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true); // 내 서버가 응답할 때 json을 js에서 처리할 수 있게 설정
