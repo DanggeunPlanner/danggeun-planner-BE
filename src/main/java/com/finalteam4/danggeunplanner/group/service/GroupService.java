@@ -115,7 +115,9 @@ public class GroupService {
 
         for (Participant participant : group.getParticipants()) {
             List<Timer> timers = timerRepository.findAllByMemberAndIsFinish(participant.getMember(),true);
-            groupDailyCarrot += timers.size();
+            for(Timer timer : timers){
+                groupDailyCarrot += timer.getCount();
+            }
         }
         for (Calendar calendar : calendarList) {
             groupCarrot += calendar.getCarrot();

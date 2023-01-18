@@ -33,7 +33,7 @@ public class ParticipantService {
                 () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
         );
 
-        String onlineParticipant = "5/"+group.getParticipants().size();
+        String onlineParticipant = "5/"+ group.getParticipants().size();
 
         boolean isAdmin = group.getAdmin().equals(member.getUsername());
         ParticipantInfoResponse response = new ParticipantInfoResponse(group, onlineParticipant, isAdmin);
@@ -52,7 +52,10 @@ public class ParticipantService {
     }
     private ParticipantListResponse appendListResponse(Member member) {
         List<Timer> timers = timerRepository.findAllByMemberAndIsFinish(member,true);
-        Integer dailyCarrot = timers.size();
+        Integer dailyCarrot=0;
+        for(Timer timer : timers){
+            dailyCarrot += timer.getCount();
+        }
         return new ParticipantListResponse(member,true, dailyCarrot);
     }
 
