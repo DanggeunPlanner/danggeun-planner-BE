@@ -71,6 +71,7 @@ public class JwtUtil {
                         .signWith(accessTokenKey, signatureAlgorithm)
                         .compact();
     }
+
     public String createRefreshToken(){
         Date date = new Date();
         return BEARER_PREFIX +
@@ -100,14 +101,10 @@ public class JwtUtil {
         }
         return false;
     }
-    public String validateRefreshToken(HttpServletRequest request, String email){
+    public boolean validateRefreshToken(HttpServletRequest request, String email){
         try {
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(refreshTokenKey).build().parseClaimsJws(request.getHeader(AUTHORIZATION_REFRESH).substring(7));
-
-            //refresh 토큰의 만료시간이 지나지 않았을 경우, 새로운 access 토큰을 생성합니다.
-            if (!claims.getBody().getExpiration().before(new Date())) {
-                return recreationAccessToken(email);
-            }
+            return true;
         } catch (SecurityException | MalformedJwtException e) {
             e.printStackTrace();
             request.setAttribute("exception", ErrorCode.INVALID_REFRESHTOKEN.getCode());
@@ -122,22 +119,7 @@ public class JwtUtil {
             e.printStackTrace();
             request.setAttribute("exception", ErrorCode.UNKNOWN_REFRESHTOKEN_ERROR.getCode());
         }
-        return null;
-    }
-
-    public String recreationAccessToken(String userEmail){
-
-        Claims claims = Jwts.claims().setSubject(userEmail); // JWT payload 에 저장되는 정보단위
-        Date now = new Date();
-
-        //Access Token
-        return Jwts.builder()
-                .setClaims(claims) // 정보 저장
-                .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + TOKEN_TIME)) // set Expire Time
-                .signWith(SignatureAlgorithm.HS256, accessTokenSecretKey)  // 사용할 암호화 알고리즘과
-                // signature 에 들어갈 secret값 세팅
-                .compact();
+        return false;
     }
 
     public Claims getUserInfoFromToken(String token) {
