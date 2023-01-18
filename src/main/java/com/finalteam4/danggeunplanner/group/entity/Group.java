@@ -1,5 +1,6 @@
 package com.finalteam4.danggeunplanner.group.entity;
 
+import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

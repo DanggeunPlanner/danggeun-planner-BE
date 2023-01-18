@@ -22,7 +22,7 @@ public class PlanValidator {
     private final PlanRepository planRepository;
 
     public void validatePlanningDate(Plan plan) {
-        if (!TimeConverter.changeTimeToYearMonthDay(plan.getStartTime()).equals(TimeConverter.changeTimeToYearMonthDay(plan.getEndTime()))) {
+        if (!TimeConverter.convertToPlannerDateForm(plan.getStartTime()).equals(TimeConverter.convertToPlannerDateForm(plan.getEndTime()))) {
             throw new DanggeunPlannerException(DIFFERENT_PLANNING_DATE);
         }
     }

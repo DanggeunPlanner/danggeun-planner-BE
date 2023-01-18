@@ -14,8 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
-import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_PLANNER;
 
 @Service
 @RequiredArgsConstructor
@@ -24,22 +25,54 @@ public class PlannerService {
     private final PlannerRepository plannerRepository;
     private final MemberRepository memberRepository;
 
-    public PlannerResponse find(Member member, String username, String date) {
+    public PlannerResponse findAll(Member member, String username, String date) {
         Member other = memberRepository.findByUsername(username).orElseThrow(
-                ()-> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
-        Planner planner = plannerRepository.findByMemberAndDate(other, date).orElseThrow(
-                () -> new DanggeunPlannerException(NOT_FOUND_PLANNER)
+        Optional<Planner> planner = plannerRepository.findByMemberAndDate(other, date);
+
+        if (planner.isPresent()) {
+            PlannerResponse response = new PlannerResponse(planner.get(), member);
+            for (Plan plan : planner.get().getPlans()) {
+                response.addPlan(new PlanResponse(plan));
+            }
+            for (Timer timer : planner.get().getTimers()) {
+                response.addTimer(new TimerResponse(timer));
+            }
+            return response;
+        }
+        return new PlannerResponse(other,member);
+    }
+
+    public PlannerResponse findPlan(Member member, String username, String date) {
+        Member other = memberRepository.findByUsername(username).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
+        Optional<Planner> planner = plannerRepository.findByMemberAndDate(other, date);
 
-        PlannerResponse response = new PlannerResponse(planner,member);
+        if (planner.isPresent()) {
+            PlannerResponse response = new PlannerResponse(planner.get(), member);
+            for (Plan plan : planner.get().getPlans()) {
+                response.addPlan(new PlanResponse(plan));
+            }
+            return response;
+        }
+        return new PlannerResponse(other,member);
+    }
 
-        for(Plan plan : planner.getPlans()){
-            response.addPlan(new PlanResponse(plan));
+    public PlannerResponse findTimer(Member member, String username, String date) {
+        Member other = memberRepository.findByUsername(username).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+        );
+        Optional<Planner> planner = plannerRepository.findByMemberAndDate(other, date);
+
+        if (planner.isPresent()) {
+            PlannerResponse response = new PlannerResponse(planner.get(), member);
+            for (Timer timer : planner.get().getTimers()) {
+                response.addTimer(new TimerResponse(timer));
+            }
+            return response;
         }
-        for(Timer timer : planner.getTimers()){
-            response.addTimer(new TimerResponse(timer));
-        }
-        return response;
+        return new PlannerResponse(other,member);
     }
 }

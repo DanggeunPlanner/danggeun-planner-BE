@@ -12,21 +12,30 @@ import java.util.List;
 public class PlannerResponse {
     private final Boolean isOwner;
     private final String username;
+    private final String profileImage;
     private final Integer carrot;
-    private final List<PlanResponse> plans = new ArrayList<>();
-    private final List<TimerResponse> timers = new ArrayList<>();
+    private final List<Object> contents = new ArrayList<>();
 
-    public PlannerResponse(Planner planner, Member member){
-        this.isOwner= planner.getMember().getId().equals(member.getId());
+    public PlannerResponse(Member other, Member member) {
+        this.isOwner = other.getUsername().equals(member.getUsername());
+        this.username = other.getUsername();
+        this.profileImage = other.getProfileImage();
+        this.carrot = 0;
+    }
+
+    public PlannerResponse(Planner planner, Member member) {
+        this.isOwner = planner.getMember().getUsername().equals(member.getUsername());
         this.username = planner.getMember().getUsername();
+        this.profileImage = planner.getMember().getProfileImage();
         this.carrot = planner.getCarrot();
     }
 
-    public void addPlan(PlanResponse response){
-        plans.add(response);
+
+    public void addPlan(PlanResponse response) {
+        contents.add(response);
     }
 
-    public void addTimer(TimerResponse response){
-        timers.add(response);
+    public void addTimer(TimerResponse response) {
+        contents.add(response);
     }
 }

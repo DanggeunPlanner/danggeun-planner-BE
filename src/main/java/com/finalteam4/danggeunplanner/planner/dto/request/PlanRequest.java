@@ -15,7 +15,6 @@ public class PlanRequest {
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
-
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
@@ -24,7 +23,7 @@ public class PlanRequest {
     private String content;
     public Plan toPlan(Member member){
         return Plan.builder()
-                .date(TimeConverter.changeTimeToYearMonthDay(startTime))
+                .date(TimeConverter.convertToPlannerDateForm(startTime))
                 .startTime(startTime)
                 .endTime(endTime)
                 .content(content)
