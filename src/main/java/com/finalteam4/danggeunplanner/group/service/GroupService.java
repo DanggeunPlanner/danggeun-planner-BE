@@ -128,7 +128,6 @@ public class GroupService {
 
         return response;
     }
-
     private void bringCalendarListOfParticipant(Group group, List<Calendar> calendarList) {
         for (Participant participant : group.getParticipants()) {
             Member other = participant.getMember();
@@ -140,12 +139,10 @@ public class GroupService {
             }
         }
     }
-
     private void descendingOrderByCarrot(List<Calendar> calendarList) {
         Comparator<Calendar> comparator = (c1, c2) -> c2.getCarrot() - c1.getCarrot();
         calendarList.sort(comparator);
     }
-
     private void bringParticipantRanking(List<Calendar> calendarList, GroupDetailResponse response) {
         Integer rank = 0;
         Iterator<Calendar> calendarIter = calendarList.iterator();
@@ -170,6 +167,10 @@ public class GroupService {
         GroupSearchResponse response = new GroupSearchResponse(group);
 
         List<Member> members = memberRepository.findByUsernameStartsWithOrderByUsername(username);
+        searchMemberList(member, group, response, members);
+        return response;
+    }
+    private void searchMemberList(Member member, Group group, GroupSearchResponse response, List<Member> members) {
         for (Member other : members) {
             if (other.getId().equals(member.getId())){
                 continue;
@@ -179,7 +180,6 @@ public class GroupService {
             GroupSearchMemberResponse invitationSearch = new GroupSearchMemberResponse(other, isMember);
             response.addMembers(invitationSearch);
         }
-        return response;
     }
 
     @Transactional
@@ -194,6 +194,11 @@ public class GroupService {
         List<Participant> participants = new ArrayList<>();
 
         List<Member> members = memberRepository.findAll();
+        memberInInvitation(username, group, response, participants, members);
+        participantRepository.saveAll(participants);
+        return response;
+    }
+    private void memberInInvitation(List<String> username, Group group, GroupInvitationResponse response, List<Participant> participants, List<Member> members) {
         for (Member other : members) {
             for (String name : username) {
                 if (participantRepository.existsByMemberAndGroup(other, group)){
@@ -206,7 +211,5 @@ public class GroupService {
                 }
             }
         }
-        participantRepository.saveAll(participants);
-        return response;
     }
 }
