@@ -21,5 +21,5 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
     Integer countParticipantByGroup_Id(Long groupId);
     Optional<Participant> findByGroup_IdAndMember(Long groupId, Member member);
     Optional<Participant> findByMemberAndGroup(Member searchMember, Group group);
-    boolean existsByMemberAndGroup(Member other, Group group);
+    Boolean existsByMemberAndGroup(Member other, Group group);
 }
