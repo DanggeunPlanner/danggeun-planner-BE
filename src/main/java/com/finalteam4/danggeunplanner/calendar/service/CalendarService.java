@@ -1,5 +1,6 @@
 package com.finalteam4.danggeunplanner.calendar.service;
 
+import com.finalteam4.danggeunplanner.TimeConverter;
 import com.finalteam4.danggeunplanner.calendar.dto.response.CalendarResponse;
 import com.finalteam4.danggeunplanner.calendar.dto.response.ColorStageResponse;
 import com.finalteam4.danggeunplanner.calendar.entity.Calendar;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
@@ -33,7 +35,7 @@ public class CalendarService {
             CalendarResponse response = new CalendarResponse(calendar.get());
             ColorStageResponse colorStage = new ColorStageResponse();
 
-            addDateToColorStage(calendar.get(), colorStage);
+            addDateToColorStage(calendar.get(), response, colorStage);
             response.addColorStage(colorStage);
 
             return response;
@@ -42,12 +44,15 @@ public class CalendarService {
         return new CalendarResponse(member);
     }
 
-    private void addDateToColorStage(Calendar calendar, ColorStageResponse colorStage){
+
+    //오늘날짜 삭제
+    private void addDateToColorStage(Calendar calendar, CalendarResponse response, ColorStageResponse colorStage){
         for (Planner planner : calendar.getPlanners()) {
             Integer carrot = planner.getCarrot();
             String date = planner.getDate();
-
-            if ((0 < carrot && carrot <= 4)) {
+            if(planner.getDate().equals(TimeConverter.convertToPlannerDateForm(LocalDateTime.now()))){
+              response.addTodayColorStage(carrot);
+            } else if ((0 < carrot && carrot <= 4)) {
                 colorStage.addDateToColorStage1(date);
             } else if ((4 < carrot && carrot <= 8)) {
                 colorStage.addDateToColorStage2(date);
