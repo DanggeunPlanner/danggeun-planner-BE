@@ -3,11 +3,13 @@
 
 - 뽀모도로 타이머 기법을 기반으로 한 집중관리와 플래너의 기능을 결합한 서비스
 
-
+<br />
 
 ## 🗓️MVP 개발 기간
 
 - 22.12.30 - 23.01.20
+
+<br />
 
 ## 🎯주요 기능
 
@@ -19,9 +21,13 @@
 - 회원 검색
 ![소개화면](https://user-images.githubusercontent.com/110980231/213652725-adea4bda-2717-4608-b8d4-a96d8bf8b0e3.jpg)
 
+<br />
+
 ## 🪄서비스 구조
 
 <img width="704" alt="image" src="https://user-images.githubusercontent.com/110980231/213647811-78befdba-0f59-4c76-8e11-06fd974feedb.png">
+
+<br />
 
 ## 🛠️Stack
 
@@ -38,10 +44,13 @@
 
 <img src="https://img.shields.io/badge/Amazon EC2-yellow?style=for-the-badge&logo=AmazonEC2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon S3-yellow?style=for-the-badge&logo=AmazonS3&logoColor=white"> <img src="https://img.shields.io/badge/Github Actions-2088FF?style=for-the-badge&logo=Github Actions&logoColor=white"> <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white"> 
 
+<br />
+
 ## 🏗️아키텍쳐
 
 ![당근플래너아키텍처-페이지-1 drawio](https://user-images.githubusercontent.com/110980231/213653472-ffceb83e-4cbc-4e29-b091-448587ca1eec.png)
 
+<br />
 
 ## 👥멤버
 
