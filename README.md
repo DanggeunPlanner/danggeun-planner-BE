@@ -1,16 +1,15 @@
 
 # Danggeun Planner ![baby_carrot](https://user-images.githubusercontent.com/110980231/213629629-ecaacda7-dee2-4712-a059-2e1cbc43e73b.png)
 
-뽀모도로 타이머 기법을 기반으로 한 집중관리와 플래너의 기능을 결합한 서비스
+- 뽀모도로 타이머 기법을 기반으로 한 집중관리와 플래너의 기능을 결합한 서비스
 
------ -
-### 🗓️MVP 개발 기간
+
+
+## 🗓️MVP 개발 기간
 
 - 22.12.30 - 23.01.20
 
-
------ -
-### 🎯주요 기능
+## 🎯주요 기능
 
 - 회원가입, 로그인
 - 뽀모도로 타이머
@@ -20,16 +19,11 @@
 - 회원 검색
 ![소개화면](https://user-images.githubusercontent.com/110980231/213652725-adea4bda-2717-4608-b8d4-a96d8bf8b0e3.jpg)
 
-
-
------ -
-### 🪄서비스 구조
+## 🪄서비스 구조
 
 <img width="704" alt="image" src="https://user-images.githubusercontent.com/110980231/213647811-78befdba-0f59-4c76-8e11-06fd974feedb.png">
 
-
------ -
-### 🛠️Stack
+## 🛠️Stack
 
 - FE 
 
@@ -44,23 +38,20 @@
 
 <img src="https://img.shields.io/badge/Amazon EC2-yellow?style=for-the-badge&logo=AmazonEC2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon S3-yellow?style=for-the-badge&logo=AmazonS3&logoColor=white"> <img src="https://img.shields.io/badge/Github Actions-2088FF?style=for-the-badge&logo=Github Actions&logoColor=white"> <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white"> 
 
-
------ - 
-### 🏗️아키텍쳐
+## 🏗️아키텍쳐
 
 ![당근플래너아키텍처-페이지-1 drawio](https://user-images.githubusercontent.com/110980231/213653472-ffceb83e-4cbc-4e29-b091-448587ca1eec.png)
 
 
------ - 
-### 👥멤버
+## 👥멤버
 
 FE
-- 장다혜 DahyeJang
-- 서강산 Noa
+- 장다혜 [DahyeJang](https://github.com/DahyeJang)
+- 서강산 [Noa](https://github.com/dkaodkaork)
 
 BE
-- 서재석 JaeSuk
-- 정성원 sungwon
-- 정진 JeongO
+- 서재석 [JaeSuk](https://github.com/suhjaesuk)
+- 정성원 [sungwon](https://github.com/SungwonJeong)
+- 정진 [JeongO](https://github.com/JeongO41)
 
 
