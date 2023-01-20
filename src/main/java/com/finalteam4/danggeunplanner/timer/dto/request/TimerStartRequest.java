@@ -1,5 +1,6 @@
 package com.finalteam4.danggeunplanner.timer.dto.request;
 
+import com.finalteam4.danggeunplanner.common.exception.ValidationGroups;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.timer.entity.Timer;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class TimerStartRequest {
-    @NotNull
+    @NotNull(message = "시작 시간은 Null이 될 수 없습니다.", groups = ValidationGroups.FirstNotNullGroup.class)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
 

@@ -1,5 +1,6 @@
 package com.finalteam4.danggeunplanner.group.controller;
 
+import com.finalteam4.danggeunplanner.common.exception.ValidationSequence;
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
 import com.finalteam4.danggeunplanner.group.dto.request.GroupInfoRequest;
 import com.finalteam4.danggeunplanner.group.dto.request.GroupInvitationRequest;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,13 +34,13 @@ public class GroupController {
     private final GroupService groupService;
 
     @PostMapping
-    public ResponseEntity<ResponseMessage<GroupInfoResponse>> createGroup(@Valid @RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ResponseMessage<GroupInfoResponse>> createGroup(@Validated(ValidationSequence.class) @RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
         GroupInfoResponse response = groupService.createGroup(request, userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("그룹 등록 성공", response), HttpStatus.CREATED);
     }
 
     @PutMapping("/{groupId}")
-    public ResponseEntity<ResponseMessage<GroupInfoResponse>> updateGroup(@PathVariable Long groupId, @RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ResponseMessage<GroupInfoResponse>> updateGroup(@PathVariable Long groupId, @Validated(ValidationSequence.class) @RequestBody GroupInfoRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails){
         GroupInfoResponse response = groupService.updateGroup(groupId, request, userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("그룹 수정 성공", response), HttpStatus.ACCEPTED);
     }
