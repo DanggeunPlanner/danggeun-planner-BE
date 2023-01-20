@@ -75,13 +75,11 @@ public class MemberService {
         member.updateRefreshToken(refreshToken);
     }
 
-    @Transactional //리팩토링 진행 전(로직 수정 가능)
+    @Transactional
     public void reissueToken(HttpServletRequest request, HttpServletResponse response) {
         String refreshTokenWithBearer = request.getHeader(AUTHORIZATION_REFRESH);
         Member member = memberRepository.findByRefreshToken(refreshTokenWithBearer);
         jwtUtil.validateRefreshToken(request, member.getEmail());
-
-        jwtUtil.resolveToken(request, AUTHORIZATION_REFRESH);
         issueTokens(response, member);
     }
 
@@ -96,7 +94,6 @@ public class MemberService {
             );
             group.updateAdmin(request.getUsername());
         }
-
         Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );

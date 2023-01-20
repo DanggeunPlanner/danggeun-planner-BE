@@ -36,7 +36,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String refreshToken = jwtUtil.resolveToken(request, AUTHORIZATION_REFRESH);
 
-        //인증 필요 없는 부분은 그냥 체인 통과하도록 분기처리(필요없으면 그냥 다음 필터로 이동)
+        //인증 필요 없거나 refrehToken이 있을 경우(토큰 재발행 요청) 다음 필터로 이동
         if (token == null || refreshToken!=null){
             filterChain.doFilter(request, response);
             return;
