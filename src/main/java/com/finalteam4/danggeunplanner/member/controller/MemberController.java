@@ -1,5 +1,6 @@
 package com.finalteam4.danggeunplanner.member.controller;
 
+import com.finalteam4.danggeunplanner.common.exception.ValidationSequence;
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberUpdateUsernameRequest;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,13 +40,13 @@ public class MemberController {
     private final OauthService oauthService;
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<ResponseMessage<Void>> signUp(@RequestBody MemberAuthRequest request){
+    public ResponseEntity<ResponseMessage<Void>> signUp(@Validated(ValidationSequence.class) @RequestBody MemberAuthRequest request){
         memberService.signUp(request);
         return new ResponseEntity<>(new ResponseMessage<>("회원가입 성공",null), HttpStatus.CREATED);
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<ResponseMessage<MemberLoginResponse>> login(@RequestBody MemberAuthRequest request, HttpServletResponse response){
+    public ResponseEntity<ResponseMessage<MemberLoginResponse>> login(@Validated(ValidationSequence.class) @RequestBody MemberAuthRequest request, HttpServletResponse response){
         MemberLoginResponse memberLogInResponse = memberService.login(request, response);
         return new ResponseEntity<>(new ResponseMessage<>("로그인 성공", memberLogInResponse), HttpStatus.OK);
     }
@@ -56,7 +58,7 @@ public class MemberController {
     }
 
     @PutMapping("/member/username")
-    public ResponseEntity<ResponseMessage<MemberUpdateUsernameResponse>> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberUpdateUsernameRequest request){
+    public ResponseEntity<ResponseMessage<MemberUpdateUsernameResponse>> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @Validated(ValidationSequence.class) @RequestBody MemberUpdateUsernameRequest request){
         MemberUpdateUsernameResponse response = memberService.updateUsername(userDetails, request);
         return new ResponseEntity<>(new ResponseMessage<>("닉네임 변경 성공", response), HttpStatus.ACCEPTED);
     }
