@@ -19,8 +19,8 @@ import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import com.finalteam4.danggeunplanner.participant.repository.ParticipantRepository;
-import com.finalteam4.danggeunplanner.timer.entity.Timer;
-import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
+import com.finalteam4.danggeunplanner.planner.entity.Planner;
+import com.finalteam4.danggeunplanner.planner.repository.PlannerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
@@ -41,7 +42,7 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final ParticipantRepository participantRepository;
     private final CalendarRepository calendarRepository;
-    private final TimerRepository timerRepository;
+    private final PlannerRepository plannerRepository;
     private final MemberRepository memberRepository;
     private final GroupValidator groupValidator;
 
@@ -55,7 +56,6 @@ public class GroupService {
 
         return new GroupInfoResponse(group);
     }
-
     private void createParticipant(Member member, Group group) {
         Participant participant = new Participant(member, group);
         participantRepository.save(participant);
@@ -110,23 +110,30 @@ public class GroupService {
 
         descendingOrderByCarrot(calendarList);
 
-        Integer groupDailyCarrot = 0;
-        Integer groupCarrot = 0;
-
-        for (Participant participant : group.getParticipants()) {
-            List<Timer> timers = timerRepository.findAllByMemberAndIsFinish(participant.getMember(),true);
-            for(Timer timer : timers){
-                groupDailyCarrot += timer.getCount();
-            }
-        }
-        for (Calendar calendar : calendarList) {
-            groupCarrot += calendar.getCarrot();
-        }
+        Integer groupDailyCarrot = countGroupDailyCarrot(group);
+        Integer groupCarrot = countGroupCarrot(calendarList);
 
         GroupDetailResponse response = new GroupDetailResponse(group, groupDailyCarrot, groupCarrot);
         bringParticipantRanking(calendarList, response);
 
         return response;
+    }
+    private Integer countGroupDailyCarrot(Group group) {
+        Integer groupDailyCarrot = 0;
+        for (Participant participant : group.getParticipants()) {
+            List<Planner> planners = plannerRepository.findAllByMemberAndDate(participant.getMember(), TimeConverter.convertToPlannerDateForm(LocalDateTime.now()));
+            for (Planner planner : planners) {
+                groupDailyCarrot += planner.getCarrot();
+            }
+        }
+        return groupDailyCarrot;
+    }
+    private static Integer countGroupCarrot(List<Calendar> calendarList) {
+        Integer groupCarrot = 0;
+        for (Calendar calendar : calendarList) {
+            groupCarrot += calendar.getCarrot();
+        }
+        return groupCarrot;
     }
     private void bringCalendarListOfParticipant(Group group, List<Calendar> calendarList) {
         for (Participant participant : group.getParticipants()) {
@@ -204,7 +211,7 @@ public class GroupService {
                 if (participantRepository.existsByMemberAndGroup(other, group)){
                     continue;
                 }
-                if (other.getUsername().equals(name)){
+                if (Objects.equals(other.getUsername(), name)){
                     Participant participant = new Participant(other, group);
                     participants.add(participant);
                     response.addUsername(participant.getMember());

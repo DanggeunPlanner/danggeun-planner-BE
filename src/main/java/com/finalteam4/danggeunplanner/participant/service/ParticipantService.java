@@ -1,5 +1,6 @@
 package com.finalteam4.danggeunplanner.participant.service;
 
+import com.finalteam4.danggeunplanner.TimeConverter;
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
@@ -9,12 +10,13 @@ import com.finalteam4.danggeunplanner.participant.dto.response.ParticipantInfoRe
 import com.finalteam4.danggeunplanner.participant.dto.response.ParticipantListResponse;
 import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import com.finalteam4.danggeunplanner.participant.repository.ParticipantRepository;
-import com.finalteam4.danggeunplanner.timer.entity.Timer;
-import com.finalteam4.danggeunplanner.timer.repository.TimerRepository;
+import com.finalteam4.danggeunplanner.planner.entity.Planner;
+import com.finalteam4.danggeunplanner.planner.repository.PlannerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
@@ -26,7 +28,7 @@ import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUN
 public class ParticipantService {
     private final ParticipantRepository participantRepository;
     private final GroupRepository groupRepository;
-    private final TimerRepository timerRepository;
+    private final PlannerRepository plannerRepository;
     private final MemberRepository memberRepository;
     private final ParticipantValidator participantValidator;
 
@@ -58,10 +60,10 @@ public class ParticipantService {
         return onlineCount;
     }
     private ParticipantListResponse appendListResponse(Member member, boolean online) {
-        List<Timer> timers = timerRepository.findAllByMemberAndIsFinish(member, true);
         Integer dailyCarrot = 0;
-        for (Timer timer : timers) {
-            dailyCarrot += timer.getCount();
+        List<Planner> planners = plannerRepository.findAllByMemberAndDate(member, TimeConverter.convertToPlannerDateForm(LocalDateTime.now()));
+        for (Planner planner : planners) {
+            dailyCarrot += planner.getCarrot();
         }
         return new ParticipantListResponse(member, online, dailyCarrot);
     }
