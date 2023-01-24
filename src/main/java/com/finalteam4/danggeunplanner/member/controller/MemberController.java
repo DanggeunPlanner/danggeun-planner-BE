@@ -9,6 +9,7 @@ import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoListResponse
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLoginResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberProfileImageResponse;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberRankingsResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberUpdateUsernameResponse;
 import com.finalteam4.danggeunplanner.member.service.MemberService;
 import com.finalteam4.danggeunplanner.member.service.OauthService;
@@ -88,6 +89,12 @@ public class MemberController {
         OauthLoginRequest kakaoLoginRequest = oauthService.createKakaoUser(kakaoAccessToken); //받아온 액세스토큰으로 카카오 로그인 리퀘스트 만들기
         MemberLoginResponse memberLogInResponse = memberService.OauthLogin(kakaoLoginRequest, response);
         return new ResponseEntity<>(new ResponseMessage<>("카카오 로그인 성공", memberLogInResponse), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/member/ranking")
+    public ResponseEntity<ResponseMessage<MemberRankingsResponse>> uploadMemberImage(){
+        MemberRankingsResponse response = memberService.findRanking();
+        return new ResponseEntity<>(new ResponseMessage<>("회원 랭킹 조회 성공", response), HttpStatus.OK);
     }
 }
 
