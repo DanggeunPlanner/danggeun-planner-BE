@@ -33,7 +33,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = jwtUtil.resolveToken(request, AUTHORIZATION_ACCESS);
-
         String refreshToken = jwtUtil.resolveToken(request, AUTHORIZATION_REFRESH);
 
         //인증 필요 없거나 refrehToken이 있을 경우(토큰 재발행 요청) 다음 필터로 이동
@@ -43,11 +42,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         jwtUtil.validateAccessToken(request, response);
-
-        Claims info = jwtUtil.getUserInfoFromToken(token);
-
+        Claims info = jwtUtil.getUserInfoFromToken(token,false);
         setAuthentication(info.getSubject());
-
         filterChain.doFilter(request,response);
     }
 
