@@ -85,14 +85,12 @@ public class ParticipantService {
         }
         return online;
     }
-
     @Transactional
     public void deleteParticipant(Long groupId, Member member) {
         Participant participant = participantRepository.findByGroup_IdAndMember(groupId, member).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_PARTICIPANT)
         );
         participantValidator.validateAdmin(member, participant);
-
         participantRepository.deleteById(participant.getId());
     }
 }

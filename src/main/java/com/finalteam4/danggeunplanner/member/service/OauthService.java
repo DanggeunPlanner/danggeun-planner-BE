@@ -46,6 +46,7 @@ public class OauthService {
             //POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
 
+
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=" + grantType);
             sb.append("&client_id=" + clientId);

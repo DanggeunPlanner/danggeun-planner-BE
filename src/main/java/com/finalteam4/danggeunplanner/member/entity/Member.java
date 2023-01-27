@@ -33,7 +33,7 @@ public class Member {
     @Column(name="profile_image",nullable = false)
     private String profileImage;
     @Column
-    private Boolean isPlannerOpened;
+    private Boolean isPlannerOpened = true;
 
     @Builder
     public Member(String email, String password, String username, String profileImage){

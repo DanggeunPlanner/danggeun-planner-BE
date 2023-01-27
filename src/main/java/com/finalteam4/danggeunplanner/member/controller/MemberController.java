@@ -6,6 +6,7 @@ import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberDisclosureRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberUpdateUsernameRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.OauthLoginRequest;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberDisclosureResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoListResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLoginResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLogoutResponse;
@@ -100,9 +101,9 @@ public class MemberController {
     }
 
     @PutMapping("/member/disclosure")
-    public ResponseEntity<ResponseMessage<Void>> setPlannerPublic(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberDisclosureRequest request){
-        memberService.setPlannerPublic(userDetails, request);
-        return new ResponseEntity<>(new ResponseMessage<>("공개범위 설정 변경 완료", null), HttpStatus.ACCEPTED);
+    public ResponseEntity<ResponseMessage<MemberDisclosureResponse>> setPlannerPublic(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberDisclosureRequest request){
+        MemberDisclosureResponse response = memberService.setPlannerPublic(userDetails, request);
+        return new ResponseEntity<>(new ResponseMessage<>("공개범위 설정 변경 완료", response), HttpStatus.ACCEPTED);
     }
 }
 
