@@ -35,7 +35,7 @@ public class JwtUtil {
     public static final String AUTHORIZATION_ACCESS = "AccessToken";
     public static final String AUTHORIZATION_REFRESH = "RefreshToken";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long TOKEN_TIME = 24*60*60*1000L;
+    private static final long TOKEN_TIME = 24 * 60 * 60 * 1000L;
     @Value("${jwt.secret.key.access}")
     private String accessTokenSecretKey;
     @Value("${jwt.secret.key.refresh}")
@@ -122,8 +122,16 @@ public class JwtUtil {
         return false;
     }
 
-    public Claims getUserInfoFromToken(String token) {
+    public Claims getUserInfoFromToken(String token, boolean isRefresh) {
+        if(isRefresh){
+            try {
             return Jwts.parserBuilder().setSigningKey(accessTokenKey).build().parseClaimsJws(token).getBody();
+            } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+        } else {
+            return Jwts.parserBuilder().setSigningKey(accessTokenKey).build().parseClaimsJws(token).getBody();
+        }
     }
 
     // 인증 객체 생성

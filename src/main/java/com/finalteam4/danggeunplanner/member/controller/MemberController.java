@@ -3,10 +3,12 @@ package com.finalteam4.danggeunplanner.member.controller;
 import com.finalteam4.danggeunplanner.common.exception.ValidationSequence;
 import com.finalteam4.danggeunplanner.common.response.ResponseMessage;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
+import com.finalteam4.danggeunplanner.member.dto.request.MemberDisclosureRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberUpdateUsernameRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.OauthLoginRequest;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoListResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLoginResponse;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberLogoutResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberProfileImageResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberRankingsResponse;
@@ -58,6 +60,13 @@ public class MemberController {
         return new ResponseEntity<>(new ResponseMessage<>("토큰 재발행 성공", null), HttpStatus.ACCEPTED);
     }
 
+    @PostMapping("/auth/logout")
+    public ResponseEntity<ResponseMessage<MemberLogoutResponse>> logout(@AuthenticationPrincipal UserDetailsImpl userDetails,HttpServletRequest request){
+        memberService.logout(userDetails.getMember());
+        return new ResponseEntity<>(new ResponseMessage<>("로그아웃 성공", null), HttpStatus.OK);
+    }
+
+
     @PutMapping("/member/username")
     public ResponseEntity<ResponseMessage<MemberUpdateUsernameResponse>> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @Validated(ValidationSequence.class) @RequestBody MemberUpdateUsernameRequest request){
         MemberUpdateUsernameResponse response = memberService.updateUsername(userDetails, request);
@@ -91,10 +100,10 @@ public class MemberController {
         return new ResponseEntity<>(new ResponseMessage<>("카카오 로그인 성공", memberLogInResponse), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/member/ranking")
-    public ResponseEntity<ResponseMessage<MemberRankingsResponse>> uploadMemberImage(){
-        MemberRankingsResponse response = memberService.findRanking();
-        return new ResponseEntity<>(new ResponseMessage<>("회원 랭킹 조회 성공", response), HttpStatus.OK);
+    @PutMapping("/member/disclosure")
+    public ResponseEntity<ResponseMessage<Void>> setPlannerPublic(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberDisclosureRequest request){
+        memberService.setPlannerPublic(userDetails, request);
+        return new ResponseEntity<>(new ResponseMessage<>("공개범위 설정 변경 완료", null), HttpStatus.ACCEPTED);
     }
 }
 

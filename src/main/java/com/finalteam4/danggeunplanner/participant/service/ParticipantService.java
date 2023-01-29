@@ -5,13 +5,13 @@ import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
-import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
 import com.finalteam4.danggeunplanner.participant.dto.response.ParticipantInfoResponse;
 import com.finalteam4.danggeunplanner.participant.dto.response.ParticipantListResponse;
 import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import com.finalteam4.danggeunplanner.participant.repository.ParticipantRepository;
 import com.finalteam4.danggeunplanner.planner.entity.Planner;
 import com.finalteam4.danggeunplanner.planner.repository.PlannerRepository;
+import com.finalteam4.danggeunplanner.redis.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +29,8 @@ public class ParticipantService {
     private final ParticipantRepository participantRepository;
     private final GroupRepository groupRepository;
     private final PlannerRepository plannerRepository;
-    private final MemberRepository memberRepository;
     private final ParticipantValidator participantValidator;
+    private final RedisService redisService;
 
     public ParticipantInfoResponse findParticipant(Long groupId, Member member) {
         Group group = groupRepository.findById(groupId).orElseThrow(
@@ -52,7 +52,7 @@ public class ParticipantService {
     }
     private Integer onlineCalculator(Group group, Integer onlineCount) {
         for (Participant participant : group.getParticipants()) {
-            boolean online = memberRepository.existsByRefreshToken(participant.getMember().getRefreshToken());
+            boolean online = hasRefreshToken(participant);
             if (online) {
                 onlineCount++;
             }
@@ -71,11 +71,19 @@ public class ParticipantService {
         for (Participant participant : group.getParticipants()) {
             boolean identification = member.getId().equals(participant.getMember().getId());
             if (!identification) {
-                boolean online = memberRepository.existsByRefreshToken(participant.getMember().getRefreshToken());
+                boolean online = hasRefreshToken(participant);
                 ParticipantListResponse participantListResponse = appendListResponse(participant.getMember(), online);
                 response.addParticipantList(participantListResponse);
             }
         }
+    }
+    private boolean hasRefreshToken(Participant participant) {
+        boolean online = true;
+        String onlineCheck = redisService.getValues(participant.getMember().getEmail());
+        if(onlineCheck == null){
+            online = false;
+        }
+        return online;
     }
 
     @Transactional
@@ -88,3 +96,4 @@ public class ParticipantService {
         participantRepository.deleteById(participant.getId());
     }
 }
+
