@@ -11,6 +11,7 @@ import com.finalteam4.danggeunplanner.member.dto.response.MemberLoginResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLogoutResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberProfileImageResponse;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberRankingsResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberUpdateUsernameResponse;
 import com.finalteam4.danggeunplanner.member.service.MemberService;
 import com.finalteam4.danggeunplanner.member.service.OauthService;
