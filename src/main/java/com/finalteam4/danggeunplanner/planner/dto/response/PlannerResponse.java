@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 public class PlannerResponse {
     private final Boolean isOwner;
+    private final Boolean isPlannerOpened;
     private final String username;
     private final String profileImage;
     private final Integer carrot;
@@ -18,6 +19,7 @@ public class PlannerResponse {
 
     public PlannerResponse(Member other, Member member) {
         this.isOwner = other.getUsername().equals(member.getUsername());
+        this.isPlannerOpened = other.isPlannerOpened();
         this.username = other.getUsername();
         this.profileImage = other.getProfileImage();
         this.carrot = 0;
@@ -25,11 +27,11 @@ public class PlannerResponse {
 
     public PlannerResponse(Planner planner, Member member) {
         this.isOwner = planner.getMember().getUsername().equals(member.getUsername());
+        this.isPlannerOpened = planner.getMember().isPlannerOpened();
         this.username = planner.getMember().getUsername();
         this.profileImage = planner.getMember().getProfileImage();
         this.carrot = planner.getCarrot();
     }
-
 
     public void addPlan(PlanResponse response) {
         contents.add(response);
