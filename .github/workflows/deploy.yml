@@ -36,9 +36,9 @@ jobs:
     # 
     - name: Copy Secret1
       env:
-        OCCUPY_SECRET: ${{ secrets.OCCUPY_SECRET1 }}
-        OCCUPY_SECRET_DIR: src/main/resources
-        OCCUPY_SECRET_DIR_FILE_NAME: application-mysql.properties
+        OCCUPY_SECRET1: ${{ secrets.OCCUPY_SECRET1 }}
+        OCCUPY_SECRET1_DIR: src/main/resources
+        OCCUPY_SECRET1_DIR_FILE_NAME: application-mysql.properties
       run: echo $OCCUPY_SECRET1 | base64 --decode > $OCCUPY_SECRET1_DIR/$OCCUPY_SECRET1_DIR_FILE_NAME
 
     - name: Copy Secret2
@@ -50,7 +50,7 @@ jobs:
       
     - name: Copy Secret3
       env:
-        OCCUPY_SECRET3: ${{ secrets.OCCUPY_SECRET2 }}
+        OCCUPY_SECRET3: ${{ secrets.OCCUPY_SECRET3 }}
         OCCUPY_SECRET3_DIR: src/main/resources
         OCCUPY_SECRET3_DIR_FILE_NAME: application-security.properties
       run: echo $OCCUPY_SECRET3 | base64 --decode > $OCCUPY_SECRET3_DIR/$OCCUPY_SECRET3_DIR_FILE_NAME
