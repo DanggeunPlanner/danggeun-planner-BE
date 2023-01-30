@@ -1,5 +1,8 @@
 package com.finalteam4.danggeunplanner.member.service;
 
+import com.finalteam4.danggeunplanner.TimeConverter;
+import com.finalteam4.danggeunplanner.calendar.entity.Calendar;
+import com.finalteam4.danggeunplanner.calendar.repository.CalendarRepository;
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
@@ -13,6 +16,8 @@ import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLoginResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberProfileImageResponse;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberRanking;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberRankingsResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberUpdateUsernameResponse;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
@@ -46,6 +51,7 @@ import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_
 @Transactional(readOnly = true)
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final CalendarRepository calendarRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final TimerRepository timerRepository;
