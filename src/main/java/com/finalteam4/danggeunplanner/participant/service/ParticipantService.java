@@ -37,6 +37,7 @@ public class ParticipantService {
                 () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
         );
 
+        participantValidator.validateAccess(member, group);
         Integer onlineCount = 0;
         onlineCount = onlineCalculator(group, onlineCount);
 
@@ -76,6 +77,7 @@ public class ParticipantService {
                 response.addParticipantList(participantListResponse);
             }
         }
+        response.sortByOnline();
     }
     private boolean hasRefreshToken(Participant participant) {
         boolean online = true;
