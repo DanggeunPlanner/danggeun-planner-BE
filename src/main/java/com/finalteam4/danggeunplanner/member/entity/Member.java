@@ -18,22 +18,26 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Member {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
     private Long id;
+    
     @Column(nullable = false)
     private String email;
+    
     @Column
     private String password;
-
+    
     @Column
     private String username;
-
+    
     @Column(name="profile_image",nullable = false)
     private String profileImage;
+    
     @Column
-    private Boolean isPlannerOpened;
+    private Boolean isPlannerOpened = true;
 
     @Builder
     public Member(String email, String password, String username, String profileImage){
@@ -42,12 +46,15 @@ public class Member {
         this.username = username;
         this.profileImage = profileImage;
     }
+    
     public void updateUsername(String username){
         this.username = username;
     }
+    
     public void updateProfileImage(String profileImage){
         this.profileImage = profileImage;
     }
+    
     public void updatePlannerOpened(Boolean plannerOpened ){
         this.isPlannerOpened = plannerOpened;
     }

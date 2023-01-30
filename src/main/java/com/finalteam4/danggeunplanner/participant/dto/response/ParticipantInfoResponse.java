@@ -4,6 +4,7 @@ import com.finalteam4.danggeunplanner.group.entity.Group;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -26,5 +27,8 @@ public class ParticipantInfoResponse {
     }
     public void addParticipantList(ParticipantListResponse response){
         participantList.add(response);
+    }
+    public void sortByOnline() {
+        participantList.sort(Comparator.comparing(ParticipantListResponse::getOnline, Comparator.reverseOrder()));
     }
 }

@@ -10,6 +10,7 @@ import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberDisclosureRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberUpdateUsernameRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.OauthLoginRequest;
+import com.finalteam4.danggeunplanner.member.dto.response.MemberDisclosureResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoListResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLoginResponse;
@@ -174,11 +175,13 @@ public class MemberService {
         boolean isExistUsername = memberValidator.validateExistUsername(member);
         return new MemberLoginResponse(isExistUsername);
     }
+    
     @Transactional
-    public void setPlannerPublic(UserDetailsImpl userDetails, MemberDisclosureRequest request) {
+    public MemberDisclosureResponse setPlannerPublic(UserDetailsImpl userDetails, MemberDisclosureRequest request) {
         Member member = memberRepository.findByUsername(userDetails.getUsername()).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
         member.updatePlannerOpened(request.getIsPlannerOpened());
+        return new MemberDisclosureResponse(member.getIsPlannerOpened());
     }
 }
