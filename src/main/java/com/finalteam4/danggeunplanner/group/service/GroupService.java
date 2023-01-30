@@ -17,6 +17,9 @@ import com.finalteam4.danggeunplanner.group.entity.GroupImageEnum;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
+import com.finalteam4.danggeunplanner.notification.entity.NotificationType;
+import com.finalteam4.danggeunplanner.notification.repository.NotificationRepository;
+import com.finalteam4.danggeunplanner.notification.service.NotificationService;
 import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import com.finalteam4.danggeunplanner.participant.repository.ParticipantRepository;
 import com.finalteam4.danggeunplanner.planner.entity.Planner;
@@ -44,7 +47,9 @@ public class GroupService {
     private final CalendarRepository calendarRepository;
     private final PlannerRepository plannerRepository;
     private final MemberRepository memberRepository;
+    private final NotificationRepository notificationRepository;
     private final GroupValidator groupValidator;
+    private final NotificationService notificationService;
 
     @Transactional
     public GroupInfoResponse createGroup(GroupInfoRequest request, Member member) {
@@ -101,9 +106,8 @@ public class GroupService {
         Group group = groupRepository.findById(groupId).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
         );
-        
-        List<Participant> participantList = participantRepository.findAllByMember(member);
-        groupValidator.validateJoinGroup(participantList);
+
+        groupValidator.validateAccess(member, group);
 
         List<Calendar> calendarList = new ArrayList<>();
         bringCalendarListOfParticipant(group, calendarList);
@@ -202,7 +206,6 @@ public class GroupService {
 
         List<Member> members = memberRepository.findAll();
         memberInInvitation(username, group, response, participants, members);
-        participantRepository.saveAll(participants);
         return response;
     }
     private void memberInInvitation(List<String> username, Group group, GroupInvitationResponse response, List<Participant> participants, List<Member> members) {
@@ -211,10 +214,14 @@ public class GroupService {
                 if (participantRepository.existsByMemberAndGroup(other, group)){
                     continue;
                 }
+                if (notificationRepository.existsByMemberAndGroupIdAndNotificationType(other, group.getId(), NotificationType.INVITATION)){
+                    continue;
+                }
                 if (Objects.equals(other.getUsername(), name)){
                     Participant participant = new Participant(other, group);
                     participants.add(participant);
                     response.addUsername(participant.getMember());
+                    notificationService.send(participant.getMember(), NotificationType.INVITATION, group.getName(), group.getId());
                 }
             }
         }
