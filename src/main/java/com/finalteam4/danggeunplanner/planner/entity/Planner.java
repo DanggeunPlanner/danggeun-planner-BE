@@ -4,6 +4,7 @@ import com.finalteam4.danggeunplanner.calendar.entity.Calendar;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.timer.entity.Timer;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -58,6 +59,7 @@ public class Planner {
         calendar.addPlanner(this);
     }
 
+    @Builder
     public Planner(Member member, String date){
         this.date = date;
         this.member = member;

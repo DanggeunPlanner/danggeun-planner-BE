@@ -36,11 +36,12 @@ public class Member {
     private Boolean isPlannerOpened;
 
     @Builder
-    public Member(String email, String password, String username, String profileImage){
+    public Member(String email, String password, String username, String profileImage, Boolean isPlannerOpened){
         this.email = email;
         this.password = password;
         this.username = username;
         this.profileImage = profileImage;
+        this.isPlannerOpened = isPlannerOpened;
     }
     public void updateUsername(String username){
         this.username = username;
