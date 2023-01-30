@@ -27,14 +27,13 @@ public class Plan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="plan_id")
     private Long id;
-
-    @Column(nullable = false)
-    private String date;
     @Column(name="start_time", nullable = false)
     private LocalDateTime startTime;
     @Column(name="end_time", nullable = false)
     private LocalDateTime endTime;
 
+    @Column(nullable = false)
+    private String date;
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
