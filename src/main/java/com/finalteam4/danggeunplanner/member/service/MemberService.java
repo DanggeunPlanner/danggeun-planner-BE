@@ -175,13 +175,13 @@ public class MemberService {
         boolean isExistUsername = memberValidator.validateExistUsername(member);
         return new MemberLoginResponse(isExistUsername);
     }
+    
     @Transactional
     public MemberDisclosureResponse setPlannerPublic(UserDetailsImpl userDetails, MemberDisclosureRequest request) {
         Member member = memberRepository.findByUsername(userDetails.getUsername()).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
         member.updatePlannerOpened(request.getIsPlannerOpened());
-
         return new MemberDisclosureResponse(member.getIsPlannerOpened());
     }
 }

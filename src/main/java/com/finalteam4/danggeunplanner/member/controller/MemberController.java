@@ -62,11 +62,10 @@ public class MemberController {
     }
 
     @PostMapping("/auth/logout")
-    public ResponseEntity<ResponseMessage<MemberLogoutResponse>> logout(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ResponseMessage<Void>> logout(@AuthenticationPrincipal UserDetailsImpl userDetails){
         memberService.logout(userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("로그아웃 성공", null), HttpStatus.OK);
     }
-
 
     @PutMapping("/member/username")
     public ResponseEntity<ResponseMessage<MemberUpdateUsernameResponse>> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @Validated(ValidationSequence.class) @RequestBody MemberUpdateUsernameRequest request){
@@ -105,6 +104,7 @@ public class MemberController {
     public ResponseEntity<ResponseMessage<MemberDisclosureResponse>> setPlannerPublic(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody MemberDisclosureRequest request){
         MemberDisclosureResponse response = memberService.setPlannerPublic(userDetails, request);
         return new ResponseEntity<>(new ResponseMessage<>("공개범위 설정 변경 완료", response), HttpStatus.ACCEPTED);
+
     }
 }
 
