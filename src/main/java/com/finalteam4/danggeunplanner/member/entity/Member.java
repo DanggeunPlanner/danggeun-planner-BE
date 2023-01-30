@@ -51,5 +51,7 @@ public class Member {
     public void updatePlannerOpened(Boolean plannerOpened ){
         this.isPlannerOpened = plannerOpened;
     }
-
+    public boolean isPlannerOpened(){
+        return this.isPlannerOpened;
+    }
 }
