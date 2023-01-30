@@ -47,9 +47,12 @@ public enum ErrorCode {
     OVERLAP_WITH_OTHER_PLAN(HttpStatus.BAD_REQUEST, "PLAN_004", "계획이 다른 계획과의 시간이 겹칩니다."),
     NOT_FOUND_GROUP(HttpStatus.NOT_FOUND,"GROUP_001","찾을 수 없는 그룹입니다."),
     NOT_FOUND_JOIN_GROUP(HttpStatus.NOT_FOUND,"GROUP_002","가입한 그룹이 없습니다."),
+    OVER_HEAD_COUNT_GROUP(HttpStatus.BAD_REQUEST,"GROUP_003","최대 인원 99명을 초과했습니다."),
 
     NOT_FOUND_PARTICIPANT(HttpStatus.NOT_FOUND,"PARTICIPANT_001","찾을 수 없는 참가자입니다."),
     NOT_DELETE_PARTICIPANT(HttpStatus.BAD_REQUEST,"PARTICIPANT_002","관리자는 그룹을 탈퇴할 수 없습니다."),
+
+    NOT_FOUND_NOTIFICATION(HttpStatus.NOT_FOUND,"NOTIFICATION_001","찾을 수 없는 알림입니다."),
 
     NOT_FOUND_PLANNER(HttpStatus.NOT_FOUND,"PLANNER_001","찾을 수 없는 플래너입니다."),
 
