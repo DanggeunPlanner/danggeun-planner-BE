@@ -32,9 +32,8 @@ public class Member {
 
     @Column(name="profile_image",nullable = false)
     private String profileImage;
-
     @Column
-    private String refreshToken;
+    private Boolean isPlannerOpened;
 
     @Builder
     public Member(String email, String password, String username, String profileImage){
@@ -49,8 +48,8 @@ public class Member {
     public void updateProfileImage(String profileImage){
         this.profileImage = profileImage;
     }
-
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+    public void updatePlannerOpened(Boolean plannerOpened ){
+        this.isPlannerOpened = plannerOpened;
     }
+
 }

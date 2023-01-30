@@ -9,11 +9,13 @@ public class MemberMyPageResponse {
     private String username;
     private String profileImage;
     private Integer totalCarrot;
+    private Boolean plannerOpened;
 
     public MemberMyPageResponse(Member member, Integer totalCarrot ){
         this.email = member.getEmail();
         this.username = member.getUsername();
         this.profileImage = member.getProfileImage();
+        this.plannerOpened = member.getIsPlannerOpened();
         this.totalCarrot = totalCarrot;
     }
 }
