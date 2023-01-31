@@ -37,7 +37,7 @@ public class Member {
     private String profileImage;
     
     @Column
-    private Boolean isPlannerOpened = true;
+    private Boolean isPlannerOpened;
 
     @Builder
     public Member(String email, String password, String username, String profileImage, Boolean isPlannerOpened){

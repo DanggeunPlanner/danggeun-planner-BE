@@ -15,6 +15,7 @@ public class OauthLoginRequest {
         return Member.builder()
                 .email(email)
                 .profileImage("https://danggeunplanner-bucket.s3.ap-northeast-2.amazonaws.com/images/77e5ffbb-37aa-499b-b79d-9e403c43268dprofile_pic.png")
+                .isPlannerOpened(true)
                 .build();
     }
 }
