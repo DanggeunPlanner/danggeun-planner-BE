@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -49,9 +50,15 @@ public class NotificationController {
         return new ResponseEntity<>(new ResponseMessage<>("알림 확인", response), HttpStatus.OK);
     }
 
-    @GetMapping("/api/member/notification/read")
+    @PutMapping("/api/member/notification/read")
     public ResponseEntity<ResponseMessage<NotificationReadResponse>> readNotification(@AuthenticationPrincipal UserDetailsImpl userDetails){
         NotificationReadResponse response = notificationService.readNotification(userDetails.getMember());
+        return new ResponseEntity<>(new ResponseMessage<>("알림 수신", response), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/member/notification/read")
+    public ResponseEntity<ResponseMessage<NotificationReadResponse>> readFindNotification(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        NotificationReadResponse response = notificationService.readFindNotification(userDetails.getMember());
         return new ResponseEntity<>(new ResponseMessage<>("알림 수신", response), HttpStatus.OK);
     }
 

@@ -2,11 +2,11 @@ package com.finalteam4.danggeunplanner.notification.service;
 
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.member.entity.Member;
+import com.finalteam4.danggeunplanner.notification.dto.reqeust.NotificationRequest;
 import com.finalteam4.danggeunplanner.notification.dto.response.NotificationConfirmResponse;
 import com.finalteam4.danggeunplanner.notification.dto.response.NotificationReadResponse;
 import com.finalteam4.danggeunplanner.notification.dto.response.NotificationResponse;
 import com.finalteam4.danggeunplanner.notification.entity.Notification;
-import com.finalteam4.danggeunplanner.notification.entity.NotificationType;
 import com.finalteam4.danggeunplanner.notification.repository.EmitterRepository;
 import com.finalteam4.danggeunplanner.notification.repository.EmitterRepositoryImpl;
 import com.finalteam4.danggeunplanner.notification.repository.NotificationRepository;
@@ -50,12 +50,14 @@ public class NotificationService {
         return emitter;
     }
 
-    @Async
-    @Transactional
-    public void send(Member member, NotificationType notificationType, String content, Long groupId){
-        Notification notification = notificationRepository.save(new Notification(content, groupId, false, notificationType, member));
+    public void send(NotificationRequest request){
+        Notification notification = saveNotification(request);
+        sendNotification(request, notification);
+    }
 
-        String receiverId = String.valueOf(member.getId());
+    @Async
+    public void sendNotification(NotificationRequest request, Notification notification) {
+        String receiverId = String.valueOf(request.getMember().getId());
         String eventId = receiverId + "_" + System.currentTimeMillis();
         Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(receiverId);
         emitters.forEach(
@@ -65,6 +67,20 @@ public class NotificationService {
                 }
         );
     }
+
+    @Transactional
+    public Notification saveNotification(NotificationRequest request) {
+        Notification notification = Notification.builder()
+                .content(request.getContent())
+                .groupId(request.getGroupId())
+                .isRead(false)
+                .notificationType(request.getNotificationType())
+                .member(request.getMember())
+                .build();
+        notificationRepository.save(notification);
+        return notification;
+    }
+
     private void sendDummyData(String emitterId, SseEmitter emitter, String eventId, Object data) {
         try {
             emitter.send(SseEmitter.event()
@@ -110,6 +126,14 @@ public class NotificationService {
         List<Notification> notifications = notificationRepository.findAllByMember_Id(member.getId());
         for (Notification notification : notifications) {
             notification.read();
+        }
+        return new NotificationReadResponse(true);
+    }
+
+    @Transactional(readOnly = true)
+    public NotificationReadResponse readFindNotification(Member member) {
+        if (notificationRepository.existsByIsReadAndMember(false, member)) {
+            return new NotificationReadResponse(false);
         }
         return new NotificationReadResponse(true);
     }

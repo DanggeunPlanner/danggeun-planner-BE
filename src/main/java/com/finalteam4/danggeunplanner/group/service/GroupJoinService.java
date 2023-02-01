@@ -6,13 +6,14 @@ import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
+import com.finalteam4.danggeunplanner.notification.dto.reqeust.NotificationRequest;
 import com.finalteam4.danggeunplanner.notification.entity.Notification;
 import com.finalteam4.danggeunplanner.notification.entity.NotificationType;
 import com.finalteam4.danggeunplanner.notification.repository.NotificationRepository;
-import com.finalteam4.danggeunplanner.notification.service.NotificationService;
 import com.finalteam4.danggeunplanner.participant.entity.Participant;
 import com.finalteam4.danggeunplanner.participant.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +28,11 @@ public class GroupJoinService {
     private final NotificationRepository notificationRepository;
     private final ParticipantRepository participantRepository;
     private final MemberRepository memberRepository;
-    private final NotificationService notificationService;
     private final GroupValidator groupValidator;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
-    public synchronized GroupJoinResponse acceptGroup(Long groupId, Long notificationId, Member member) {
+    public GroupJoinResponse acceptGroup(Long groupId, Long notificationId, Member member) {
         Group group = groupRepository.findById(groupId).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
         );
@@ -50,7 +51,13 @@ public class GroupJoinService {
         notificationRepository.deleteById(notificationId);
 
         String content = member.getUsername() + "님이 " + group.getName() + " 그룹 초대를 승인했습니다.";
-        notificationService.send(adminMember, NotificationType.ACCEPT, content, groupId);
+        applicationEventPublisher.publishEvent(NotificationRequest.builder()
+                .member(adminMember)
+                .notificationType(NotificationType.ACCEPT)
+                .content(content)
+                .groupId(groupId)
+                .build());
+
 
         return new GroupJoinResponse(group);
     }
@@ -72,7 +79,12 @@ public class GroupJoinService {
         notificationRepository.deleteById(notificationId);
 
         String content = member.getUsername() + "님이 " + group.getName() + " 그룹 초대를 거절했습니다.";
-        notificationService.send(adminMember, NotificationType.REJECT, content, groupId);
+        applicationEventPublisher.publishEvent(NotificationRequest.builder()
+                .member(adminMember)
+                .notificationType(NotificationType.REJECT)
+                .content(content)
+                .groupId(groupId)
+                .build());
 
         return new GroupJoinResponse(group);
     }

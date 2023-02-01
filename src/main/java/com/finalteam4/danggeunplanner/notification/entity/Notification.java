@@ -2,6 +2,7 @@ package com.finalteam4.danggeunplanner.notification.entity;
 
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -45,6 +46,7 @@ public class Notification {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
+    @Builder
     public Notification(String content, Long groupId, Boolean isRead, NotificationType notificationType, Member member) {
         this.content = content;
         this.groupId = groupId;

@@ -58,7 +58,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000");
+//        configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedOrigin("https://www.dggnplanner.com/");
         configuration.addAllowedOrigin("http://danggeunplanner.s3-website.ap-northeast-2.amazonaws.com/");
         configuration.addAllowedOrigin("http://localhost:8080/login/kakao");
@@ -70,6 +70,7 @@ public class WebSecurityConfig {
         configuration.setMaxAge(3600L);
         configuration.addExposedHeader("AccessToken"); // 헤더에 있는 JWT 토큰을 클라이언트에서 사용할 수 있도록 권한을 주는 부분
         configuration.addExposedHeader("RefreshToken");
+//        configuration.addAllowedOrigin("https://danggeun-planner-fe-new.vercel.app");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/**", configuration);
         return source;
