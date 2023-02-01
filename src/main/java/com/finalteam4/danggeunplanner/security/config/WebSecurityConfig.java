@@ -59,6 +59,7 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("https://www.dggnplanner.com/");
         configuration.addAllowedOrigin("http://danggeunplanner.s3-website.ap-northeast-2.amazonaws.com/");
         configuration.addAllowedOrigin("http://localhost:8080/login/kakao");
         configuration.addAllowedOrigin("https://danggeun-planner-fe.vercel.app");
