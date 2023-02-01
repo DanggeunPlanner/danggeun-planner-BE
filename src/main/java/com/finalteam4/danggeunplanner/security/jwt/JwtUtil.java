@@ -76,7 +76,7 @@ public class JwtUtil {
         Date date = new Date();
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setExpiration(new Date(System.currentTimeMillis() + TOKEN_TIME +  2 * 24 * 60 * 60 * 1000L))
+                        .setExpiration(new Date(System.currentTimeMillis() + TOKEN_TIME +  13 * 24 * 60 * 60 * 1000L))
                         .setIssuedAt(date)
                         .signWith(refreshTokenKey, signatureAlgorithm)
                         .compact();
