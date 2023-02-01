@@ -31,7 +31,6 @@ public class PlanService {
 
         planValidator.validatePlanningDate(plan);
         planValidator.validatePlanningTime(plan);
-        planValidator.validateOverlapping(plan, member);
 
         planRepository.save(plan);
 
@@ -55,7 +54,6 @@ public class PlanService {
 
         planValidator.validatePlanningTime(plan);
         planValidator.validatePlanningDate(plan);
-        planValidator.validateOverlapping(plan, member);
 
         return new PlanResponse(plan);
     }
