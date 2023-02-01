@@ -12,7 +12,6 @@ import java.util.List;
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findAllByMember_Id(Long memberId);
     Boolean existsByIsReadAndMember(Boolean isRead, Member member);
-    Boolean existsByMember_Id(Long memberId);
     @Query("select count(n) from Notification n " +
             "where n.member.id = :memberId and " +
             "n.isRead = false")

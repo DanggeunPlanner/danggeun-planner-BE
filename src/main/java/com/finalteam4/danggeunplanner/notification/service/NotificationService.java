@@ -28,7 +28,7 @@ import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUN
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final EmitterRepository emitterRepository = new EmitterRepositoryImpl();
-    private final Long timeout = 90L * 1000L;
+    private final Long timeout = 60L * 1000L * 60L;
 
     public SseEmitter subscribe(Member member, String lastEventId) {
         String emitterId = makeTimeIncludeId(member);
@@ -87,7 +87,6 @@ public class NotificationService {
         List<NotificationResponse> response = new ArrayList<>();
         for (Notification notification : notifications) {
             response.add(new NotificationResponse(notification));
-            notification.read();
         }
         return response;
     }
@@ -107,6 +106,10 @@ public class NotificationService {
     public NotificationReadResponse readNotification(Member member) {
         if (notificationRepository.existsByIsReadAndMember(false, member)) {
             return new NotificationReadResponse(false);
+        }
+        List<Notification> notifications = notificationRepository.findAllByMember_Id(member.getId());
+        for (Notification notification : notifications) {
+            notification.read();
         }
         return new NotificationReadResponse(true);
     }
