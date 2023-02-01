@@ -64,6 +64,7 @@ public class WebSecurityConfig {
         configuration.addAllowedOrigin("http://localhost:8080/login/kakao");
         configuration.addAllowedOrigin("https://danggeun-planner-fe.vercel.app");
         configuration.addAllowedOrigin("https://danggeun-planner-9rfbtpqwd-dahyejang.vercel.app");
+        configuration.addAllowedOrigin("https://danggeun-planner-fe-new.vercel.app");
         configuration.addAllowedMethod("*"); // 허용할 Http Method
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true); // 내 서버가 응답할 때 json을 js에서 처리할 수 있게 설정
