@@ -118,18 +118,6 @@ public class NotificationService {
         return new NotificationConfirmResponse(notification);
     }
 
-    @Transactional
-    public NotificationReadResponse readNotification(Member member) {
-        if (notificationRepository.existsByIsReadAndMember(false, member)) {
-            return new NotificationReadResponse(false);
-        }
-        List<Notification> notifications = notificationRepository.findAllByMember_Id(member.getId());
-        for (Notification notification : notifications) {
-            notification.read();
-        }
-        return new NotificationReadResponse(true);
-    }
-
     @Transactional(readOnly = true)
     public NotificationReadResponse readFindNotification(Member member) {
         if (notificationRepository.existsByIsReadAndMember(false, member)) {
