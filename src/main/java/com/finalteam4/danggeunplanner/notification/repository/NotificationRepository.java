@@ -4,6 +4,7 @@ import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.notification.entity.Notification;
 import com.finalteam4.danggeunplanner.notification.entity.NotificationType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,4 +18,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
             "n.isRead = false")
     Long countUnReadNotification(@Param("memberId") Long memberId);
     Boolean existsByMemberAndGroupIdAndNotificationType(Member member, Long groupId, NotificationType notificationType);
+    @Modifying(clearAutomatically = true)
+    @Query("update Notification n set n.isRead = true where n.member.id = :memberId")
+    void updateAllIsRead(@Param("memberId") Long memberId);
 }
