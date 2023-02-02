@@ -54,8 +54,4 @@ public class Notification {
         this.notificationType = notificationType;
         this.member = member;
     }
-
-    public void read() {
-        isRead = true;
-    }
 }

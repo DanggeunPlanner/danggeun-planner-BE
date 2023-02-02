@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +48,12 @@ public class NotificationController {
     public ResponseEntity<ResponseMessage<NotificationConfirmResponse>> confirmNotification(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long notificationId){
         NotificationConfirmResponse response = notificationService.confirmNotification(userDetails.getMember(), notificationId);
         return new ResponseEntity<>(new ResponseMessage<>("알림 확인", response), HttpStatus.OK);
+    }
+
+    @PatchMapping("/api/member/notification/read")
+    public ResponseEntity<ResponseMessage<Void>> readNotification(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        notificationService.readNotification(userDetails.getMember());
+        return new ResponseEntity<>(new ResponseMessage<>("알림 읽음", null), HttpStatus.OK);
     }
 
     @GetMapping("/api/member/notification/read")

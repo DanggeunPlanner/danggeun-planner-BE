@@ -118,6 +118,11 @@ public class NotificationService {
         return new NotificationConfirmResponse(notification);
     }
 
+    @Transactional
+    public void readNotification(Member member) {
+        notificationRepository.updateAllIsRead(member.getId());
+    }
+
     @Transactional(readOnly = true)
     public NotificationReadResponse readFindNotification(Member member) {
         if (notificationRepository.existsByIsReadAndMember(false, member)) {

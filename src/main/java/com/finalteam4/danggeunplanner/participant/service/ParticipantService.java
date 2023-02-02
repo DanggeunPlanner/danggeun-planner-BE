@@ -5,6 +5,9 @@ import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
 import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
 import com.finalteam4.danggeunplanner.member.entity.Member;
+import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
+import com.finalteam4.danggeunplanner.notification.dto.reqeust.NotificationRequest;
+import com.finalteam4.danggeunplanner.notification.entity.NotificationType;
 import com.finalteam4.danggeunplanner.participant.dto.response.ParticipantInfoResponse;
 import com.finalteam4.danggeunplanner.participant.dto.response.ParticipantListResponse;
 import com.finalteam4.danggeunplanner.participant.entity.Participant;
@@ -13,6 +16,7 @@ import com.finalteam4.danggeunplanner.planner.entity.Planner;
 import com.finalteam4.danggeunplanner.planner.repository.PlannerRepository;
 import com.finalteam4.danggeunplanner.redis.service.RedisService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
+import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_PARTICIPANT;
 
 @Service
@@ -29,8 +34,10 @@ public class ParticipantService {
     private final ParticipantRepository participantRepository;
     private final GroupRepository groupRepository;
     private final PlannerRepository plannerRepository;
+    private final MemberRepository memberRepository;
     private final ParticipantValidator participantValidator;
     private final RedisService redisService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public ParticipantInfoResponse findParticipant(Long groupId, Member member) {
         Group group = groupRepository.findById(groupId).orElseThrow(
@@ -93,8 +100,19 @@ public class ParticipantService {
         Participant participant = participantRepository.findByGroup_IdAndMember(groupId, member).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_PARTICIPANT)
         );
+        Member adminMember = memberRepository.findByUsername(participant.getGroup().getAdmin()).orElseThrow(
+                () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
+        );
         participantValidator.validateAdmin(member, participant);
         participantRepository.deleteById(participant.getId());
+
+        String content = member.getUsername() + "님이 " + participant.getGroup().getName() + " 그룹에서 탈퇴했습니다.";
+        applicationEventPublisher.publishEvent(NotificationRequest.builder()
+                .member(adminMember)
+                .notificationType(NotificationType.WITHDRAWAL)
+                .content(content)
+                .groupId(groupId)
+                .build());
     }
 }
 
