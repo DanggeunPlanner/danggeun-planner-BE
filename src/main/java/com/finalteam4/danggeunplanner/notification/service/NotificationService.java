@@ -28,7 +28,7 @@ import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUN
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final EmitterRepository emitterRepository = new EmitterRepositoryImpl();
-    private final Long timeout = 60L * 1000L * 60L;
+    private final Long timeout = 14L * 24L * 60L * 1000L * 60L;
 
     public SseEmitter subscribe(Member member, String lastEventId) {
         String emitterId = makeTimeIncludeId(member);

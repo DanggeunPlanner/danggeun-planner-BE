@@ -79,7 +79,7 @@ public class MemberService {
         String refreshToken = jwtUtil.createRefreshToken();
         response.addHeader(AUTHORIZATION_ACCESS, accessToken);
         response.addHeader(AUTHORIZATION_REFRESH, refreshToken);
-        redisService.setValues(email, refreshToken, Duration.ofDays(2));
+        redisService.setValues(email, refreshToken, Duration.ofDays(60));
     }
 
     @Transactional
