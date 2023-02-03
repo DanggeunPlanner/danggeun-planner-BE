@@ -1,10 +1,7 @@
 package com.finalteam4.danggeunplanner.member.service;
 
-import com.finalteam4.danggeunplanner.TimeConverter;
-import com.finalteam4.danggeunplanner.calendar.entity.Calendar;
 import com.finalteam4.danggeunplanner.calendar.repository.CalendarRepository;
 import com.finalteam4.danggeunplanner.common.exception.DanggeunPlannerException;
-import com.finalteam4.danggeunplanner.group.entity.Group;
 import com.finalteam4.danggeunplanner.group.repository.GroupRepository;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberAuthRequest;
 import com.finalteam4.danggeunplanner.member.dto.request.MemberDisclosureRequest;
@@ -16,8 +13,6 @@ import com.finalteam4.danggeunplanner.member.dto.response.MemberInfoResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberLoginResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberMyPageResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberProfileImageResponse;
-import com.finalteam4.danggeunplanner.member.dto.response.MemberRanking;
-import com.finalteam4.danggeunplanner.member.dto.response.MemberRankingsResponse;
 import com.finalteam4.danggeunplanner.member.dto.response.MemberUpdateUsernameResponse;
 import com.finalteam4.danggeunplanner.member.entity.Member;
 import com.finalteam4.danggeunplanner.member.repository.MemberRepository;
@@ -40,7 +35,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_GROUP;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_FOUND_MEMBER;
 import static com.finalteam4.danggeunplanner.common.exception.ErrorCode.NOT_MATCH_REFRESHTOKEN;
 import static com.finalteam4.danggeunplanner.security.jwt.JwtUtil.AUTHORIZATION_ACCESS;
@@ -113,17 +107,14 @@ public class MemberService {
         String username = request.getUsername();
         memberValidator.validateUsername(username);
        
-        if (groupRepository.existsByAdmin(userDetails.getUsername())){
-            Group group = groupRepository.findByAdmin(userDetails.getUsername()).orElseThrow(
-                    () -> new DanggeunPlannerException(NOT_FOUND_GROUP)
-            );
-            group.updateAdmin(request.getUsername());
-        }
         Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(
                 () -> new DanggeunPlannerException(NOT_FOUND_MEMBER)
         );
-
         member.updateUsername(username);
+
+        if (groupRepository.existsByAdmin(userDetails.getUsername())){
+            groupRepository.updateGroupAdmin(username, userDetails.getUsername());
+        }
         return new MemberUpdateUsernameResponse(member);
     }
 
