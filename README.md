@@ -5,6 +5,7 @@
 ### 안녕하세요. 당신 근처의 플래너: 당근 플래너 입니다.🥕
 **당근 플래너**는 **뽀모도로 타이머 기반의 집중&시간관리 서비스**를 제공하고 있습니다.
 
+- 서비스 이용 링크 : [당근플래너](https://www.dggnplanner.com/)
 <br />
 <br />
 
@@ -62,6 +63,8 @@
 
 ![당근플래너 아키텍쳐](https://user-images.githubusercontent.com/110963294/217158066-0b1365bb-7f69-4982-9b13-084128f81d54.png)
 
+- [아키텍쳐에 대한 이해 추가해야함]()
+
 
 <br />
 <br />
@@ -70,17 +73,8 @@
 
 ![팀원소개이미지](https://user-images.githubusercontent.com/110963294/217158202-5df9b5ce-10c4-4297-adf2-4886f12692b0.jpg)
 
-### FE
-- 장다혜 [DahyeJang](https://github.com/DahyeJang)
-- 서강산 [Noa](https://github.com/dkaodkaork)
 
-### BE
-- 서재석 [JaeSuk](https://github.com/suhjaesuk)
-- 정성원 [sungwon](https://github.com/SungwonJeong)
-- 정진 [JeongO](https://github.com/JeongO41)
-
-### Design
-- 이예랑
+### 🐰정진 [JeongO](https://github.com/JeongO41), 🐰정성원 [sungwon](https://github.com/SungwonJeong),  🐰서재석 [JaeSuk](https://github.com/suhjaesuk), 🐰장다혜 [DahyeJang](https://github.com/DahyeJang), 🐰서강산 [Noa](https://github.com/dkaodkaork), 🐰이예랑
 
 ## 👨‍👨‍👧‍👧 팀 블로그
 [당근플래너 공식 블로그](https://danggeunplanner.tistory.com/)
