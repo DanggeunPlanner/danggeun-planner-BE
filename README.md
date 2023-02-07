@@ -1,14 +1,16 @@
+# 당근플래너
 
-# Danggeun Planner ![baby_carrot](https://user-images.githubusercontent.com/110980231/213629629-ecaacda7-dee2-4712-a059-2e1cbc43e73b.png)
+![600x340](https://user-images.githubusercontent.com/110963294/217157702-6b17cf6f-40f2-4611-9da9-d5e11eadca2d.png)
 
-- 뽀모도로 타이머 기법을 기반으로 한 집중관리와 플래너의 기능을 결합한 서비스
+### 안녕하세요. 당신 근처의 플래너: 당근 플래너 입니다.🥕
+**당근 플래너**는 **뽀모도로 타이머 기반의 집중&시간관리 서비스**를 제공하고 있습니다.
 
 <br />
 <br />
 
 ## 🗓️MVP 개발 기간
 
-- 22.12.30 - 23.01.20
+- 22.12.30 - 23.02.01
 
 <br />
 <br />
@@ -58,20 +60,27 @@
 
 ## 🏗️아키텍쳐
 
-![당근플래너아키텍처-페이지-1 drawio](https://user-images.githubusercontent.com/110980231/213653472-ffceb83e-4cbc-4e29-b091-448587ca1eec.png)
+![당근플래너 아키텍쳐](https://user-images.githubusercontent.com/110963294/217158066-0b1365bb-7f69-4982-9b13-084128f81d54.png)
+
 
 <br />
 <br />
 
-## 👥멤버
+## 👥팀원 소개
 
-FE
+![팀원소개이미지](https://user-images.githubusercontent.com/110963294/217158202-5df9b5ce-10c4-4297-adf2-4886f12692b0.jpg)
+
+### FE
 - 장다혜 [DahyeJang](https://github.com/DahyeJang)
 - 서강산 [Noa](https://github.com/dkaodkaork)
 
-BE
+### BE
 - 서재석 [JaeSuk](https://github.com/suhjaesuk)
 - 정성원 [sungwon](https://github.com/SungwonJeong)
 - 정진 [JeongO](https://github.com/JeongO41)
 
+### Design
+- 
 
+## 👨‍👨‍👧‍👧 팀 블로그
+[당근플래너 공식 블로그](https://danggeunplanner.tistory.com/)
