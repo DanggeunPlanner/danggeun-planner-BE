@@ -7,8 +7,8 @@
 
 - 📅MVP 개발 기간: 22.12.30 - 23.02.01
 - [🥕당근플래너 이용하기](https://www.dggnplanner.com/)
+- [🥕팀 블로그 둘러보기](https://danggeunplanner.tistory.com/): 블로그를 통해 개발 스토리, 기획&구현 방법, 공지사항등을 이야기합니다.
 - [👄리뷰 남기기](https://docs.google.com/forms/d/1LwUiqNQoysQiWK3vZF4Tbshc6GNsFTwIbiyQ-sgTW-U/edit)
-
 <br />
 <br />
 
@@ -66,11 +66,6 @@
 ![팀원소개이미지](https://user-images.githubusercontent.com/110963294/217158202-5df9b5ce-10c4-4297-adf2-4886f12692b0.jpg)
 
 
-### 🐰정진 [JeongO](https://github.com/JeongO41)   🐰정성원 [sungwon](https://github.com/SungwonJeong)    🐰서재석 [JaeSuk](https://github.com/suhjaesuk)   🐰장다혜 [DahyeJang](https://github.com/DahyeJang)   🐰서강산 [Noa](https://github.com/dkaodkaork)   🐰이예랑
+### 🐰정진 [JeongO](https://github.com/JeongO41) 🐰정성원 [sungwon](https://github.com/SungwonJeong)    🐰서재석 [JaeSuk](https://github.com/suhjaesuk)   🐰장다혜 [DahyeJang](https://github.com/DahyeJang)   🐰서강산 [Noa](https://github.com/dkaodkaork)   🐰이예랑
 
-<br />
-<br />
 
-## 👨‍👨‍👧‍👧 팀 블로그
-저희는 블로그를 통해 개발 스토리, 기획&구현 방법, 공지사항등을 이야기합니다.
-- [🥕팀 블로그 둘러보기](https://danggeunplanner.tistory.com/)
