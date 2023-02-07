@@ -6,8 +6,8 @@
 **당근 플래너**는 **뽀모도로 타이머 기반의 집중&시간관리 서비스**를 제공하고 있습니다.
 
 - MVP 개발 기간: 22.12.30 - 23.02.01
-- 서비스 이용 링크: https://www.dggnplanner.com/
-- 저희에게 리뷰를 남기고 싶다면?: https://docs.google.com/forms/d/1LwUiqNQoysQiWK3vZF4Tbshc6GNsFTwIbiyQ-sgTW-U/edit 
+- [당근플래너 이용하기](https://www.dggnplanner.com/)
+- [리뷰 남기기](https://docs.google.com/forms/d/1LwUiqNQoysQiWK3vZF4Tbshc6GNsFTwIbiyQ-sgTW-U/edit)
 <br />
 <br />
 
