@@ -63,7 +63,7 @@
 
 ![당근플래너 아키텍쳐](https://user-images.githubusercontent.com/110963294/217158066-0b1365bb-7f69-4982-9b13-084128f81d54.png)
 
-- [아키텍쳐에 대한 이해 추가해야함]()
+- [아키텍쳐에 대한 이해](https://github.com/DanggeunPlanner/danggeun-planner-BE/wiki/%F0%9F%91%A9%F0%9F%8F%BB%E2%80%8D%F0%9F%94%A7%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90%EC%97%90-%EB%8C%80%ED%95%9C-%EC%9D%B4%ED%95%B4)
 
 
 <br />
