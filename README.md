@@ -74,7 +74,7 @@
 ![팀원소개이미지](https://user-images.githubusercontent.com/110963294/217158202-5df9b5ce-10c4-4297-adf2-4886f12692b0.jpg)
 
 
-### 🐰정진 [JeongO](https://github.com/JeongO41), 🐰정성원 [sungwon](https://github.com/SungwonJeong),  🐰서재석 [JaeSuk](https://github.com/suhjaesuk), 🐰장다혜 [DahyeJang](https://github.com/DahyeJang), 🐰서강산 [Noa](https://github.com/dkaodkaork), 🐰이예랑
+### 🐰정진 [JeongO](https://github.com/JeongO41)   🐰정성원 [sungwon](https://github.com/SungwonJeong)    🐰서재석 [JaeSuk](https://github.com/suhjaesuk)   🐰장다혜 [DahyeJang](https://github.com/DahyeJang)   🐰서강산 [Noa](https://github.com/dkaodkaork)   🐰이예랑
 
 ## 👨‍👨‍👧‍👧 팀 블로그
-[당근플래너 공식 블로그](https://danggeunplanner.tistory.com/)
+저희는 팀블로그를 운영하고 있습니다. [당근플래너 공식 블로그](https://danggeunplanner.tistory.com/)
