@@ -5,14 +5,9 @@
 ### 안녕하세요. 당신 근처의 플래너: 당근 플래너 입니다.🥕
 **당근 플래너**는 **뽀모도로 타이머 기반의 집중&시간관리 서비스**를 제공하고 있습니다.
 
-- 서비스 이용 링크 : [당근플래너](https://www.dggnplanner.com/)
-<br />
-<br />
-
-## 🗓️MVP 개발 기간
-
-- 22.12.30 - 23.02.01
-
+- MVP 개발 기간: 22.12.30 - 23.02.01
+- 서비스 이용 링크: https://www.dggnplanner.com/
+- 저희에게 리뷰를 남기고 싶다면?: https://docs.google.com/forms/d/1LwUiqNQoysQiWK3vZF4Tbshc6GNsFTwIbiyQ-sgTW-U/edit 
 <br />
 <br />
 
@@ -32,10 +27,6 @@
 
 <br />
 <br />
-
-## 🪄서비스 구조
-
-<img width="937" alt="서비스구조" src="https://user-images.githubusercontent.com/110980231/213668704-4067988c-81e1-49f8-a38b-8cb9297d5343.png">
 
 
 <br />
@@ -78,4 +69,4 @@
 
 ## 👨‍👨‍👧‍👧 팀 블로그
 저희는 팀블로그를 운영하고 있습니다. 
-- 블로그 링크: [당근플래너 공식 블로그](https://danggeunplanner.tistory.com/)
+- 당근플래너 공식 블로그 링크: https://danggeunplanner.tistory.com/
