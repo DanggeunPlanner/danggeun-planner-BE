@@ -7,26 +7,80 @@
 
 - 📅MVP 개발 기간: 22.12.30 - 23.02.01
 - [🥕당근플래너 이용하기](https://www.dggnplanner.com/)
-- [👨‍👨‍👧‍👧팀 블로그 둘러보기](https://danggeunplanner.tistory.com/): 블로그를 통해 개발 스토리, 기획&구현 방법, 공지사항등을 이야기합니다.
+- [👨‍👨‍👧‍👧팀 블로그 둘러보기](https://danggeunplanner.tistory.com/)
 - [👄리뷰 남기기](https://docs.google.com/forms/d/1LwUiqNQoysQiWK3vZF4Tbshc6GNsFTwIbiyQ-sgTW-U/edit)
 - [📕웬피이지 노션](https://suhjaesuk.notion.site/1131a8383e724f63b53469466b20cb99)
 
 <br />
-<br />
 
-## 🎯주요 기능
+## 🎯핵심 기능
+**핵심 기능은 타이머, 캘린더, 플래너, 그룹 4가지가 존재합니다.**
 
-- 회원가입, 로그인
-- 뽀모도로 타이머
-- Daily 플래너 - 집중 시간과 계획 관리
-- Monthly 캘린더 - 집중 현황 파악
-- 그룹 - 그룹 멤버들 실시간 상태 확인 가능
-- 회원 검색
-
+### 1.⏰**타이머**
+**25분 집중 5분 휴식 사이클인 뽀모도로 타이머입니다.**
 <br />
 <br />
+**📌 집중타이머는 시작하고 멈출 수 있습니다.**
+<br /> 
 
-![소개화면6장](https://user-images.githubusercontent.com/110980231/213668486-7151d1d6-8817-4414-83ca-1673a881d195.png)
+![타이머는 시작하고 멈출 수 있다](https://user-images.githubusercontent.com/110963294/217167518-0a2a7fee-54b0-46ee-8a25-1ee3eb9e45fc.gif)
+
+<br />
+
+**📌 집중을 시작하고 25분이 지나면 당근을 수확합니다.**
+<br />
+
+![타이머는 시작하고 멈출 수 있다](https://user-images.githubusercontent.com/110963294/217167643-8ccf12e4-f034-4a3d-afc4-f8d84f378bdd.gif)
+<br />
+
+### 2.📅캘린더
+**유저가 뿌듯함을 느껴 계속해서 집중할 수 있도록** 
+**당근을 얻을 수록 개별 날짜의 색깔을 단계별로  나누었습니다.**
+
+<br />
+
+![캘린더 이미지](https://user-images.githubusercontent.com/110963294/217168588-959e6d89-594e-4e91-8e52-492de03f84ed.png)
+
+<br />
+
+### 3.📕플래너
+**플래너는 계획을 기록할 수 있고 오늘 집중을 언제했는지 확인 할 수 있습니다.**
+<br />
+
+**📌 당근을 수확한 경우 집중한 기록으로 플래너에 자동으로 추가됩니다.**
+
+![타이머가 종료되면 당근을 얻고 플래너에 추가됨](https://user-images.githubusercontent.com/110963294/217169210-9d98fc3a-de8c-400b-a1eb-6bd0d860dc8e.gif)
+
+<br />
+
+**📌 사생활 보호를 위해 플래너 비공개 설정 시 다른 유저는 볼 수 없습니다.**
+
+![비공개 설정 플래너](https://user-images.githubusercontent.com/110963294/217169340-009f6744-b3e2-4ae8-a24c-458d4183b929.png)
+
+<br />
+
+### 4.👩‍👩‍👦그룹
+
+**그룹을 통해 같이 집중하여 동기부여를 느낄 수 있습니다.**
+
+<br />
+
+**📌 그룹원의 랭킹을 확인 할 수 있습니다. 이번 달에 당근을 많이 얻을 수록 랭킹이 높아집니다.**
+![그룹 메인페이지](https://user-images.githubusercontent.com/110963294/217169766-a9d30296-1878-4848-b5ff-32658c128a7b.png)
+
+<br />
+
+**📌 초대하고 싶은 유저를 리스트에 담아 초대합니다.**  
+![그룹원을 초대할 수 있다](https://user-images.githubusercontent.com/110963294/217170045-8438f362-1326-4e29-93a7-de8bd1c1ed88.gif)
+
+<br />
+
+**📌 유저의 편의성을 위해 그룹원 초대 시 실시간 알림을 구현했습니다.**
+
+![그룹 초대 승락](https://user-images.githubusercontent.com/110963294/217169902-62012f33-c600-46bf-b6d3-8822a55cb308.gif)
+
+
+
 
 <br />
 <br />
