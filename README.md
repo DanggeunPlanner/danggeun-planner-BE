@@ -68,5 +68,5 @@
 ### 🐰정진 [JeongO](https://github.com/JeongO41)   🐰정성원 [sungwon](https://github.com/SungwonJeong)    🐰서재석 [JaeSuk](https://github.com/suhjaesuk)   🐰장다혜 [DahyeJang](https://github.com/DahyeJang)   🐰서강산 [Noa](https://github.com/dkaodkaork)   🐰이예랑
 
 ## 👨‍👨‍👧‍👧 팀 블로그
-저희는 팀블로그를 운영하고 있습니다. 개발 스토리, 기획과 구현한 방법, 공지사항등을 이야기합니다.
+저희는 블로그를 통해 개발 스토리, 기획&구현 방법, 공지사항등을 이야기합니다.
 - [🥕팀 블로그 둘러보기](https://danggeunplanner.tistory.com/)
