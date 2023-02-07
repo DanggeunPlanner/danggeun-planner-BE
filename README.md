@@ -1,4 +1,4 @@
-# 당근플래너
+#  ![profile_pic](https://user-images.githubusercontent.com/110963294/217171052-b6d171f4-2d52-416e-9c14-9adb0e4c597b.png) 당근플래너
 
 ![600x340](https://user-images.githubusercontent.com/110963294/217157702-6b17cf6f-40f2-4611-9da9-d5e11eadca2d.png)
 
