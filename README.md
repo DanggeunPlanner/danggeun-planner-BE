@@ -80,7 +80,7 @@
 - 정진 [JeongO](https://github.com/JeongO41)
 
 ### Design
-- 
+- 이예랑
 
 ## 👨‍👨‍👧‍👧 팀 블로그
 [당근플래너 공식 블로그](https://danggeunplanner.tistory.com/)
