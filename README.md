@@ -10,6 +10,7 @@
 - [👨‍👨‍👧‍👧팀 블로그 둘러보기](https://danggeunplanner.tistory.com/)
 - [👄리뷰 남기기](https://docs.google.com/forms/d/1LwUiqNQoysQiWK3vZF4Tbshc6GNsFTwIbiyQ-sgTW-U/edit)
 - [📕웬피이지 노션](https://suhjaesuk.notion.site/1131a8383e724f63b53469466b20cb99)
+- [📒Github Wiki](https://github.com/DanggeunPlanner/danggeun-planner-BE/wiki)
 
 <br />
 
