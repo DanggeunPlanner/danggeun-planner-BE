@@ -101,7 +101,6 @@
 <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"/> <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white"/> <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=Slack&logoColor=white"/> <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white"> <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
 
 <br />
-<br />
 
 ## 🏗️아키텍쳐
 
@@ -110,7 +109,6 @@
 📌**Github Wiki**: [아키텍쳐에 대한 이해](https://github.com/DanggeunPlanner/danggeun-planner-BE/wiki/%F0%9F%91%A9%F0%9F%8F%BB%E2%80%8D%F0%9F%94%A7%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90%EC%97%90-%EB%8C%80%ED%95%9C-%EC%9D%B4%ED%95%B4)
 
 
-<br />
 <br />
 
 ## 👥팀원 소개
