@@ -81,7 +81,7 @@
 
 
 ## 📒ERD&API
-- [**📌API 링크**](https://suhjaesuk.notion.site/API-d74e874a05ba46758cb5d06654c0e102)
+- [**📌ERD&API 링크**](https://suhjaesuk.notion.site/API-ERD-8dcd3f1e750f4777980b5d15d02fae9b)
 
 <br />
 <br />
